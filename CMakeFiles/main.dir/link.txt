@@ -1,0 +1,1 @@
+/bin/c++     CMakeFiles/main.dir/src/main.cpp.o  -o main  src/test/libsrcs.a 

@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/corentin/Epitech/delivery/OOP/OOP_indie_studio_2019/src/main.cpp
+test/test.hpp
+/home/corentin/Epitech/delivery/OOP/OOP_indie_studio_2019/src/test/test.hpp
+iostream
+-
+irrlicht/irrlicht.h
+-
+
+/home/corentin/Epitech/delivery/OOP/OOP_indie_studio_2019/src/test/test.hpp
+
