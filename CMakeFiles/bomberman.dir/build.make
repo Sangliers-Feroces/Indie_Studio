@@ -79,6 +79,7 @@ bomberman_EXTERNAL_OBJECTS =
 
 bomberman: CMakeFiles/bomberman.dir/src/main.cpp.o
 bomberman: CMakeFiles/bomberman.dir/build.make
+bomberman: /usr/lib/libIrrlicht.so
 bomberman: CMakeFiles/bomberman.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/corentin/Epitech/delivery/OOP/OOP_indie_studio_2019/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable bomberman"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bomberman.dir/link.txt --verbose=$(VERBOSE)

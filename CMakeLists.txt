@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 project(bomberman)
 
-include(FindIrrlicht.cmake)
+set(CMAKE_MODULE_PATH FindIrrlicht.cmake)
+
 #ADD .CPP HERE
 set(SRCS 
 	./src/main.cpp
@@ -14,3 +15,5 @@ set(HEADER
 	)
 
 add_executable(bomberman ${SRCS} ${HEADER})
+
+target_link_libraries(bomberman ${Irrlicht_LIBRARIES})
