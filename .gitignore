@@ -3,3 +3,6 @@ cmake_install.cmake
 
 bomberman
 Makefile
+
+doc/html
+doc/latex
