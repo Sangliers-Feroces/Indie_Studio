@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 
 project(bomberman)
 
-set(CMAKE_MODULE_PATH FindIrrlicht.cmake)
+set(CMAKE_MODULE_PATH "./cmake_modules")
+
+include(FindIrrlicht)
 
 #ADD .CPP HERE
 set(SRCS 
