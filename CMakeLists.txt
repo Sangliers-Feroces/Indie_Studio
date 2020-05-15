@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
 
+if (MSVC)
+    add_compile_options(/W4 /WX)
+else()
+    add_compile_options(-Wall -Wextra -g)
+endif()
+
 project(bomberman)
 
 set(CMAKE_MODULE_PATH "./cmake_modules")
@@ -14,6 +20,7 @@ set(SRCS
 
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Field.cpp
+	./src/Bomberman/Player.cpp
 
 	./src/main.cpp
 )
@@ -27,3 +34,4 @@ include_directories(src)
 add_executable(bomberman ${SRCS} ${HEADER})
 
 target_link_libraries(bomberman ${Irrlicht_LIBRARIES})
+target_compile_features(bomberman PRIVATE cxx_std_17)

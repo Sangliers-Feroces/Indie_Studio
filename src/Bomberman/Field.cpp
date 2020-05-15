@@ -3,7 +3,8 @@
 namespace Bomberman {
 
 Field::Field(irr::IrrlichtDevice &device) :
-	World(device)
+	World(device),
+	m_player(add<Player>())
 {
 }
 

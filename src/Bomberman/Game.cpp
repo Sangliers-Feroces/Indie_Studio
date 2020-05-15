@@ -2,7 +2,8 @@
 
 namespace Bomberman {
 
-Game::Game(void)
+Game::Game(void) :
+	m_field(add<Field>())
 {
 }
 

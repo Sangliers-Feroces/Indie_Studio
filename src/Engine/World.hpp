@@ -17,6 +17,8 @@ public:
 	irr::video::IVideoDriver &driver;
 
 private:
+	friend Entity;
+
 	irr::scene::ISceneManager &m_irr_scene;
 };
 
