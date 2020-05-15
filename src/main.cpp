@@ -5,21 +5,10 @@
 ** main
 */
 
-#include "test/test.hpp"
-#include <iostream>
-#include <irrlicht/irrlicht.h>
-
-using namespace irr;
-using namespace core;
-using namespace scene;
-using namespace video;
-using namespace io;
-using namespace gui;
+#include "Bomberman/Game.hpp"
 
 int main(void)
 {
-	IrrlichtDevice *device =
-        createDevice( video::EDT_SOFTWARE, dimension2d<u32>(640, 480), 16, false, false, false, 0);
-	std::cout << "Hellow World" << std::endl;
-	return TEST;
+	Bomberman::Game();
+	return 0;
 }
