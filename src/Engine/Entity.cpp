@@ -20,6 +20,18 @@ Entity::~Entity(void)
 {
 }
 
+void Entity::destroy(void)
+{
+	if (m_parent == nullptr)
+		throw std::runtime_error("Can't destroy root entity");
+
+	auto &c = m_parent->m_children;
+	auto got = c.find(*this);
+	if (got == c.end())
+		throw std::runtime_error("Can't find entity in its own parent");
+	c.erase(got);
+}
+
 const irr::core::vector3df& Entity::getPos(void) const
 {
 	return m_irr_node->getPosition();

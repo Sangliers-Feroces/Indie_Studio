@@ -42,6 +42,8 @@ protected:
 		return  m_children.emplace<EntityType>(Context(world, this), std::forward<Args>(args)...);
 	}
 
+	void destroy(void);
+
 	const irr::core::vector3df& getPos(void) const;
 	const irr::core::vector3df& getRot(void) const;
 	const irr::core::vector3df& getScale(void) const;
