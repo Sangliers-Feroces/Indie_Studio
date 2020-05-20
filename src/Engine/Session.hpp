@@ -17,7 +17,10 @@ protected:
 	template <class WorldType, typename ...Args>
 	WorldType& add(Args &&...args)
 	{
-		return m_worlds.emplace<WorldType>(m_irr_device, std::forward<Args>(args)...);
+		World::getStack().push(m_irr_device);
+		auto &res = m_worlds.emplace<WorldType>(std::forward<Args>(args)...);
+		World::getStack().pop();
+		return res;
 	}
 
 private:

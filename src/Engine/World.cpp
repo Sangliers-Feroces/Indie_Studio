@@ -2,16 +2,23 @@
 
 namespace Engine {
 
-World::World(irr::IrrlichtDevice &device) :
-	Entity(Entity::Context(*this, nullptr), *device.getSceneManager()),
-	m_irr_device(device),
-	driver(*device.getVideoDriver()),
-	m_irr_scene(*device.getSceneManager())
+World::World(void) :
+	Entity(Entity::Context(*this, nullptr), *getStack().top().get().getSceneManager()),
+	m_irr_device(getStack().top()),
+	driver(*getStack().top().get().getVideoDriver()),
+	m_irr_scene(*getStack().top().get().getSceneManager())
 {
 }
 
 World::~World(void)
 {
+}
+
+std::stack<std::reference_wrapper<irr::IrrlichtDevice>>& World::getStack(void)
+{
+	static thread_local std::stack<std::reference_wrapper<irr::IrrlichtDevice>> res;
+
+	return res;
 }
 
 }

@@ -1,16 +1,21 @@
 #pragma once
 
+#include <stack>
 #include "Entity.hpp"
 
 namespace Engine {
 
+class Session;
+
 class World : public Entity
 {
 public:
-	World(irr::IrrlichtDevice &device);
+	World(void);
 	virtual ~World(void) override = 0;
 
 private:
+	friend Session;
+	static std::stack<std::reference_wrapper<irr::IrrlichtDevice>>& getStack(void);
 	irr::IrrlichtDevice &m_irr_device;
 
 public:

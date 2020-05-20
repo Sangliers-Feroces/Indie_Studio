@@ -8,7 +8,7 @@ namespace Bomberman {
 class Field : public en::World
 {
 public:
-	Field(irr::IrrlichtDevice &device);
+	Field(void);
 	~Field(void);
 
 private:
