@@ -2,9 +2,9 @@
 
 namespace Engine {
 
-Entity::Entity(const Context &ctx) :
-	world(ctx.world),
-	m_parent(ctx.parent),
+Entity::Entity(void) :
+	world(getStack().top().world),
+	m_parent(getStack().top().parent),
 	m_irr_node(world.m_irr_scene.addEmptySceneNode(m_parent ? &*m_parent->m_irr_node : nullptr))
 {
 }
@@ -18,6 +18,13 @@ Entity::Entity(const Context &ctx, irr::scene::ISceneManager &sceneMgr) :
 
 Entity::~Entity(void)
 {
+}
+
+std::stack<Entity::Context>& Entity::getStack(void)
+{
+	static thread_local std::stack<Entity::Context> res;
+
+	return res;
 }
 
 void Entity::destroy(void)

@@ -17,7 +17,7 @@ protected:
 	template <class WorldType, typename ...Args>
 	WorldType& add(Args &&...args)
 	{
-		World::getStack().push(m_irr_device);
+		World::getStack().emplace(m_irr_device);
 		auto &res = m_worlds.emplace<WorldType>(std::forward<Args>(args)...);
 		World::getStack().pop();
 		return res;

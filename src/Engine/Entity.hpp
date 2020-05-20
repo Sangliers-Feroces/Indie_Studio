@@ -1,6 +1,7 @@
 #pragma once
 
 #include <irrlicht/irrlicht.h>
+#include <stack>
 #include "util.hpp"
 
 namespace Engine {
@@ -29,7 +30,7 @@ public:
 		Entity *parent;
 	};
 
-	Entity(const Context &ctx);
+	Entity(void);
 	Entity(const Context &ctx, irr::scene::ISceneManager &sceneMgr);
 	virtual ~Entity(void) = 0;
 
@@ -39,7 +40,10 @@ protected:
 	template <class EntityType, typename ...Args>
 	EntityType& add(Args &&...args)
 	{
-		return  m_children.emplace<EntityType>(Context(world, this), std::forward<Args>(args)...);
+		getStack().emplace(world, this);
+		auto &res = m_children.emplace<EntityType>(std::forward<Args>(args)...);
+		getStack().pop();
+		return res;
 	}
 
 	void destroy(void);
@@ -53,6 +57,7 @@ protected:
 	void setScale(const irr::core::vector3df& scale);
 
 private:
+	static std::stack<Context>& getStack(void);
 	Entity *m_parent;
 	util::irr_shared<irr::scene::ISceneNode, true> m_irr_node;
 	util::unique_set<Entity> m_children;
