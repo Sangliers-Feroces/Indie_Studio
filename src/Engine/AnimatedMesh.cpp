@@ -11,6 +11,11 @@ AnimatedMesh::AnimatedMesh(irr::scene::IAnimatedMesh &mesh) :
         m_irr_node_der.setMaterialFlag(irr::video::EMF_LIGHTING, false);
 }
 
+AnimatedMesh::AnimatedMesh(const std::string &mesh_path) :
+	AnimatedMesh(getStackWorld().getMesh(mesh_path))
+{
+}
+
 AnimatedMesh::~AnimatedMesh(void)
 {
 }

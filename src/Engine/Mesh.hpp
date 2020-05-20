@@ -7,8 +7,11 @@ namespace Engine {
 class Mesh : public Entity::ISceneNodeDerived<irr::scene::IMeshSceneNode>
 {
 public:
-	Mesh(irr::scene::IMesh &mesh);
+	Mesh(const std::string &mesh_path);
 	~Mesh(void);
+
+private:
+	Mesh(irr::scene::IMesh &mesh);
 };
 
 }
