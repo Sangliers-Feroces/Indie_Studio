@@ -2,6 +2,7 @@
 
 #include <irrlicht/irrlicht.h>
 #include <stack>
+#include <functional>
 #include "util.hpp"
 
 namespace Engine {
@@ -41,6 +42,11 @@ protected:
 public:
 	virtual ~Entity(void) = 0;
 
+	template <class ISceneNodeType>
+	class ISceneNodeDerivedBase;
+	template <class ISceneNodeType>
+	class ISceneNodeDerived;
+
 protected:
 	World &world;
 
@@ -68,6 +74,38 @@ private:
 	Entity *m_parent;
 	util::irr_shared<irr::scene::ISceneNode, true> m_irr_node;
 	util::unique_set<Entity> m_children;
+};
+
+template <class ISceneNodeType>
+class Entity::ISceneNodeDerivedBase : public Entity
+{
+public:
+	ISceneNodeDerivedBase(ISceneNodeType *node) :
+		Entity(node),
+		m_irr_node_der(util::ptr_to_ref(node))
+	{
+	}
+
+	~ISceneNodeDerivedBase(void) override
+	{
+	}
+
+protected:
+	ISceneNodeType &m_irr_node_der;
+};
+
+template <class ISceneNodeType>
+class Entity::ISceneNodeDerived : public Entity::ISceneNodeDerivedBase<ISceneNodeType>
+{
+public:
+	ISceneNodeDerived(const std::function<ISceneNodeType* (irr::scene::ISceneNode *parent)> &factory) :
+		Entity::ISceneNodeDerivedBase<ISceneNodeType>(factory(getStackParentNode()))
+	{
+	}
+
+	~ISceneNodeDerived(void) override
+	{
+	}
 };
 
 }

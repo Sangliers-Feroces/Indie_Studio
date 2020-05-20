@@ -7,6 +7,22 @@
 namespace Engine {
 namespace util {
 
+template <typename T>
+T& ptr_to_ref(T *ptr)
+{
+	if (ptr == nullptr)
+		throw std::runtime_error("ptr_to_ref got nullptr as input");
+	return *ptr;
+}
+
+template <typename T>
+const T& ptr_to_ref(const T *ptr)
+{
+	if (ptr == nullptr)
+		throw std::runtime_error("ptr_to_ref got nullptr as input");
+	return *ptr;
+}
+
 template <class IrrRefCounted, bool isRemove = false>
 class irr_shared
 {
@@ -16,10 +32,8 @@ public:
 	{
 	}
 	irr_shared(IrrRefCounted *obj) :
-		m_obj(*obj)
+		m_obj(ptr_to_ref(obj))
 	{
-		if (obj == nullptr)
-			throw std::runtime_error("irr_shared got nullptr as input");
 	}
 	~irr_shared(void)
 	{

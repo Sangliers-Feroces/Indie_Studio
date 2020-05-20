@@ -2,18 +2,11 @@
 
 namespace Engine {
 
-CameraFPSBase::CameraFPSBase(irr::scene::ICameraSceneNode *camera) :
-	Entity(camera),
-	m_camera(*camera)
-{
-}
-
-CameraFPSBase::~CameraFPSBase(void)
-{
-}
 
 CameraFPS::CameraFPS(void) :
-	CameraFPSBase(getStackScene().addCameraSceneNodeFPS(getStackParentNode()))
+	Entity::ISceneNodeDerived<irr::scene::ICameraSceneNode>([](auto parent){
+		return getStackScene().addCameraSceneNodeFPS(parent);
+	})
 {
 }
 

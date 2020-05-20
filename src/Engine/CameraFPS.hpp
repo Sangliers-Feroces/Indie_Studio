@@ -4,17 +4,7 @@
 
 namespace Engine {
 
-class CameraFPSBase : public Entity
-{
-public:
-	CameraFPSBase(irr::scene::ICameraSceneNode *camera);
-	~CameraFPSBase(void);
-
-private:
-	irr::scene::ICameraSceneNode &m_camera;
-};
-
-class CameraFPS : public CameraFPSBase
+class CameraFPS : public Entity::ISceneNodeDerived<irr::scene::ICameraSceneNode>
 {
 public:
 	CameraFPS(void);

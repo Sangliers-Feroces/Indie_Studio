@@ -20,6 +20,7 @@ private:
 
 public:
 	irr::video::IVideoDriver &driver;
+	irr::scene::IMesh& getMesh(const std::string &path);
 
 private:
 	friend Entity;
