@@ -34,6 +34,11 @@ std::stack<Entity::Context>& Entity::getStack(void)
 	return res;
 }
 
+World& Entity::getStackWorld(void)
+{
+	return getStack().top().world;
+}
+
 irr::scene::ISceneManager& Entity::getStackScene(void)
 {
 	return getStack().top().world.m_irr_scene;

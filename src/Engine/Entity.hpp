@@ -36,6 +36,7 @@ public:
 
 protected:
 	Entity(irr::scene::ISceneNode *irrnode);	// Node has been built by the sub class
+	static World& getStackWorld(void);
 	static irr::scene::ISceneManager& getStackScene(void);
 	static irr::scene::ISceneNode* getStackParentNode(void);
 

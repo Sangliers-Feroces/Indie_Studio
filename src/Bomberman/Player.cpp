@@ -2,7 +2,8 @@
 
 namespace Bomberman {
 
-Player::Player(void)
+Player::Player(void) :
+	AnimatedMesh(getStackWorld().getMesh("res/models/dolphin.md2"))
 {
 }
 

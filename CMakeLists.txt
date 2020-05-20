@@ -18,6 +18,8 @@ set(SRCS
 	./src/Engine/World.cpp
 	./src/Engine/Entity.cpp
 	./src/Engine/CameraFPS.cpp
+	./src/Engine/Mesh.cpp
+	./src/Engine/AnimatedMesh.cpp
 
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Field.cpp

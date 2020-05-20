@@ -21,7 +21,7 @@ std::stack<std::reference_wrapper<irr::IrrlichtDevice>>& World::getStack(void)
 	return res;
 }
 
-irr::scene::IMesh& World::getMesh(const std::string &path)
+irr::scene::IAnimatedMesh& World::getMesh(const std::string &path)
 {
 	return util::ptr_to_ref(m_irr_scene.getMesh(path.c_str()));
 }
