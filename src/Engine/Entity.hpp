@@ -34,7 +34,9 @@ public:
 	Entity(const Context &ctx, irr::scene::ISceneManager &sceneMgr);
 
 protected:
-	Entity(irr::scene::ISceneNode &irrnode);	// Node has been built by the sub class
+	Entity(irr::scene::ISceneNode *irrnode);	// Node has been built by the sub class
+	static irr::scene::ISceneManager& getStackScene(void);
+	static irr::scene::ISceneNode* getStackParentNode(void);
 
 public:
 	virtual ~Entity(void) = 0;
@@ -63,7 +65,6 @@ protected:
 
 private:
 	static std::stack<Context>& getStack(void);
-	static irr::scene::ISceneNode* getStackParentNode(void);
 	Entity *m_parent;
 	util::irr_shared<irr::scene::ISceneNode, true> m_irr_node;
 	util::unique_set<Entity> m_children;

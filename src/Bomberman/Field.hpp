@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine/World.hpp"
+#include "Engine/CameraFPS.hpp"
 #include "Player.hpp"
 
 namespace Bomberman {
@@ -12,6 +13,7 @@ public:
 	~Field(void);
 
 private:
+	en::CameraFPS &m_camera;
 	Player &m_player;
 };
 

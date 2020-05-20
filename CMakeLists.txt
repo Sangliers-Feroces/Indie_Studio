@@ -17,6 +17,7 @@ set(SRCS
 	./src/Engine/Session.cpp
 	./src/Engine/World.cpp
 	./src/Engine/Entity.cpp
+	./src/Engine/CameraFPS.cpp
 
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Field.cpp
