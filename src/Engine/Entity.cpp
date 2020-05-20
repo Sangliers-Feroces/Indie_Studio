@@ -5,7 +5,14 @@ namespace Engine {
 Entity::Entity(void) :
 	world(getStack().top().world),
 	m_parent(getStack().top().parent),
-	m_irr_node(world.m_irr_scene.addEmptySceneNode(m_parent ? &*m_parent->m_irr_node : nullptr))
+	m_irr_node(world.m_irr_scene.addEmptySceneNode(getStackParentNode()))
+{
+}
+
+Entity::Entity(irr::scene::ISceneNode &irrnode) :
+	world(getStack().top().world),
+	m_parent(getStack().top().parent),
+	m_irr_node(irrnode)
 {
 }
 
@@ -25,6 +32,16 @@ std::stack<Entity::Context>& Entity::getStack(void)
 	static thread_local std::stack<Entity::Context> res;
 
 	return res;
+}
+
+irr::scene::ISceneNode* Entity::getStackParentNode(void)
+{
+	auto &p = getStack().top().parent;
+
+	if (p)
+		return &*p->m_irr_node;
+	else
+		return nullptr;
 }
 
 void Entity::destroy(void)
