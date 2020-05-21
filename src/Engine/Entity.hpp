@@ -99,8 +99,8 @@ template <class ISceneNodeType>
 class Entity::ISceneNodeDerived : public Entity::ISceneNodeDerivedBase<ISceneNodeType>
 {
 public:
-	ISceneNodeDerived(const std::function<ISceneNodeType* (irr::scene::ISceneNode *parent)> &factory) :
-		Entity::ISceneNodeDerivedBase<ISceneNodeType>(factory(getStackParentNode()))
+	ISceneNodeDerived(const std::function<ISceneNodeType* (irr::scene::ISceneManager &scene, irr::scene::ISceneNode *parent)> &factory) :
+		Entity::ISceneNodeDerivedBase<ISceneNodeType>(factory(getStackScene(), getStackParentNode()))
 	{
 	}
 

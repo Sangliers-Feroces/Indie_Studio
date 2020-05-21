@@ -3,8 +3,8 @@
 namespace Engine {
 
 AnimatedMesh::AnimatedMesh(irr::scene::IAnimatedMesh &mesh) :
-	Entity::ISceneNodeDerived<irr::scene::IAnimatedMeshSceneNode>([&mesh](auto parent){
-		return getStackScene().addAnimatedMeshSceneNode(&mesh, parent);
+	Entity::ISceneNodeDerived<irr::scene::IAnimatedMeshSceneNode>([&mesh](auto &scene, auto parent){
+		return scene.addAnimatedMeshSceneNode(&mesh, parent);
 	})
 {
 	m_irr_node_der.setMaterialTexture(0, world.driver.getTexture("res/models/dolphin_f.pcx"));

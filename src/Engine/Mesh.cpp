@@ -3,8 +3,8 @@
 namespace Engine {
 
 Mesh::Mesh(irr::scene::IMesh &mesh) :
-	Entity::ISceneNodeDerived<irr::scene::IMeshSceneNode>([&mesh](auto parent){
-		return getStackScene().addMeshSceneNode(&mesh, parent);
+	Entity::ISceneNodeDerived<irr::scene::IMeshSceneNode>([&mesh](auto &scene, auto parent){
+		return scene.addMeshSceneNode(&mesh, parent);
 	})
 {
 }
