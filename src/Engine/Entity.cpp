@@ -96,4 +96,15 @@ void Entity::setScale(const irr::core::vector3df& scale)
 	m_irr_node->setScale(scale);
 }
 
+const irr::video::SMaterial& Entity::getMaterial(const irr::u32& num)
+{
+	return (m_irr_node.get().getMaterial(num));
+}
+
+const irr::u32& Entity::getMaterialCount() const
+{
+	return (m_irr_node.get().getMaterialCount());
+}
+
+
 }
