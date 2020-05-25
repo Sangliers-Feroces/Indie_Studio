@@ -106,17 +106,17 @@ const irr::u32& Entity::getMaterialCount() const
 	return (m_irr_node.get().getMaterialCount());
 }
 
-void Entity::setMaterialFlag(irr::video::E_MATERIAL_FLAG &flag, bool &newvalue)
+void Entity::setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue)
 {
 	m_irr_node.get().setMaterialFlag(flag, newvalue);
 }
 
-void Entity::setMaterialTexture(irr::u32 &textureLayer, irr::video::ITexture texture)
+void Entity::setMaterialTexture(irr::u32 textureLayer, irr::video::ITexture *texture)
 {
-	m_irr_node.get().setMaterialTexture(textureLayer, &texture);
+	m_irr_node.get().setMaterialTexture(textureLayer, texture);
 }
 
-void Entity::setMaterialType(irr::video::E_MATERIAL_TYPE &newtype)
+void Entity::setMaterialType(irr::video::E_MATERIAL_TYPE newtype)
 {
 	m_irr_node.get().setMaterialType(newtype);
 }
