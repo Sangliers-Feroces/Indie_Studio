@@ -73,6 +73,10 @@ protected:
 	const irr::video::SMaterial& getMaterial(const irr::u32& num);
 	const irr::u32& getMaterialCount() const;
 
+	void setMaterialFlag(irr::video::E_MATERIAL_FLAG &flag, bool &newvalue);
+	void setMaterialTexture(irr::u32 &textureLayer, irr::video::ITexture texture);
+	void setMaterialType(irr::video::E_MATERIAL_TYPE &newtype);
+
 private:
 	static std::stack<Context>& getStack(void);
 	Entity *m_parent;
