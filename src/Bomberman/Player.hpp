@@ -13,7 +13,7 @@ public:
 	class Sub : public en::AnimatedMesh
 	{
 	public:
-		Sub(ssize_t x, ssize_t y, ssize_t z) :
+		Sub(int64_t x, int64_t y, int64_t z) :
 			en::AnimatedMesh("res/models/dolphin.md2")
 		{
 			setPos(irr::core::vector3df(x, y, z));
