@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef _MSC_VER
-#define _WINDOWS
+#define _PLATFORM_WINDOWS
 #else
-#define _LINUX
+#define _PLATFORM_POSIX
 #endif
