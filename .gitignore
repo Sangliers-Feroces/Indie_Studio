@@ -2,7 +2,8 @@ CMakeFiles/*
 CMakeCache.txt
 cmake_install.cmake
 
-bomberman
+build
+bin/bomberman*
 Makefile
 
 doc/html
