@@ -2,6 +2,17 @@
 
 #include "Engine/AnimatedMesh.hpp"
 #include "Engine/Mesh.hpp"
+#include "util/crossplatform.hpp"
+
+#if defined(_PLATFORM_WINDOWS)
+	#include <BaseTsd.h>
+
+	typedef SSIZE_T ssize_t;
+#elif defined(_PLATFORM_POSIX)
+#else
+#error Unsupported platform
+#endif
+
 
 namespace Bomberman {
 
@@ -22,6 +33,14 @@ public:
 			setMaterialTexture(0, world.driver.getTexture("res/models/Steve.png"));
 			setMaterialFlag(irr::video::EMF_LIGHTING, false);
 		}
+
+		template <typename ...Args>
+		void setTexture(Args&&...args)
+		{
+			auto tex = world.driver.getTexture(std::forward<Args>(args)...);
+			setMaterialTexture(0, tex);
+		}
+
 		~Sub(void) = default;
 	};
 };
