@@ -71,7 +71,7 @@ protected:
 	void setScale(const irr::core::vector3df& scale);
 
 	const irr::video::SMaterial& getMaterial(const irr::u32& num);
-	const irr::u32& getMaterialCount() const;
+	const irr::u32 getMaterialCount() const;
 
 	void setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue);
 	void setMaterialTexture(irr::u32 textureLayer, irr::video::ITexture *texture);
