@@ -27,7 +27,7 @@ public:
 		Events(void);
 		~Events(void);
 
-		class Update : public Event::CopyDispatcher<double, double>
+		class Update : public Event::CopyDispatcher<double>
 		{
 		public:
 			Update(void);
@@ -38,7 +38,6 @@ public:
 
 			friend Events;
 			void updateObserver(void);
-			extract_type extract(const src_type&) override;
 		} update;
 
 	private:

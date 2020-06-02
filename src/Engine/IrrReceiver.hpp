@@ -18,16 +18,18 @@ public:
 		Key(void);
 		~Key(void);
 
-		class Pressed : public CopyDispatcher<irr::SEvent::SKeyInput, bool>
+		class KeyEvent : public CopyDispatcher<irr::EKEY_CODE>
 		{
 		public:
-			Pressed(void);
-			~Pressed(void);
+			KeyEvent(void);
+			~KeyEvent(void);
 
 		private:
 			friend Key;
-			extract_type extract(const src_type&) override;
-		} pressed;
+		};
+
+		KeyEvent pressed;
+		KeyEvent released;
 
 		bool getState(irr::EKEY_CODE code) const;
 

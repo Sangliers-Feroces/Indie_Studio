@@ -41,11 +41,6 @@ World::Events::Update::~Update(void)
 {
 }
 
-World::Events::Update::extract_type World::Events::Update::extract(const World::Events::Update::src_type &src)
-{
-	return src;
-}
-
 void World::Events::Update::updateObserver(void)
 {
 	auto now = std::chrono::high_resolution_clock::now();

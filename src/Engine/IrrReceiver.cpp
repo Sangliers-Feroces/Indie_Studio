@@ -29,7 +29,12 @@ IrrReceiver::Key::extract_type IrrReceiver::Key::extract(const IrrReceiver::Key:
 {
 	if (src.EventType == irr::EET_KEY_INPUT_EVENT) {
 		auto &k = src.KeyInput;
+		auto prev = m_state[k.Key];
 		m_state[k.Key] = k.PressedDown;
+		if (!prev && m_state[k.Key])
+			pressed.newEvent(k.Key);
+		if (prev && !m_state[k.Key])
+			released.newEvent(k.Key);
 		return src.KeyInput;
 	} else
 		return std::nullopt;
@@ -40,17 +45,12 @@ bool IrrReceiver::Key::getState(irr::EKEY_CODE code) const
 	return m_state[code];
 }
 
-IrrReceiver::Key::Pressed::Pressed(void)
+IrrReceiver::Key::KeyEvent::KeyEvent(void)
 {
 }
 
-IrrReceiver::Key::Pressed::~Pressed(void)
+IrrReceiver::Key::KeyEvent::~KeyEvent(void)
 {
-}
-
-IrrReceiver::Key::Pressed::extract_type IrrReceiver::Key::Pressed::extract(const IrrReceiver::Key::Pressed::src_type&)
-{
-	return true;
 }
 
 }
