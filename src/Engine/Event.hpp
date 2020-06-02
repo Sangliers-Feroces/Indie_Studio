@@ -115,5 +115,35 @@ private:
 	}
 };
 
+template <typename ...Payload>
+class Generator
+{
+	using ListenerType = std::function<void (const Payload &...payload)>;
+
+public:
+	Generator(void)
+	{
+	}
+	~Generator(void)
+	{
+	}
+
+	template <typename ...Args>
+	void bind(Args &&...args)
+	{
+		m_listeners.bind(std::forward<Args>(args)...);
+	}
+
+	template <typename ...Args>
+	void emit(Args &&...payload)
+	{
+		for (auto &l : m_listeners)
+			l(std::forward<Args>(payload)...);
+	}
+
+private:
+	Bindings::Strong<ListenerType> m_listeners;
+};
+
 }
 }
