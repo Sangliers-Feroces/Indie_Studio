@@ -10,7 +10,7 @@ namespace Engine {
 
 class World;
 
-class Entity : public Event::Dependency::Socket
+class Entity : public Bindings::Dependency::Socket
 {
 public:
 	struct Context
