@@ -15,12 +15,10 @@ public:
 
 private:
 	friend Session;
-	static std::stack<std::reference_wrapper<irr::IrrlichtDevice>>& getStack(void);
-	irr::IrrlichtDevice &m_irr_device;
+	static std::stack<std::reference_wrapper<Session>>& getStack(void);
 
 public:
-	irr::video::IVideoDriver &driver;
-	irr::scene::IAnimatedMesh& getMesh(const std::string &path);
+	Session &session;
 
 private:
 	friend Entity;
@@ -29,3 +27,5 @@ private:
 };
 
 }
+
+#include "Session.hpp"

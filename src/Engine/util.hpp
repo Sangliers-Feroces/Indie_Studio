@@ -241,5 +241,15 @@ private:
 	Map m_map;
 };
 
+template <typename CallbackType>
+void fatal_throw(const CallbackType &callback)
+{
+	try {
+		callback();
+	} catch (const std::exception &e) {
+		std::terminate();
+	}
+}
+
 }
 }

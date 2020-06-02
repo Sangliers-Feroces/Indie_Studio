@@ -10,7 +10,7 @@ Mesh::Mesh(irr::scene::IMesh &mesh) :
 }
 
 Mesh::Mesh(const std::string &mesh_path) :
-	Mesh(getStackWorld().getMesh(mesh_path))
+	Mesh(getStackWorld().session.getMesh(mesh_path))
 {
 }
 
