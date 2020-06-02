@@ -7,70 +7,80 @@
 namespace Engine {
 namespace Event {
 
-template <typename SrcType, typename DstType>
-class Dispatcher
+template <typename SrcType, typename DstType, typename ExtractType>
+class GenDispatcher
 {
 	using ListenerType = std::function<void (const DstType&)>;
 
+public:
+	using src_type = SrcType;
+	using dst_type = DstType;
+	using extract_type = ExtractType;
+
+	GenDispatcher(void)
+	{
+	}
+	virtual ~GenDispatcher(void)
+	{
+	}
+
+	template <typename ...Args>
+	void bind(Args &&...args)
+	{
+		m_listeners.bind(std::forward<Args>(args)...);
+	}
+
+protected:
+	void newEvent(const SrcType &event)
+	{
+		auto got = extract(event);
+		
+		if (got)
+			for (auto &l : m_listeners)
+				l(convertExtracted(got));
+	}
+
+private:
+	virtual extract_type extract(const src_type&) = 0;
+	Bindings::Weak<ListenerType> m_listeners;
+
+	virtual const DstType& convertExtracted(const ExtractType &value) = 0;
+};
+
+template <typename SrcType, typename DstType>
+class Dispatcher : public GenDispatcher<SrcType, DstType, std::optional<std::reference_wrapper<const DstType>>>
+{
 public:
 	Dispatcher(void)
 	{
 	}
-	virtual ~Dispatcher(void)
+	~Dispatcher(void)
 	{
-	}
-
-	template <typename ...Args>
-	void bind(Args &&...args)
-	{
-		m_listeners.bind(std::forward<Args>(args)...);
-	}
-
-	void newEvent(const SrcType &event)
-	{
-		auto got = extract(event);
-		
-		if (got)
-			for (auto &l : m_listeners)
-				l(got->get());
 	}
 
 private:
-	virtual std::optional<const std::reference_wrapper<DstType>> extract(const SrcType&) = 0;
-	Bindings::Weak<ListenerType> m_listeners;
+	const DstType& convertExtracted(const std::optional<std::reference_wrapper<const DstType>> &value)
+	{
+		return value->get();
+	}
 };
 
 template <typename SrcType, typename DstType>
-class CopyDispatcher
+class CopyDispatcher : public GenDispatcher<SrcType, DstType, std::optional<DstType>>
 {
-	using ListenerType = std::function<void (const DstType&)>;
-
 public:
 	CopyDispatcher(void)
 	{
 	}
-	virtual ~CopyDispatcher(void)
+	~CopyDispatcher(void)
 	{
-	}
-
-	template <typename ...Args>
-	void bind(Args &&...args)
-	{
-		m_listeners.bind(std::forward<Args>(args)...);
-	}
-
-	void newEvent(const SrcType &event)
-	{
-		auto got = extract(event);
-		
-		if (got)
-			for (auto &l : m_listeners)
-				l(*got);
 	}
 
 private:
-	virtual std::optional<DstType> extract(const SrcType&) = 0;
-	Bindings::Weak<ListenerType> m_listeners;
+	const DstType& convertExtracted(const std::optional<DstType> &value)
+	{
+		return *value;
+	}
 };
 
 }

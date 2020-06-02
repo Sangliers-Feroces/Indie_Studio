@@ -20,4 +20,38 @@ std::stack<std::reference_wrapper<Session>>& World::getStack(void)
 	return res;
 }
 
+World::Events::Events(void)
+{
+}
+
+World::Events::~Events(void)
+{
+}
+
+void World::Events::updateObserver(void)
+{
+	update.updateObserver();
+}
+
+World::Events::Update::Update(void)
+{
+}
+
+World::Events::Update::~Update(void)
+{
+}
+
+World::Events::Update::extract_type World::Events::Update::extract(const World::Events::Update::src_type &src)
+{
+	return src;
+}
+
+void World::Events::Update::updateObserver(void)
+{
+	auto now = std::chrono::high_resolution_clock::now();
+	double res = std::chrono::duration<double>(now - m_time_before).count();
+	m_time_before = now;
+	newEvent(res);
+}
+
 }
