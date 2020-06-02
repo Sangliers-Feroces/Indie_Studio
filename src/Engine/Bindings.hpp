@@ -19,7 +19,7 @@ class Source
 {
 public:
 	template <typename T>
-	class WeakElement;
+	class StrongElement;
 
 	Source(void)
 	{
@@ -34,7 +34,7 @@ private:
 };
 
 template <typename T>
-class Weak;
+class Strong;
 
 class Dependency
 {
@@ -63,7 +63,7 @@ public:
 	private:
 		friend Point;
 		template <typename T>
-		friend class Weak;
+		friend class Source::StrongElement;
 		util::unique_set<Dependency> m_deps;
 
 		Dependency& add(Source &source)
@@ -228,43 +228,41 @@ public:
 };
 
 template <typename T>
-class Weak : public Storage<Source::WeakElement<T>>
-{
-public:
-	template <typename ...Args>
-	Weak(Args &&...args) :
-		Storage<Source::WeakElement<T>>(std::forward<Args>(args)...)
+	class Strong : public Storage<Source::StrongElement<T>>
 	{
-	}
-	~Weak(void)
-	{
-		if (this->m_elements.size() > 0)
-			util::fatal_throw([](){
-				throw std::runtime_error("Elements still in weak socket");
-			});
-	}
+	public:
+		template <typename ...Args>
+		Strong(Args &&...args) :
+			Storage<Source::StrongElement<T>>(std::forward<Args>(args)...)
+		{
+		}
+		~Strong(void)
+		{
+		}
 
-	template <typename ...Args>
-	void bind(Dependency::Socket &socket, Args &&...args)
-	{
-		socket.add(this->m_elements.emplace(*this, std::forward<Args>(args)...));
-	}
-};
+		template <typename ...Args>
+		void bind(Dependency::Socket &socket, Args &&...args)
+		{
+			this->m_elements.emplace(*this, socket, std::forward<Args>(args)...);
+		}
+	};
 
 template <typename T>
-class Source::WeakElement : public Source
+class Source::StrongElement : public Source
 {
 public:
 	using value_type = T;
 
 	template <typename ...Args>
-	WeakElement(Weak<T> &socket, Args &&...args) :
+	StrongElement(Strong<T> &socket, Dependency::Socket &depSocket, Args &&...args) :
 		m_socket(socket),
+		m_dependency(depSocket, depSocket.add(*this)),
 		m_obj(std::forward<Args>(args)...)
 	{
 	}
-	~WeakElement(void)
+	~StrongElement(void)
 	{
+		m_dependency.destroyBound();
 	}
 
 	operator T&(void)
@@ -273,11 +271,14 @@ public:
 	}
 
 private:
-	Weak<T> &m_socket;
+	friend Strong<T>;
+	Strong<T> &m_socket;
+	Dependency::Point m_dependency;
 	T m_obj;
 
 	void depDestroyed(Dependency&) override
 	{
+		m_dependency.clear();
 		m_socket.destroyElement(*this);
 	}
 };

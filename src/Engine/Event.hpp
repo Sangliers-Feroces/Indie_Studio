@@ -42,7 +42,7 @@ protected:
 
 private:
 	virtual extract_type extract(const src_type&) = 0;
-	Bindings::Weak<ListenerType> m_listeners;
+	Bindings::Strong<ListenerType> m_listeners;
 
 	virtual const DstType& convertExtracted(const ExtractType &value) = 0;
 };
