@@ -4,13 +4,39 @@ namespace Engine {
 
 Camera::Camera(void) :
 	Entity::ISceneNodeDerived<irr::scene::ICameraSceneNode>([](auto &scene, auto parent){
-		return scene.addCameraSceneNodeFPS(parent);
+		return scene.addCameraSceneNode(parent);
 	})
 {
+	setPos(irr::core::vector3df(100, 100, -100));
 }
 
 Camera::~Camera(void)
 {
+}
+
+void Camera::setAspectRatio(irr::f32 aspect)
+{
+	m_irr_node_der.setAspectRatio(aspect);
+}
+
+void Camera::setFarValue(irr::f32 zf)
+{
+	m_irr_node_der.setFarValue(zf);
+}
+
+void Camera::setFOV(irr::f32 fovy)
+{
+	m_irr_node_der.setFOV(fovy);
+}
+
+void Camera::setNearValue(irr::f32 zn)
+{
+	m_irr_node_der.setNearValue(zn);
+}
+
+void Camera::setRotation(const irr::core::vector3df &rotation)
+{
+	m_irr_node_der.setRotation(rotation);
 }
 
 }
