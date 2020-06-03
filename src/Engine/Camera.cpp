@@ -14,6 +14,26 @@ Camera::~Camera(void)
 {
 }
 
+irr::f32 Camera::getAspectRatio(void) const
+{
+	return m_irr_node_der.getAspectRatio();
+}
+
+irr::f32 Camera::getFarValue(void) const
+{
+	return m_irr_node_der.getFarValue();
+}
+
+irr::f32 Camera::getFOV(void) const
+{
+	return m_irr_node_der.getFOV();
+}
+
+irr::f32 Camera::getNearValue(void) const
+{
+	return m_irr_node_der.getNearValue();
+}
+
 void Camera::setAspectRatio(irr::f32 aspect)
 {
 	m_irr_node_der.setAspectRatio(aspect);
@@ -38,5 +58,6 @@ void Camera::setRotation(const irr::core::vector3df &rotation)
 {
 	m_irr_node_der.setRotation(rotation);
 }
+
 
 }
