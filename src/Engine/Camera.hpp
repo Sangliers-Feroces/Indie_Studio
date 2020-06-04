@@ -16,12 +16,14 @@ protected:
 	irr::f32 getFarValue(void) const;
 	irr::f32 getFOV(void) const;
 	irr::f32 getNearValue(void) const;
+	const irr::core::vector3df& getTarget() const;
 
 	void setAspectRatio(irr::f32 aspect);
 	void setFarValue(irr::f32 zf);
 	void setFOV(irr::f32 fovy);
 	void setNearValue(irr::f32 zn);
 	void setRotation(const irr::core::vector3df &rotation);
+	void setTarget(const irr::core::vector3df &pos);
 
 };
 
