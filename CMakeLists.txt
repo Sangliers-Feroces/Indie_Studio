@@ -20,6 +20,7 @@ set(SRCS
 	./src/Engine/Camera.cpp
 	./src/Engine/Mesh.cpp
 	./src/Engine/AnimatedMesh.cpp
+	./src/Engine/IrrReceiver.cpp
 
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Field.cpp

@@ -3,13 +3,14 @@
 #include <irrlicht/irrlicht.h>
 #include <stack>
 #include <functional>
+#include "Event.hpp"
 #include "util.hpp"
 
 namespace Engine {
 
 class World;
 
-class Entity
+class Entity : public Bindings::Dependency::Socket
 {
 public:
 	struct Context

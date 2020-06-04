@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stack>
+#include <chrono>
 #include "Entity.hpp"
 
 namespace Engine {
@@ -15,12 +16,34 @@ public:
 
 private:
 	friend Session;
-	static std::stack<std::reference_wrapper<irr::IrrlichtDevice>>& getStack(void);
-	irr::IrrlichtDevice &m_irr_device;
+	static std::stack<std::reference_wrapper<Session>>& getStack(void);
 
 public:
-	irr::video::IVideoDriver &driver;
-	irr::scene::IAnimatedMesh& getMesh(const std::string &path);
+	Session &session;
+
+	class Events
+	{
+	public:
+		Events(void);
+		~Events(void);
+
+		class Update : public Event::CopyDispatcher<double>
+		{
+		public:
+			Update(void);
+			~Update(void);
+
+		private:
+			std::chrono::high_resolution_clock::time_point m_time_before;
+
+			friend Events;
+			void updateObserver(void);
+		} update;
+
+	private:
+		friend Session;
+		void updateObserver(void);
+	} events;
 
 private:
 	friend Entity;
@@ -29,3 +52,5 @@ private:
 };
 
 }
+
+#include "Session.hpp"

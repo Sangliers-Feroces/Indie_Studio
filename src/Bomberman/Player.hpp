@@ -20,6 +20,10 @@ public:
 		}
 		~Sub(void) = default;
 	};
+
+	en::Event::Generator<> pressedZ;
+	en::Event::Generator<std::string> message;
+	en::Event::Generator<> do_quit;
 };
 
 }

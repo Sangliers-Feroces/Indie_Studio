@@ -9,6 +9,6 @@
 
 int main(void)
 {
-	Bomberman::Game().run();
+	Bomberman::Game();
 	return 0;
 }
