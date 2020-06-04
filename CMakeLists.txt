@@ -17,7 +17,7 @@ set(SRCS
 	./src/Engine/Session.cpp
 	./src/Engine/World.cpp
 	./src/Engine/Entity.cpp
-	./src/Engine/CameraFPS.cpp
+	./src/Engine/Camera.cpp
 	./src/Engine/Mesh.cpp
 	./src/Engine/AnimatedMesh.cpp
 	./src/Engine/IrrReceiver.cpp

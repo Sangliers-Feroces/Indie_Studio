@@ -5,7 +5,7 @@
 namespace Bomberman {
 
 Field::Field(void) :
-	m_camera(add<en::CameraFPS>()),
+	m_camera(add<en::Camera>()),
 	m_player(add<Player>())
 {
 	bind(m_player.pressedZ, [](){
