@@ -33,7 +33,8 @@ void World::Events::updateObserver(void)
 	update.updateObserver();
 }
 
-World::Events::Update::Update(void)
+World::Events::Update::Update(void) :
+	m_time_before(std::chrono::high_resolution_clock::now())
 {
 }
 

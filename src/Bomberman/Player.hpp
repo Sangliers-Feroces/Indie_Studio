@@ -1,18 +1,21 @@
 #pragma once
 
-#include "Engine/AnimatedMesh.hpp"
+#include "Mob.hpp"
 
 namespace Bomberman {
 
-class Player : public en::Entity
+class Player : public Mob
 {
 public:
-	Player(void);
+	Player(size_t id);
 	~Player(void);
 
-	en::Event::Generator<> pressedZ;
-	en::Event::Generator<std::string> message;
-	en::Event::Generator<> do_quit;
+private:
+	irr::EKEY_CODE m_last_key;
+	size_t m_bombs;
+	double m_time_before_bomb;
+
+	static double reload_rate;
 };
 
 }

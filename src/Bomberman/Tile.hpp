@@ -18,6 +18,7 @@ public:
 	~Tile(void);
 
 	Type getType(void) const;
+	void setType(Type type);
 
 private:
 	Type m_type;
@@ -32,6 +33,8 @@ private:
 
 		return table.at(type);
 	}
+
+	void renderType(void);
 };
 
 }

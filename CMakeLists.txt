@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
 
+
+project(bomberman)
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(/W4 /WX)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wall -Wextra -g)
+    add_compile_options(-Wall -Wextra -g -Wno-unused-parameter -Wno-deprecated-copy)
 endif()
-
-project(bomberman)
 
 set(CMAKE_MODULE_PATH "./cmake_modules")
 
@@ -28,6 +29,9 @@ set(SRCS
 	./src/Bomberman/Camera.cpp
 	./src/Bomberman/Model.cpp
 	./src/Bomberman/Tile.cpp
+	./src/Bomberman/Mob.cpp
+	./src/Bomberman/Bomb.cpp
+	./src/Bomberman/Sparks.cpp
 
 	./src/main.cpp
 )
