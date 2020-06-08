@@ -21,6 +21,8 @@ set(SRCS
 	./src/Engine/Mesh.cpp
 	./src/Engine/AnimatedMesh.cpp
 	./src/Engine/IrrReceiver.cpp
+	./src/Engine/EntityGui.cpp
+	./src/Engine/EntityGuiWorld.cpp
 
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Field.cpp

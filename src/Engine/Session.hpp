@@ -1,6 +1,7 @@
 #pragma once
 
 #include "World.hpp"
+#include "EntityGuiWorld.hpp"
 #include "IrrReceiver.hpp"
 #include "util.hpp"
 
@@ -28,7 +29,9 @@ protected:
 	void run(void);
 
 private:
+
 	friend World;
+	friend EntityGuiWorld;
 	util::irr_shared<irr::IrrlichtDevice> m_irr_device;
 
 public:
@@ -37,6 +40,7 @@ public:
 private:
 	irr::scene::ISceneManager &m_irr_scene;
 	util::unique_set<World> m_worlds;
+	util::unique_set<EntityGuiWorld> m_GuiWorlds;
 };
 
 }
