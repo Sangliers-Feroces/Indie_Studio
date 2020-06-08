@@ -25,6 +25,9 @@ set(SRCS
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Field.cpp
 	./src/Bomberman/Player.cpp
+	./src/Bomberman/Camera.cpp
+	./src/Bomberman/Model.cpp
+	./src/Bomberman/Tile.cpp
 
 	./src/main.cpp
 )

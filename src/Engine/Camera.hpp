@@ -24,7 +24,7 @@ protected:
 	void setNearValue(irr::f32 zn);
 	void setRotation(const irr::core::vector3df &rotation);
 	void setTarget(const irr::core::vector3df &pos);
-
+	void setUpVector(const irr::core::vector3df &up);
 };
 
 }

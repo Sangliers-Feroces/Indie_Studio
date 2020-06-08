@@ -4,7 +4,7 @@ namespace Engine {
 
 Camera::Camera(void) :
 	Entity::ISceneNodeDerived<irr::scene::ICameraSceneNode>([](auto &scene, auto parent){
-		return scene.addCameraSceneNodeFPS(parent);
+		return scene.addCameraSceneNode(parent);
 	})
 {
 }
@@ -66,6 +66,11 @@ void Camera::setRotation(const irr::core::vector3df &rotation)
 void Camera::setTarget(const irr::core::vector3df &pos)
 {
 	m_irr_node_der.setTarget(pos);
+}
+
+void Camera::setUpVector(const irr::core::vector3df &up)
+{
+	m_irr_node_der.setUpVector(up);
 }
 
 }
