@@ -31,6 +31,7 @@ set(SRCS
 	./src/Bomberman/Tile.cpp
 	./src/Bomberman/Mob.cpp
 	./src/Bomberman/Bomb.cpp
+	./src/Bomberman/Sparks.cpp
 
 	./src/main.cpp
 )

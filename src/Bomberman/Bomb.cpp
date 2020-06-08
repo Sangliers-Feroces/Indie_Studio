@@ -1,4 +1,5 @@
 #include "Bomb.hpp"
+#include "Sparks.hpp"
 
 namespace Bomberman {
 
@@ -39,10 +40,12 @@ void Bomb::nuke(const irr::core::vector2di &pos, const irr::core::vector2di &dir
 		if (t == Tile::Type::Box) {
 			field.nuke(p);
 			got++;
+			field.addMob<Sparks>(p);
 			if (got >= penetration)
 				return;
 		} else if (t != Tile::Type::Air)
 			return;
+		field.addMob<Sparks>(p);
 	}
 }
 
