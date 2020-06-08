@@ -1,6 +1,14 @@
 #pragma once
 
+
+#ifdef _MSC_VER
+#pragma warning(push, 0)
+#endif
 #include <irrlicht/irrlicht.h>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <stack>
 #include <functional>
 #include "Event.hpp"
