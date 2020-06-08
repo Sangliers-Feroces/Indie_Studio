@@ -9,7 +9,7 @@ Field::Field(void) :
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
 	m_camera(add<Camera>(m_w, m_h)),
-	m_player(add<Player>()),
+	m_player(addMob<Player>(0)),
 	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000)))
 {
 	for (int64_t i = -50; i < 50; i++)
@@ -17,19 +17,6 @@ Field::Field(void) :
 			if (!((i >= 0 && i < m_h) && (j >= 0 && j < m_w)))
 				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
 		}
-
-	bind(m_player.pressedZ, [](){
-		std::cout << "Player pressed Z!!" << std::endl;
-	});
-
-	bind(m_player.message, [](const std::string &msg){
-		std::cout << "Player messages you!!: " << msg << std::endl;
-	});
-
-	bind(m_player.do_quit, [](){
-		std::cout << "Player wants to quit!!" << std::endl;
-		std::cout << "(someone please add a method in Session to break game loop)" << std::endl;
-	});
 }
 
 Field::~Field(void)
@@ -49,6 +36,16 @@ Tile& Field::at(const irr::core::vector2di &pos)
 Tile::Type Field::typeAt(const irr::core::vector2di &pos)
 {
 	return at(pos).getType();
+}
+
+size_t Field::getWidth(void) const
+{
+	return m_w;
+}
+
+size_t Field::getHeight(void) const
+{
+	return m_h;
 }
 
 std::vector<std::vector<Tile::Type>> Field::genField(void)

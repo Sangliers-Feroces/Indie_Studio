@@ -28,6 +28,7 @@ set(SRCS
 	./src/Bomberman/Camera.cpp
 	./src/Bomberman/Model.cpp
 	./src/Bomberman/Tile.cpp
+	./src/Bomberman/Mob.cpp
 
 	./src/main.cpp
 )
