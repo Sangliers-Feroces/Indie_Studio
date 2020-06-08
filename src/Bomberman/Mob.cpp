@@ -44,7 +44,7 @@ bool Mob::move(const irr::core::vector2di &dir, double speed)
 
 bool Mob::canMoveTo(const irr::core::vector2di &pos) const
 {
-	return field.typeAt(pos) != Tile::Type::Air;
+	return field.typeAt(pos) == Tile::Type::Air;
 }
 
 const irr::core::vector2di& Mob::getPos(void) const

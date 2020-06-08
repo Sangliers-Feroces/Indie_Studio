@@ -8,6 +8,7 @@
 
 namespace Engine {
 
+class Session;
 class World;
 
 class Entity : public Bindings::Dependency::Socket
@@ -72,7 +73,7 @@ protected:
 	void setScale(const irr::core::vector3df& scale);
 
 	const irr::video::SMaterial& getMaterial(const irr::u32& num);
-	const irr::u32 getMaterialCount() const;
+	irr::u32 getMaterialCount(void) const;
 
 	void setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue);
 	void setMaterialTexture(irr::u32 textureLayer, irr::video::ITexture *texture);
@@ -83,6 +84,12 @@ private:
 	Entity *m_parent;
 	util::irr_shared<irr::scene::ISceneNode, true> m_irr_node;
 	util::unique_set<Entity> m_children;
+	bool m_to_destroy;
+
+	friend Session;
+	void collectGarbage(void);
+	bool destroyIfMarked(void);
+	bool tryDestroyChild(void);
 };
 
 template <class ISceneNodeType>

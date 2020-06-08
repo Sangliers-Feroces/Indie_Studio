@@ -14,7 +14,7 @@ Field::Field(void) :
 {
 	for (int64_t i = -50; i < 50; i++)
 		for (int64_t j = -50; j < 50; j++) {
-			if (!((i >= 0 && i < m_h) && (j >= 0 && j < m_w)))
+			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
 				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
 		}
 }
@@ -25,9 +25,9 @@ Field::~Field(void)
 
 Tile& Field::at(const irr::core::vector2di &pos)
 {
-	if (pos.Y >= 0 && pos.Y < m_tiles.size()) {
+	if (pos.Y >= 0 && pos.Y < (int)m_tiles.size()) {
 		auto &row = m_tiles.at(pos.Y);
-		if (pos.X >= 0 && pos.X < row.size())
+		if (pos.X >= 0 && pos.X < (int)row.size())
 			return row.at(pos.X);
 	}
 	return m_wall;
@@ -36,6 +36,11 @@ Tile& Field::at(const irr::core::vector2di &pos)
 Tile::Type Field::typeAt(const irr::core::vector2di &pos)
 {
 	return at(pos).getType();
+}
+
+void Field::nuke(const irr::core::vector2di &pos)
+{
+	at(pos).setType(Tile::Type::Air);
 }
 
 size_t Field::getWidth(void) const

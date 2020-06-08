@@ -17,8 +17,10 @@ Session::~Session(void)
 void Session::run(void)
 {
 	while (m_irr_device->run()) {
-		for (auto &w : m_worlds)
+		for (auto &w : m_worlds) {
 			w.events.updateObserver();
+			w.collectGarbage();
+		}
 		driver.beginScene(true, true, irr::video::SColor(255,0,0,0));
 		m_irr_scene.drawAll();
 		driver.endScene();

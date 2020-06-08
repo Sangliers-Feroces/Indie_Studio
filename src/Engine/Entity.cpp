@@ -5,21 +5,24 @@ namespace Engine {
 Entity::Entity(void) :
 	world(getStack().top().world),
 	m_parent(getStack().top().parent),
-	m_irr_node(getStackScene().addEmptySceneNode(getStackParentNode()))
+	m_irr_node(getStackScene().addEmptySceneNode(getStackParentNode())),
+	m_to_destroy(false)
 {
 }
 
 Entity::Entity(irr::scene::ISceneNode *irrnode) :
 	world(getStack().top().world),
 	m_parent(getStack().top().parent),
-	m_irr_node(irrnode)
+	m_irr_node(irrnode),
+	m_to_destroy(false)
 {
 }
 
 Entity::Entity(const Context &ctx, irr::scene::ISceneManager &sceneMgr) :
 	world(ctx.world),
 	m_parent(ctx.parent),
-	m_irr_node(sceneMgr.addEmptySceneNode(m_parent ? &*m_parent->m_irr_node : nullptr))
+	m_irr_node(sceneMgr.addEmptySceneNode(m_parent ? &*m_parent->m_irr_node : nullptr)),
+	m_to_destroy(false)
 {
 }
 
@@ -56,6 +59,14 @@ irr::scene::ISceneNode* Entity::getStackParentNode(void)
 
 void Entity::destroy(void)
 {
+	m_to_destroy = true;
+}
+
+bool Entity::destroyIfMarked(void)
+{
+	if (!m_to_destroy)
+		return false;
+
 	if (m_parent == nullptr)
 		throw std::runtime_error("Can't destroy root entity");
 
@@ -64,6 +75,22 @@ void Entity::destroy(void)
 	if (got == c.end())
 		throw std::runtime_error("Can't find entity in its own parent");
 	c.erase(got);
+	return true;
+}
+
+void Entity::collectGarbage(void)
+{
+	while (tryDestroyChild());
+	for (auto &c : m_children)
+		c.collectGarbage();
+}
+
+bool Entity::tryDestroyChild(void)
+{
+	for (auto &c : m_children)
+		if (c.destroyIfMarked())
+			return true;
+	return false;
 }
 
 const irr::core::vector3df& Entity::getPos(void) const
@@ -101,7 +128,7 @@ const irr::video::SMaterial& Entity::getMaterial(const irr::u32& num)
 	return (m_irr_node.get().getMaterial(num));
 }
 
-const irr::u32 Entity::getMaterialCount() const
+irr::u32 Entity::getMaterialCount(void) const
 {
 	return (m_irr_node.get().getMaterialCount());
 }
