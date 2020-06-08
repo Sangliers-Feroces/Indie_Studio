@@ -16,6 +16,8 @@ public:
 		Sub(int64_t x, int64_t y, int64_t z) :
 			en::AnimatedMesh("res/models/dolphin.md2")
 		{
+			setMaterialTexture(0, world.session.driver.getTexture("res/models/dolphin_f.pcx"));
+        		setMaterialFlag(irr::video::EMF_LIGHTING, false);
 			setPos(irr::core::vector3df(x, y, z));
 		}
 		~Sub(void) = default;

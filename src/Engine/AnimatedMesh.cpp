@@ -7,8 +7,6 @@ AnimatedMesh::AnimatedMesh(irr::scene::IAnimatedMesh &mesh) :
 		return scene.addAnimatedMeshSceneNode(&mesh, parent);
 	})
 {
-	m_irr_node_der.setMaterialTexture(0, world.session.driver.getTexture("res/models/dolphin_f.pcx"));
-        m_irr_node_der.setMaterialFlag(irr::video::EMF_LIGHTING, false);
 }
 
 AnimatedMesh::AnimatedMesh(const std::string &mesh_path) :
