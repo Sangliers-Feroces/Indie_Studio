@@ -42,6 +42,8 @@ Player::Player(size_t id) :
 		m_time_before_bomb -= deltaTime;
 		if (m_time_before_bomb <= 0.0) {
 			m_bombs++;
+			if (m_bombs > 3)
+				m_bombs = 3;
 			m_time_before_bomb += reload_rate;
 		}
 	});
@@ -49,7 +51,7 @@ Player::Player(size_t id) :
 	bind(world.session.events.key.pressed, [this](auto key){
 		if (key == irr::KEY_RCONTROL) {
 			if (m_bombs > 0) {
-				field.addMob<Bomb>(getPos());
+				field.addMob<Bomb>(getIncomingPos());
 				m_bombs--;
 			}
 		}

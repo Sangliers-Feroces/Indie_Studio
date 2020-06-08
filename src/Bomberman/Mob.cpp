@@ -52,6 +52,14 @@ const irr::core::vector2di& Mob::getPos(void) const
 	return m_pos;
 }
 
+irr::core::vector2di Mob::getIncomingPos(void) const
+{
+	if (m_move_ratio == 1.0)
+		return m_pos;
+	else
+		return m_pos + m_dir;
+}
+
 void Mob::setPos(const irr::core::vector2di &newpos)
 {
 	m_pos = newpos;

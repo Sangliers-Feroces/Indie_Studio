@@ -17,6 +17,7 @@ protected:
 
 	bool move(const irr::core::vector2di &dir, double speed);
 	const irr::core::vector2di& getPos(void) const;
+	irr::core::vector2di getIncomingPos(void) const;
 	void setPos(const irr::core::vector2di &newpos);
 
 private:
