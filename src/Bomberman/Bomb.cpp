@@ -11,12 +11,18 @@ Bomb::Bomb(const irr::core::vector2di &pos) :
 	setScale(irr::core::vector3df(0.3));
 	bind(world.events.update, [this](auto delta){
 		m_time_bef_expl -= delta;
-		if (m_time_bef_expl <= 0.0)
+		if (m_time_bef_expl <= 0.0) {
+			nuke();
 			destroy();
+		}
 	});
 }
 
 Bomb::~Bomb(void)
+{
+}
+
+void Bomb::nuke(void)
 {
 	static const size_t radius = 3;
 	static const std::vector<irr::core::vector2di> dirs = {
@@ -27,10 +33,10 @@ Bomb::~Bomb(void)
 	};
 
 	for (auto &d : dirs)
-		nuke(getPos(), d, radius);
+		nukeLine(getPos(), d, radius);
 }
 
-void Bomb::nuke(const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t max, size_t penetration)
+void Bomb::nukeLine(const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t max, size_t penetration)
 {
 	size_t got = 0;
 

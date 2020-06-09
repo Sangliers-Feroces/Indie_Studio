@@ -5,6 +5,8 @@
 
 namespace Bomberman {
 
+class Mob;
+
 class Tile : public Model
 {
 public:
@@ -19,9 +21,11 @@ public:
 
 	Type getType(void) const;
 	void setType(Type type);
+	const std::vector<std::reference_wrapper<Mob>>& getMobs(void);
 
 private:
 	Type m_type;
+	std::vector<std::reference_wrapper<Mob>> m_mobs;	// mobs on that tile
 
 	static const std::string& typeToTexture(Type type)
 	{
@@ -35,6 +39,11 @@ private:
 	}
 
 	void renderType(void);
+	friend Mob;
+	void addMob(Mob &mob);
+	void removeMob(Mob &mob);
 };
 
 }
+
+#include "Mob.hpp"

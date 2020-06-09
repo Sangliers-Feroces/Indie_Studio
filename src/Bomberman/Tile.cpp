@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Tile.hpp"
 
 namespace Bomberman {
@@ -25,6 +26,24 @@ void Tile::setType(Type type)
 {
 	m_type = type;
 	renderType();
+}
+
+const std::vector<std::reference_wrapper<Mob>>& Tile::getMobs(void)
+{
+	return m_mobs;
+}
+
+void Tile::addMob(Mob &mob)
+{
+	removeMob(mob);
+	m_mobs.emplace_back(mob);
+}
+
+void Tile::removeMob(Mob &mob)
+{
+	m_mobs.erase(std::remove_if(m_mobs.begin(), m_mobs.end(), [&](auto &ref_wrapper){
+		return &ref_wrapper.get() == &mob;
+	}), m_mobs.end());
 }
 
 void Tile::renderType(void)

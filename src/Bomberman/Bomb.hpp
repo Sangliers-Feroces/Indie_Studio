@@ -15,7 +15,8 @@ private:
 
 	static double explosion_delay;
 
-	void nuke(const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t max, size_t penetration = 1);
+	void nuke(void);
+	void nukeLine(const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t max, size_t penetration = 1);
 };
 
 }

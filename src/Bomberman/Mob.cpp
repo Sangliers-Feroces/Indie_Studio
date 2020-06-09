@@ -10,6 +10,8 @@ Mob::Mob(const std::string &model_path, const std::string &texture_path) :
 	m_speed(0.0),
 	m_move_ratio(1.0)
 {
+	field.at(getPos()).addMob(*this);
+
 	bind(world.events.update, [this](auto delta){
 		if (m_move_ratio == 1.0) {
 			//onIntersection(getOptions());
@@ -18,7 +20,7 @@ Mob::Mob(const std::string &model_path, const std::string &texture_path) :
 			auto pos = m_pos;
 			if (m_move_ratio > 1.0) {
 				m_move_ratio = 1.0;
-				m_pos = m_pos + m_dir;
+				setPos(m_pos + m_dir);
 			}
 			auto np = irr::core::vector2df(pos.X, pos.Y) + irr::core::vector2df(m_dir.X, m_dir.Y) * m_move_ratio;
 			Entity::setPos(irr::core::vector3df(np.X, 0.0, np.Y));
@@ -62,8 +64,10 @@ irr::core::vector2di Mob::getIncomingPos(void) const
 
 void Mob::setPos(const irr::core::vector2di &newpos)
 {
+	field.at(getPos()).removeMob(*this);
 	m_pos = newpos;
 	updatePos();
+	field.at(getPos()).addMob(*this);
 }
 
 void Mob::updatePos(void)
