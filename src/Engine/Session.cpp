@@ -16,7 +16,7 @@ Session::~Session(void)
 
 void Session::run(void)
 {
-	while (m_irr_device->run()) {
+	while (m_irr_device->run() && !isDone()) {
 		for (auto &w : m_worlds) {
 			w.events.updateObserver();
 			w.collectGarbage();

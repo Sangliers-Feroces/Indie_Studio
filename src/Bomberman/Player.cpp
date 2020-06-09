@@ -11,6 +11,7 @@ Player::Player(size_t id) :
 	m_bombs(1),
 	m_time_before_bomb(reload_rate),
 	m_dead(false),
+	m_id(id),
 	m_controller(genController(id))
 {
 	int w_max = field.getWidth() - 1;
@@ -64,8 +65,21 @@ Player::~Player(void)
 
 void Player::hitByBomb(void)
 {
+	if (m_dead)
+		return;
 	m_dead = true;
 	setScale(irr::core::vector3df(0.0));
+	died.emit();
+}
+
+bool Player::isDead(void) const
+{
+	return m_dead;
+}
+
+size_t Player::getId(void) const
+{
+	return m_id;
 }
 
 bool Player::canMoveTo(const irr::core::vector2di &pos) const

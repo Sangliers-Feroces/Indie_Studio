@@ -11,8 +11,12 @@ public:
 	Game(void);
 	~Game(void) override;
 
+protected:
+	bool isDone(void) const override;
+
 private:
 	Field &m_field;
+	bool m_stop_run;
 };
 
 }

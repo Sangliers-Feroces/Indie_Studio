@@ -15,6 +15,8 @@ public:
 	Field(void);
 	~Field(void);
 
+	en::Event::Generator<> game_done;
+
 	Tile& at(const irr::core::vector2di &pos);
 	Tile::Type typeAt(const irr::core::vector2di &pos);
 	void nuke(const irr::core::vector2di &pos);
@@ -32,6 +34,8 @@ private:
 	size_t m_h;
 	Camera &m_camera;
 	Tile &m_wall;
+	size_t m_players_alive;
+	std::vector<std::reference_wrapper<Player>> m_players;
 
 	static std::vector<std::vector<Tile::Type>> genField(void);
 	std::vector<std::vector<std::reference_wrapper<Tile>>> genTiles(void);

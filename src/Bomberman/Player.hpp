@@ -15,6 +15,9 @@ public:
 	~Player(void);
 
 	void hitByBomb(void);
+	en::Event::Generator<> died;
+	bool isDead(void) const;
+	size_t getId(void) const;
 
 	struct Stats
 	{
@@ -37,6 +40,7 @@ private:
 	size_t m_bombs;
 	double m_time_before_bomb;
 	bool m_dead;
+	size_t m_id;
 
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
 	void onMove(const irr::core::vector2di &newpos) override;

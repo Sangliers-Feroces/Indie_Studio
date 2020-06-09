@@ -13,7 +13,8 @@ Field::Field(void) :
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
 	m_camera(add<Camera>(m_w, m_h)),
-	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000)))
+	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000))),
+	m_players_alive(0)
 {
 	int64_t radius = 3;
 	for (int64_t i = -radius; i < ((int64_t)m_h + radius); i++)
@@ -21,8 +22,21 @@ Field::Field(void) :
 			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
 				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
 		}
-	for (size_t i = 0; i < 4; i++)
-		addMob<Player>(i);
+	for (size_t i = 0; i < 4; i++) {
+		auto &p = addMob<Player>(i);
+		m_players.emplace_back(p);
+		bind(p.died, [&](){
+			m_players_alive--;
+			if (m_players_alive == 1) {
+				for (auto &p : m_players)
+					if (!p.get().isDead()) {
+						std::cout << "PLAYER " << p.get().getId() + 1 << " WON!!" << std::endl;
+						game_done.emit();
+					}
+			}
+		});
+		m_players_alive++;
+	}
 }
 
 Field::~Field(void)

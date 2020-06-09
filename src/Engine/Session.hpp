@@ -7,7 +7,7 @@
 
 namespace Engine {
 
-class Session
+class Session : public Bindings::Dependency::Socket
 {
 public:
 	Session(void);
@@ -30,6 +30,7 @@ protected:
 	}
 
 	void run(void);
+	virtual bool isDone(void) const = 0;
 
 private:
 	friend World;
