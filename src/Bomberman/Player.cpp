@@ -39,8 +39,8 @@ Player::Player(size_t id) :
 		m_time_before_bomb -= deltaTime;
 		if (m_time_before_bomb <= 0.0) {
 			m_bombs++;
-			if (m_bombs > 3)
-				m_bombs = 3;
+			if (m_bombs > max_bombs)
+				m_bombs = max_bombs;
 			m_time_before_bomb += reload_rate;
 		}
 
@@ -58,6 +58,7 @@ Player::~Player(void)
 }
 
 double Player::reload_rate = 3.0;
+size_t Player::max_bombs = 3;
 
 std::unique_ptr<Player::Controller> Player::genController(size_t id)
 {
@@ -65,7 +66,8 @@ std::unique_ptr<Player::Controller> Player::genController(size_t id)
 		return std::make_unique<LocalController>(world.session, LocalController::Layout::Zqsd);
 	else if (id == 1)
 		return std::make_unique<LocalController>(world.session, LocalController::Layout::Arrows);
-	throw std::runtime_error("No controller found for this id");
+	else
+		return std::make_unique<BotController>(field, *this);
 }
 
 void Player::Controller::scan(void)
@@ -144,6 +146,31 @@ const std::map<Player::Controller::Key, irr::EKEY_CODE>& Player::LocalController
 irr::EKEY_CODE Player::LocalController::getKeyCode(Key abstract_key) const
 {
 	return m_key_set.at(abstract_key);
+}
+
+Player::BotController::BotController(Field &field, Player &me) :
+	m_field(field),
+	m_me(me)
+{
+}
+
+Player::BotController::~BotController(void)
+{
+}
+
+void Player::BotController::refresh(void)
+{
+	auto &keys = getKeys();
+	size_t sel = rand() % keys.size();
+
+	size_t i = 0;
+	for (auto &k : keys)
+		m_keys[k] = i++ == sel;
+}
+
+bool Player::BotController::getState(Key key) const
+{
+	return m_keys.at(key);
 }
 
 }

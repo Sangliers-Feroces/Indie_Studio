@@ -15,6 +15,7 @@ private:
 	double m_time_before_bomb;
 
 	static double reload_rate;
+	static size_t max_bombs;
 
 	class Controller
 	{
@@ -38,11 +39,11 @@ private:
 	protected:
 		virtual void refresh(void) = 0;
 
+		static const std::vector<Key>& getKeys(void);
+
 	private:
 		std::map<Key, bool> m_last_state;
 		std::map<Key, bool> m_cur_state;
-
-		static const std::vector<Key>& getKeys(void);
 	};
 
 	std::unique_ptr<Controller> m_controller;
@@ -71,6 +72,24 @@ private:
 		const std::map<Key, irr::EKEY_CODE>& getKeySet(Layout layout);
 		irr::EKEY_CODE getKeyCode(Key abstract_key) const;
 	};
+
+	class BotController : public Controller
+	{
+	public:
+		BotController(Field &field, Player &me);
+		~BotController(void) override;
+
+		void refresh(void) override;
+		bool getState(Key key) const override;
+
+	private:
+		Field &m_field;
+		Player &m_me;
+
+		std::map<Key, bool> m_keys;
+	};
+
+	friend BotController;
 };
 
 }
