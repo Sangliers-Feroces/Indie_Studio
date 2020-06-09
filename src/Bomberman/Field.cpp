@@ -11,8 +11,9 @@ Field::Field(void) :
 	m_camera(add<Camera>(m_w, m_h)),
 	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000)))
 {
-	for (int64_t i = -50; i < 50; i++)
-		for (int64_t j = -50; j < 50; j++) {
+	int64_t radius = 3;
+	for (int64_t i = -radius; i < ((int64_t)m_h + radius); i++)
+		for (int64_t j = -radius; j < ((int64_t)m_w + radius); j++) {
 			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
 				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
 		}
