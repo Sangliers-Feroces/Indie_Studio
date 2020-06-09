@@ -30,7 +30,6 @@ private:
 	size_t m_w;
 	size_t m_h;
 	Camera &m_camera;
-	Player &m_player;
 	Tile &m_wall;
 
 	static std::vector<std::vector<Tile::Type>> genField(void);

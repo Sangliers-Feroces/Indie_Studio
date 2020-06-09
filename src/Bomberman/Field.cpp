@@ -9,7 +9,6 @@ Field::Field(void) :
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
 	m_camera(add<Camera>(m_w, m_h)),
-	m_player(addMob<Player>(0)),
 	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000)))
 {
 	for (int64_t i = -50; i < 50; i++)
@@ -17,6 +16,8 @@ Field::Field(void) :
 			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
 				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
 		}
+	for (size_t i = 0; i < 4; i++)
+		addMob<Player>(i);
 }
 
 Field::~Field(void)
