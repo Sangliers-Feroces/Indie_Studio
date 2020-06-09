@@ -1,4 +1,8 @@
 #include "Field.hpp"
+#include "PowerUp/PassUp.hpp"
+#include "PowerUp/SpeedUp.hpp"
+#include "PowerUp/FireUp.hpp"
+#include "PowerUp/BombUp.hpp"
 
 #include <iostream>
 
@@ -49,7 +53,44 @@ Tile::Type Field::typeAt(const irr::core::vector2di &pos)
 
 void Field::nuke(const irr::core::vector2di &pos)
 {
+	if (typeAt(pos) == Tile::Type::Box)
+		genItem(pos);
 	at(pos).setType(Tile::Type::Air);
+}
+
+void Field::genItem(const irr::core::vector2di &pos)
+{
+	static const std::map<size_t, const std::function<void (void)>> items = {
+		{1, [&](){
+			addMob<PowerUp::PassUp>(pos);
+		}},
+		{2, [&](){
+			addMob<PowerUp::SpeedUp>(pos);
+		}},
+		{2, [&](){
+			addMob<PowerUp::FireUp>(pos);
+		}},
+		{3, [&](){
+			addMob<PowerUp::BombUp>(pos);
+		}},
+		{8, [](){
+		}}
+	};
+	size_t sum = 0;
+
+	for (auto &p : items)
+		sum += p.first;
+
+	size_t got = world.session.randInt(sum);
+
+	size_t goti = 0;
+	for (auto &p : items) {
+		if (goti >= got) {
+			p.second();
+			return;
+		}
+		goti += p.first;
+	}
 }
 
 size_t Field::getWidth(void) const

@@ -32,6 +32,11 @@ set(SRCS
 	./src/Bomberman/Mob.cpp
 	./src/Bomberman/Bomb.cpp
 	./src/Bomberman/Sparks.cpp
+	./src/Bomberman/PowerUp/Base.cpp
+	./src/Bomberman/PowerUp/PassUp.cpp
+	./src/Bomberman/PowerUp/SpeedUp.cpp
+	./src/Bomberman/PowerUp/FireUp.cpp
+	./src/Bomberman/PowerUp/BombUp.cpp
 
 	./src/main.cpp
 )

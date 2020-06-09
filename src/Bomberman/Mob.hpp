@@ -19,6 +19,7 @@ protected:
 	const irr::core::vector2di& getPos(void) const;
 	irr::core::vector2di getIncomingPos(void) const;
 	void setPos(const irr::core::vector2di &newpos);
+	virtual void onMove(const irr::core::vector2di &newpos);
 
 private:
 	irr::core::vector2di m_pos;

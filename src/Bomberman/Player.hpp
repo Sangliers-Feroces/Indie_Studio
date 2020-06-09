@@ -4,6 +4,10 @@
 
 namespace Bomberman {
 
+namespace PowerUp {
+class Base;
+}
+
 class Player : public Mob
 {
 public:
@@ -12,18 +16,35 @@ public:
 
 	void hitByBomb(void);
 
+	struct Stats
+	{
+		Stats(void) :
+			speed(5.0),
+			max_bombs(3),
+			bomb_radius(3),
+			wall_pass(false)
+		{
+		}
+
+		double speed;
+		size_t max_bombs;
+		size_t bomb_radius;
+		bool wall_pass;
+	};
+
 private:
-	double m_speed;
+	Stats m_stats;
 	size_t m_bombs;
-	size_t m_max_bombs;
-	size_t m_bomb_radius;
 	double m_time_before_bomb;
-	bool m_wall_pass;
 	bool m_dead;
 
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
+	void onMove(const irr::core::vector2di &newpos) override;
 
 	static double reload_rate;
+
+	friend PowerUp::Base;
+	Stats& getStats(void);
 
 	class Controller
 	{

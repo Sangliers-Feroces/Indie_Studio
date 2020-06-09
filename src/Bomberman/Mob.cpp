@@ -69,6 +69,11 @@ void Mob::setPos(const irr::core::vector2di &newpos)
 	m_pos = newpos;
 	updatePos();
 	field.at(getPos()).addMob(*this);
+	onMove(newpos);
+}
+
+void Mob::onMove(const irr::core::vector2di&)
+{
 }
 
 void Mob::updatePos(void)

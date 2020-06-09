@@ -18,6 +18,7 @@ public:
 	Tile& at(const irr::core::vector2di &pos);
 	Tile::Type typeAt(const irr::core::vector2di &pos);
 	void nuke(const irr::core::vector2di &pos);
+	void genItem(const irr::core::vector2di &pos);
 
 	template <class MobType, typename ...Args>
 	MobType& addMob(Args &&...args);

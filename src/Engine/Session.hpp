@@ -1,5 +1,6 @@
 #pragma once
 
+#include <random>
 #include "World.hpp"
 #include "IrrReceiver.hpp"
 #include "util.hpp"
@@ -14,6 +15,9 @@ public:
 
 	irr::scene::IAnimatedMesh& getMesh(const std::string &path);
 	Event::IrrReceiver events;
+
+	double rand(void);
+	size_t randInt(size_t max);
 
 protected:
 	template <class WorldType, typename ...Args>
@@ -37,6 +41,7 @@ public:
 private:
 	irr::scene::ISceneManager &m_irr_scene;
 	util::unique_set<World> m_worlds;
+	std::mt19937_64 m_rand_gen;
 };
 
 }
