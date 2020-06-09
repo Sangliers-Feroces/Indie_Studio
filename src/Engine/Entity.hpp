@@ -70,6 +70,8 @@ protected:
 		return res;
 	}
 
+	util::unique_set<Entity>& getChildren(void);
+	void collectGarbage(void);
 	void destroy(void);
 
 	const irr::core::vector3df& getPos(void) const;
@@ -95,7 +97,6 @@ private:
 	bool m_to_destroy;
 
 	friend Session;
-	void collectGarbage(void);
 	bool destroyIfMarked(void);
 	bool tryDestroyChild(void);
 };

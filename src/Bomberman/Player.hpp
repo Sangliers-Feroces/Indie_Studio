@@ -10,9 +10,12 @@ public:
 	Player(size_t id);
 	~Player(void);
 
+	void hitByBomb(void);
+
 private:
 	size_t m_bombs;
 	double m_time_before_bomb;
+	bool m_dead;
 
 	static double reload_rate;
 	static size_t max_bombs;

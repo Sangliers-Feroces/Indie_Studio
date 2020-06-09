@@ -30,6 +30,7 @@ Mob::Mob(const std::string &model_path, const std::string &texture_path) :
 
 Mob::~Mob(void)
 {
+	field.at(getPos()).removeMob(*this);
 }
 
 bool Mob::move(const irr::core::vector2di &dir, double speed)

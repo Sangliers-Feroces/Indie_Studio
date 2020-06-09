@@ -42,6 +42,7 @@ private:
 	friend Mob;
 	void addMob(Mob &mob);
 	void removeMob(Mob &mob);
+	bool tryRemoveMob(Mob &mob);
 };
 
 }

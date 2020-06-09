@@ -41,9 +41,17 @@ void Tile::addMob(Mob &mob)
 
 void Tile::removeMob(Mob &mob)
 {
-	m_mobs.erase(std::remove_if(m_mobs.begin(), m_mobs.end(), [&](auto &ref_wrapper){
-		return &ref_wrapper.get() == &mob;
-	}), m_mobs.end());
+	while (tryRemoveMob(mob));
+}
+
+bool Tile::tryRemoveMob(Mob &mob)
+{
+	for (auto it = m_mobs.begin(); it != m_mobs.end(); it++)
+		if (&it->get() == &mob) {
+			m_mobs.erase(it);
+			return true;
+		}
+	return false;
 }
 
 void Tile::renderType(void)

@@ -57,6 +57,11 @@ irr::scene::ISceneNode* Entity::getStackParentNode(void)
 		return nullptr;
 }
 
+util::unique_set<Entity>& Entity::getChildren(void)
+{
+	return m_children;
+}
+
 void Entity::destroy(void)
 {
 	m_to_destroy = true;

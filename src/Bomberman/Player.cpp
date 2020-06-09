@@ -9,6 +9,7 @@ Player::Player(size_t id) :
 	Mob("res/models/box.obj", "res/models/Steve.png"),
 	m_bombs(1),
 	m_time_before_bomb(reload_rate),
+	m_dead(false),
 	m_controller(genController(id))
 {
 	int w_max = field.getWidth() - 1;
@@ -32,22 +33,25 @@ Player::Player(size_t id) :
 
 	bind(world.events.update, [&](auto deltaTime) {
 		m_controller->scan();
-		for (auto &p : directions)
-			if (m_controller->getState(p.first))
-				move(p.second, 5.0);
 
-		m_time_before_bomb -= deltaTime;
-		if (m_time_before_bomb <= 0.0) {
-			m_bombs++;
-			if (m_bombs > max_bombs)
-				m_bombs = max_bombs;
-			m_time_before_bomb += reload_rate;
-		}
+		if (!m_dead) {
+			for (auto &p : directions)
+				if (m_controller->getState(p.first))
+					move(p.second, 5.0);
 
-		if (m_controller->isPressed(Controller::Key::Fire)) {
-			if (m_bombs > 0) {
-				field.addMob<Bomb>(getIncomingPos());
-				m_bombs--;
+			m_time_before_bomb -= deltaTime;
+			if (m_time_before_bomb <= 0.0) {
+				m_bombs++;
+				if (m_bombs > max_bombs)
+					m_bombs = max_bombs;
+				m_time_before_bomb += reload_rate;
+			}
+
+			if (m_controller->isPressed(Controller::Key::Fire)) {
+				if (m_bombs > 0) {
+					field.addMob<Bomb>(getIncomingPos());
+					m_bombs--;
+				}
 			}
 		}
 	});
@@ -55,6 +59,12 @@ Player::Player(size_t id) :
 
 Player::~Player(void)
 {
+}
+
+void Player::hitByBomb(void)
+{
+	m_dead = true;
+	setScale(irr::core::vector3df(0.0));
 }
 
 double Player::reload_rate = 3.0;

@@ -23,6 +23,13 @@ Field::Field(void) :
 
 Field::~Field(void)
 {
+	for (auto &e : getChildren()) {
+		try {
+			auto &mob = dynamic_cast<Mob&>(e);
+			mob.destroy();
+		} catch (const std::bad_cast&) {}
+	}
+	collectGarbage();
 }
 
 Tile& Field::at(const irr::core::vector2di &pos)
