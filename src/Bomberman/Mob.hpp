@@ -27,7 +27,7 @@ private:
 	double m_move_ratio;
 
 	void updatePos(void);
-	bool canMoveTo(const irr::core::vector2di &pos) const;
+	virtual bool canMoveTo(const irr::core::vector2di &pos) const;
 
 	friend Field;
 	static std::stack<std::reference_wrapper<Field>>& getStack(void);

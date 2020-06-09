@@ -7,11 +7,12 @@ namespace Bomberman {
 class Bomb : public Mob
 {
 public:
-	Bomb(const irr::core::vector2di &pos);
+	Bomb(const irr::core::vector2di &pos, size_t radius);
 	~Bomb(void);
 
 private:
 	double m_time_bef_expl;
+	size_t m_radius;
 
 	static double explosion_delay;
 

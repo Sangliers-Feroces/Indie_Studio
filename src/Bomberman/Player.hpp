@@ -13,12 +13,17 @@ public:
 	void hitByBomb(void);
 
 private:
+	double m_speed;
 	size_t m_bombs;
+	size_t m_max_bombs;
+	size_t m_bomb_radius;
 	double m_time_before_bomb;
+	bool m_wall_pass;
 	bool m_dead;
 
+	bool canMoveTo(const irr::core::vector2di &pos) const override;
+
 	static double reload_rate;
-	static size_t max_bombs;
 
 	class Controller
 	{

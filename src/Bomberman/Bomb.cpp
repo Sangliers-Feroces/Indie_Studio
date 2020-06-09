@@ -3,9 +3,10 @@
 
 namespace Bomberman {
 
-Bomb::Bomb(const irr::core::vector2di &pos) :
+Bomb::Bomb(const irr::core::vector2di &pos, size_t radius) :
 	Mob("res/models/box.obj", "res/models/SadSteve.png"),
-	m_time_bef_expl(explosion_delay)
+	m_time_bef_expl(explosion_delay),
+	m_radius(radius)
 {
 	setPos(pos);
 	setScale(irr::core::vector3df(0.3));
@@ -24,7 +25,6 @@ Bomb::~Bomb(void)
 
 void Bomb::nuke(void)
 {
-	static const size_t radius = 3;
 	static const std::vector<irr::core::vector2di> dirs = {
 		{1, 0},
 		{-1, 0},
@@ -33,7 +33,7 @@ void Bomb::nuke(void)
 	};
 
 	for (auto &d : dirs)
-		nukeLine(getPos(), d, radius);
+		nukeLine(getPos(), d, m_radius);
 }
 
 void Bomb::nukeLine(const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t max, size_t penetration)

@@ -7,8 +7,12 @@ namespace Bomberman {
 
 Player::Player(size_t id) :
 	Mob("res/models/box.obj", "res/models/Steve.png"),
+	m_speed(5.0),
 	m_bombs(1),
+	m_max_bombs(3),
+	m_bomb_radius(3),
 	m_time_before_bomb(reload_rate),
+	m_wall_pass(false),
 	m_dead(false),
 	m_controller(genController(id))
 {
@@ -37,19 +41,19 @@ Player::Player(size_t id) :
 		if (!m_dead) {
 			for (auto &p : directions)
 				if (m_controller->getState(p.first))
-					move(p.second, 5.0);
+					move(p.second, m_speed);
 
 			m_time_before_bomb -= deltaTime;
 			if (m_time_before_bomb <= 0.0) {
 				m_bombs++;
-				if (m_bombs > max_bombs)
-					m_bombs = max_bombs;
+				if (m_bombs > m_max_bombs)
+					m_bombs = m_max_bombs;
 				m_time_before_bomb += reload_rate;
 			}
 
 			if (m_controller->isPressed(Controller::Key::Fire)) {
 				if (m_bombs > 0) {
-					field.addMob<Bomb>(getIncomingPos());
+					field.addMob<Bomb>(getIncomingPos(), m_bomb_radius);
 					m_bombs--;
 				}
 			}
@@ -67,8 +71,17 @@ void Player::hitByBomb(void)
 	setScale(irr::core::vector3df(0.0));
 }
 
+bool Player::canMoveTo(const irr::core::vector2di &pos) const
+{
+	auto t = field.typeAt(pos);
+
+	if (m_wall_pass)
+		return t == Tile::Type::Air || t == Tile::Type::Box;
+	else
+		return t == Tile::Type::Air;
+}
+
 double Player::reload_rate = 3.0;
-size_t Player::max_bombs = 3;
 
 std::unique_ptr<Player::Controller> Player::genController(size_t id)
 {
