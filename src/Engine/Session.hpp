@@ -26,6 +26,15 @@ protected:
 		return res;
 	}
 
+	template<class WorldType, typename ...Args>
+	WorldType& addGui(Args &&...args)
+	{
+		EntityGuiWorld::getStack().emplace(*this);
+		auto &res = m_gui_worlds.emplace<WorldType>(std::forward<Args>(args)...);
+		EntityGuiWorld::getStack().pop();
+		return res;
+	}
+
 	void run(void);
 
 private:
@@ -40,7 +49,7 @@ public:
 private:
 	irr::scene::ISceneManager &m_irr_scene;
 	util::unique_set<World> m_worlds;
-	util::unique_set<EntityGuiWorld> m_GuiWorlds;
+	util::unique_set<EntityGuiWorld> m_gui_worlds;
 };
 
 }

@@ -30,6 +30,7 @@ public:
 private:
 	friend EntityGui;
 	irr::scene::ISceneManager &m_irr_scene;
+	irr::gui::IGUIEnvironment* m_env;
 };
 
 }
