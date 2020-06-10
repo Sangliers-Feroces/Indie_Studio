@@ -5,6 +5,8 @@
 #include "PowerUp/BombUp.hpp"
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 namespace Bomberman {
 
@@ -120,8 +122,8 @@ size_t Field::getHeight(void) const
 std::vector<std::vector<Tile::Type>> Field::genField(void)
 {
 	std::vector<std::vector<Tile::Type>> res;
-	size_t h = 11;
-	size_t w = 21;
+	size_t h = 13;
+	size_t w = 23;
 	int wi = w;
 	int hi = h;
 	std::vector<irr::core::vector2di> air = {
@@ -142,18 +144,23 @@ std::vector<std::vector<Tile::Type>> Field::genField(void)
 		{0, hi - 2},
 	};
 
+	std::srand(std::time(nullptr));
+
 	for (size_t i = 0; i < h; i++) {
 		std::vector<Tile::Type> row;
 		for (size_t j = 0; j < w; j++) {
 			auto p = irr::core::vector2di(j, i);
 			auto type = Tile::Type::Air;
 			bool isAir = false;
+			int random_number = std::rand() % 5;
 			for (auto &a : air)
 				if (a == p)
 					isAir = true;
 			if (!isAir) {
-				if ((j & 1) && (i & 1))
+				if (random_number == 0)
 					type = Tile::Type::Wall;
+				else if (random_number == 1)
+					type = Tile::Type::Air;
 				else
 					type = Tile::Type::Box;
 			}
