@@ -39,21 +39,21 @@ public:
 	};
 
 	EntityGui(void);
-	EntityGui(const Context &ctx, irr::scene::ISceneManager &sceneMgr);
+	EntityGui(const Context &ctx, irr::gui::IGUIEnvironment &env);
 
 protected:
-	EntityGui(irr::scene::ISceneNode *irrnode);
+	EntityGui(irr::gui::IGUIElement *irrelem);
 	static EntityGuiWorld& getStackWorld(void);
-	static irr::scene::ISceneManager& getStackScene(void);
-	static irr::scene::ISceneNode* getStackParentNode(void);
+	static irr::gui::IGUIEnvironment& getStackScene(void);
+	static irr::gui::IGUIElement* getStackParentElem(void);
 
 public:
 	virtual ~EntityGui(void) = 0;
 
-	template <class ISceneNodeType>
-	class ISceneNodeDerivedBase;
-	template <class ISceneNodeType>
-	class ISceneNodeDerived;
+	template <class IGUIElementType>
+	class IGUIElementDerivedBase;
+	template <class IGUIElementType>
+	class IGUIElementDerived;
 
 protected:
 	EntityGuiWorld &world;
@@ -69,48 +69,41 @@ protected:
 
 	void destroy(void);
 
-	const irr::video::SMaterial& getMaterial(const irr::u32& num);
-	const irr::u32 getMaterialCount() const;
-
-	void setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue);
-	void setMaterialTexture(irr::u32 textureLayer, irr::video::ITexture *texture);
-	void setMaterialType(irr::video::E_MATERIAL_TYPE newtype);
-
 private:
 	static std::stack<Context>& getStack(void);
 	EntityGui *m_parent;
-	util::irr_shared<irr::scene::ISceneNode, true> m_irr_node;
+	util::irr_shared<irr::gui::IGUIElement, true> m_irr_elem;
 	util::unique_set<EntityGui> m_children;
 };
 
-template <class ISceneNodeType>
-class EntityGui::ISceneNodeDerivedBase : public EntityGui
+template <class IGUIElementType>
+class EntityGui::IGUIElementDerivedBase : public EntityGui
 {
 public:
-	ISceneNodeDerivedBase(ISceneNodeType *node) :
+	IGUIElementDerivedBase(IGUIElementType *node) :
 		EntityGui(node),
-		m_irr_node_der(util::ptr_to_ref(node))
+		m_irr_elem_der(util::ptr_to_ref(node))
 	{
 	}
 
-	~ISceneNodeDerivedBase(void) override
+	~IGUIElementDerivedBase(void) override
 	{
 	}
 
 protected:
-	ISceneNodeType &m_irr_node_der;
+	IGUIElementType &m_irr_elem_der;
 };
 
-template <class ISceneNodeType>
-class EntityGui::ISceneNodeDerived : public EntityGui::ISceneNodeDerivedBase<ISceneNodeType>
+template <class IGUIElementType>
+class EntityGui::IGUIElementDerived : public EntityGui::IGUIElementDerivedBase<IGUIElementType>
 {
 public:
-	ISceneNodeDerived(const std::function<ISceneNodeType* (irr::scene::ISceneManager &scene, irr::scene::ISceneNode *parent)> &factory) :
-		EntityGui::ISceneNodeDerivedBase<ISceneNodeType>(factory(getStackScene(), getStackParentNode()))
+	IGUIElementDerived(const std::function<IGUIElementType* (irr::gui::IGUIEnvironment &env, irr::gui::IGUIElement *parent)> &factory) :
+		EntityGui::IGUIElementDerivedBase<IGUIElementType>(factory(getStackScene(), getStackParentElem()))
 	{
 	}
 
-	~ISceneNodeDerived(void) override
+	~IGUIElementDerived(void) override
 	{
 	}
 };

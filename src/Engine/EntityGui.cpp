@@ -12,21 +12,21 @@ namespace Engine {
 EntityGui::EntityGui(void) :
 	world(getStack().top().world),
 	m_parent(getStack().top().parent),
-	m_irr_node(getStackScene().addEmptySceneNode(getStackParentNode()))
+	m_irr_elem(getStackScene().addGUIElement("", getStackParentElem()))
 {
 }
 
-EntityGui::EntityGui(irr::scene::ISceneNode *irrnode) :
+EntityGui::EntityGui(irr::gui::IGUIElement *irrelem) :
 	world(getStack().top().world),
 	m_parent(getStack().top().parent),
-	m_irr_node(irrnode)
+	m_irr_elem(irrelem)
 {
 }
 
-EntityGui::EntityGui(const Context &ctx, irr::scene::ISceneManager &sceneMgr) :
+EntityGui::EntityGui(const Context &ctx, irr::gui::IGUIEnvironment &env) :
 	world(ctx.world),
 	m_parent(ctx.parent),
-	m_irr_node(sceneMgr.addEmptySceneNode(m_parent ? &*m_parent->m_irr_node : nullptr))
+	m_irr_elem(env.addGUIElement("", getStackParentElem()))
 {
 }
 
@@ -46,17 +46,17 @@ EntityGuiWorld& EntityGui::getStackWorld(void)
 	return getStack().top().world;
 }
 
-irr::scene::ISceneManager& EntityGui::getStackScene(void)
+irr::gui::IGUIEnvironment& EntityGui::getStackScene(void)
 {
-	return getStack().top().world.m_irr_scene;
+	return getStack().top().world.m_env;
 }
 
-irr::scene::ISceneNode* EntityGui::getStackParentNode(void)
+irr::gui::IGUIElement* EntityGui::getStackParentElem(void)
 {
 	auto &p = getStack().top().parent;
 
 	if (p)
-		return &*p->m_irr_node;
+		return &*p->m_irr_elem;
 	else
 		return nullptr;
 }
@@ -71,31 +71,6 @@ void EntityGui::destroy(void)
 	if (got == c.end())
 		throw std::runtime_error("Can't find EntityGui in its own parent");
 	c.erase(got);
-}
-
-const irr::video::SMaterial& EntityGui::getMaterial(const irr::u32& num)
-{
-	return (m_irr_node.get().getMaterial(num));
-}
-
-const irr::u32 EntityGui::getMaterialCount() const
-{
-	return (m_irr_node.get().getMaterialCount());
-}
-
-void EntityGui::setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue)
-{
-	m_irr_node.get().setMaterialFlag(flag, newvalue);
-}
-
-void EntityGui::setMaterialTexture(irr::u32 textureLayer, irr::video::ITexture *texture)
-{
-	m_irr_node.get().setMaterialTexture(textureLayer, texture);
-}
-
-void EntityGui::setMaterialType(irr::video::E_MATERIAL_TYPE newtype)
-{
-	m_irr_node.get().setMaterialType(newtype);
 }
 
 }

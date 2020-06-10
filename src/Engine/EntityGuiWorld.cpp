@@ -4,8 +4,7 @@ namespace Engine {
 EntityGuiWorld::EntityGuiWorld(void):
 		EntityGui(),
 		session(getStack().top()),
-		m_irr_scene(session.m_irr_scene),
-		m_env(session.m_irr_device->getGUIEnvironment())
+		m_env(util::ptr_to_ref(session.m_irr_device->getGUIEnvironment()))
 {
 }
 
