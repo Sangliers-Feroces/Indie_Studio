@@ -2,6 +2,7 @@
 
 #include "Engine/Session.hpp"
 #include "Field.hpp"
+#include "Gui.hpp"
 
 namespace Bomberman {
 
@@ -13,6 +14,7 @@ public:
 
 private:
 	Field &m_field;
+	Gui &m_gui;
 };
 
 }

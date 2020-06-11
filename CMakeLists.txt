@@ -23,6 +23,7 @@ set(SRCS
 	./src/Engine/IrrReceiver.cpp
 	./src/Engine/EntityGui.cpp
 	./src/Engine/EntityGuiWorld.cpp
+	./src/Engine/ui/GuiButton.cpp
 
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Field.cpp
@@ -30,6 +31,7 @@ set(SRCS
 	./src/Bomberman/Camera.cpp
 	./src/Bomberman/Model.cpp
 	./src/Bomberman/Tile.cpp
+	./src/Bomberman/Gui.cpp
 
 	./src/main.cpp
 )
