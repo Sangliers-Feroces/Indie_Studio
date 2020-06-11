@@ -13,7 +13,8 @@ public:
 	enum class Type {
 		Wall,
 		Air,
-		Box
+		Box,
+		Ground
 	};
 
 	Tile(Type type, const irr::core::vector2di &pos);
@@ -32,7 +33,8 @@ private:
 		static const std::map<Type, std::string> table = {
 			{Type::Box, "res/models/crate.jpg"},
 			{Type::Wall, "res/models/wall.jpg"},
-			{Type::Air, "res/models/crate.jpg"}
+			{Type::Air, "res/models/crate.jpg"},
+			{Type::Ground, "res/models/grass.jpg"}
 		};
 
 		return table.at(type);
