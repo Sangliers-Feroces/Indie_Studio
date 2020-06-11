@@ -10,8 +10,8 @@ namespace Bomberman {
 
 Field::Field(void) :
 	m_tiles(genTiles()),
-	m_w(m_tiles.at(0).at(0).size()),
-	m_h(m_tiles.at(0).size()),
+	m_w(m_tiles.at(0).size()),
+	m_h(m_tiles.size()),
 	m_camera(add<Camera>(m_w, m_h)),
 	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000))),
 	m_players_alive(0)
@@ -21,6 +21,8 @@ Field::Field(void) :
 		for (int64_t j = -radius; j < ((int64_t)m_w + radius); j++) {
 			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
 				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
+			else
+				add<Tile>(Tile::Type::Ground, irr::core::vector2di(j, i));
 		}
 	for (size_t i = 0; i < 4; i++) {
 		auto &p = addMob<Player>(i);
@@ -52,8 +54,8 @@ Field::~Field(void)
 
 Tile& Field::at(const irr::core::vector2di &pos)
 {
-	if (pos.Y >= 0 && pos.Y < (int)m_tiles.at(0).size()) {
-		auto &row = m_tiles.at(0).at(pos.Y);
+	if (pos.Y >= 0 && pos.Y < (int)m_tiles.size()) {
+		auto &row = m_tiles.at(pos.Y);
 		if (pos.X >= 0 && pos.X < (int)row.size())
 			return row.at(pos.X);
 	}
@@ -167,10 +169,9 @@ std::vector<std::vector<Tile::Type>> Field::genField(void)
 	return res;
 }
 
-std::vector<std::vector<std::vector<std::reference_wrapper<Tile>>>> Field::genTiles(void)
+std::vector<std::vector<std::reference_wrapper<Tile>>> Field::genTiles(void)
 {
-	std::vector<std::vector<std::vector<std::reference_wrapper<Tile>>>> res;
-	std::vector<std::vector<std::reference_wrapper<Tile>>> columns;
+	std::vector<std::vector<std::reference_wrapper<Tile>>> res;
 
 	auto field = genField();
 	for (size_t i = 0; i < field.size(); i++) {
@@ -178,19 +179,10 @@ std::vector<std::vector<std::vector<std::reference_wrapper<Tile>>>> Field::genTi
 		std::vector<std::reference_wrapper<Tile>> row;
 		for (size_t j = 0; j < field_row.size(); j++)
 			row.emplace_back(add<Tile>(field_row.at(j), irr::core::vector2di(j, i)));
-		columns.emplace_back(row);
+		res.emplace_back(row);
 	}
-	res.emplace_back(columns);
-	columns.clear();
-	for (size_t i = 0; i < field.size(); i++) {
-		auto &field_row = field.at(i);
-		std::vector<std::reference_wrapper<Tile>> row;
-		for (size_t j = 0; j < field_row.size(); j++)
-			row.emplace_back(add<Tile>(Tile::Type::Ground, irr::core::vector2di(j, i)));
-		columns.emplace_back(row);
-	}
-	res.emplace_back(columns);
 	return res;
 }
+
 
 }

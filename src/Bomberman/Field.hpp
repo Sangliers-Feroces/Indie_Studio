@@ -29,7 +29,7 @@ public:
 	size_t getHeight(void) const;
 
 private:
-	std::vector<std::vector<std::vector<std::reference_wrapper<Tile>>>> m_tiles;
+	std::vector<std::vector<std::reference_wrapper<Tile>>> m_tiles;
 	size_t m_w;
 	size_t m_h;
 	Camera &m_camera;
@@ -38,7 +38,7 @@ private:
 	std::vector<std::reference_wrapper<Player>> m_players;
 
 	std::vector<std::vector<Tile::Type>> genField(void);
-	std::vector<std::vector<std::vector<std::reference_wrapper<Tile>>>> genTiles(void);
+	std::vector<std::vector<std::reference_wrapper<Tile>>> genTiles(void);
 };
 
 }
