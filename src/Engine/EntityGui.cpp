@@ -27,7 +27,7 @@ EntityGui::EntityGui(irr::gui::IGUIElement *irrelem) :
 EntityGui::EntityGui(const Context &ctx, irr::gui::IGUIEnvironment &env) :
 	world(ctx.world),
 	m_parent(ctx.parent),
-	m_irr_elem(env.getDefaultGUIElementFactory()->addGUIElement(irr::gui::EGUIET_ROOT, getStackParentElem()))
+	m_irr_elem(env.getDefaultGUIElementFactory()->addGUIElement(irr::gui::EGUIET_ROOT, m_parent ?  &*m_parent->m_irr_elem : nullptr))
 {
 }
 
@@ -49,7 +49,6 @@ EntityGuiWorld& EntityGui::getStackWorld(void)
 
 irr::gui::IGUIEnvironment& EntityGui::getStackScene(void)
 {
-	std::cout << getStack().size() << std::endl;
 	return getStack().top().world.m_env;
 }
 
