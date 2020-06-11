@@ -13,7 +13,7 @@ namespace Engine {
 EntityGui::EntityGui(void) :
 	world(getStack().top().world),
 	m_parent(getStack().top().parent),
-	m_irr_elem(getStackScene().getDefaultGUIElementFactory()->addGUIElement(irr::gui::EGUIET_ELEMENT, getStackParentElem()))
+	m_irr_elem(getStackScene().addTab(irr::core::rect<irr::s32>(0,0, 4000, 4000), m_parent ?  &*m_parent->m_irr_elem : nullptr))
 {
 }
 
@@ -27,7 +27,7 @@ EntityGui::EntityGui(irr::gui::IGUIElement *irrelem) :
 EntityGui::EntityGui(const Context &ctx, irr::gui::IGUIEnvironment &env) :
 	world(ctx.world),
 	m_parent(ctx.parent),
-	m_irr_elem(env.getDefaultGUIElementFactory()->addGUIElement(irr::gui::EGUIET_ROOT, m_parent ?  &*m_parent->m_irr_elem : nullptr))
+	m_irr_elem(env.addTab(irr::core::rect<irr::s32>(0,0, 4000, 4000), m_parent ?  &*m_parent->m_irr_elem : nullptr))
 {
 }
 

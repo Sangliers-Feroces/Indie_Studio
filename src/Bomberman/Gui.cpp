@@ -10,7 +10,7 @@
 namespace Bomberman {
 
 Gui::Gui() :
-	m_button(add<en::GuiButton>(irr::core::rect<irr::s32>()))
+	m_button(add<en::GuiButton>(irr::core::rect<irr::s32>(0, 0, 200, 200)))
 {
 }
 
