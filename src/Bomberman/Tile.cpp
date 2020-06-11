@@ -9,7 +9,7 @@ Tile::Tile(Type type, const irr::core::vector2di &pos) :
 {
 	auto npos = pos;
 
-	setPos(irr::core::vector3df(npos.X, 0.0, npos.Y));
+	setPos(irr::core::vector3df(npos.X, type == Type::Ground ? -1.0 : 0.0, npos.Y));
 	renderType();
 }
 
