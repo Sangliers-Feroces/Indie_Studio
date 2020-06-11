@@ -6,7 +6,8 @@ Session::Session(void) :
 	m_irr_device(irr::createDevice(irr::video::EDT_OPENGL,
 	irr::core::dimension2d<irr::u32>(1600, 900), 32, false, false, true, &events)),
 	driver(*m_irr_device->getVideoDriver()),
-	m_irr_scene(*m_irr_device->getSceneManager())
+	m_irr_scene(*m_irr_device->getSceneManager()),
+	m_irr_env(util::ptr_to_ref(m_irr_device->getGUIEnvironment()))
 {
 }
 

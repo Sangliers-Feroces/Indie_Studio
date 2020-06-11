@@ -48,6 +48,7 @@ public:
 
 private:
 	irr::scene::ISceneManager &m_irr_scene;
+	irr::gui::IGUIEnvironment &m_irr_env;
 	util::unique_set<World> m_worlds;
 	util::unique_set<EntityGuiWorld> m_gui_worlds;
 };

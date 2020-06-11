@@ -2,9 +2,9 @@
 
 namespace Engine {
 EntityGuiWorld::EntityGuiWorld(void):
-		EntityGui(),
+		EntityGui(EntityGui::Context(*this, nullptr), getStack().top().get().m_irr_env),
 		session(getStack().top()),
-		m_env(util::ptr_to_ref(session.m_irr_device->getGUIEnvironment()))
+		m_env(session.m_irr_env)
 {
 }
 
