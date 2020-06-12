@@ -1,4 +1,8 @@
 #include "Field.hpp"
+#include "PowerUp/PassUp.hpp"
+#include "PowerUp/SpeedUp.hpp"
+#include "PowerUp/FireUp.hpp"
+#include "PowerUp/BombUp.hpp"
 
 #include <iostream>
 
@@ -9,38 +13,48 @@ Field::Field(void) :
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
 	m_camera(add<Camera>(m_w, m_h)),
-	m_player(add<Player>()),
-	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000)))
+	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000))),
+	m_players_alive(0)
 {
-	for (int64_t i = -50; i < 50; i++)
-		for (int64_t j = -50; j < 50; j++) {
-			if (!((i >= 0 && i < m_h) && (j >= 0 && j < m_w)))
+	int64_t radius = 3;
+	for (int64_t i = -radius; i < ((int64_t)m_h + radius); i++)
+		for (int64_t j = -radius; j < ((int64_t)m_w + radius); j++) {
+			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
 				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
 		}
-
-	bind(m_player.pressedZ, [](){
-		std::cout << "Player pressed Z!!" << std::endl;
-	});
-
-	bind(m_player.message, [](const std::string &msg){
-		std::cout << "Player messages you!!: " << msg << std::endl;
-	});
-
-	bind(m_player.do_quit, [](){
-		std::cout << "Player wants to quit!!" << std::endl;
-		std::cout << "(someone please add a method in Session to break game loop)" << std::endl;
-	});
+	for (size_t i = 0; i < 4; i++) {
+		auto &p = addMob<Player>(i);
+		m_players.emplace_back(p);
+		bind(p.died, [&](){
+			m_players_alive--;
+			if (m_players_alive == 1) {
+				for (auto &p : m_players)
+					if (!p.get().isDead()) {
+						std::cout << "PLAYER " << p.get().getId() + 1 << " WON!!" << std::endl;
+						game_done.emit();
+					}
+			}
+		});
+		m_players_alive++;
+	}
 }
 
 Field::~Field(void)
 {
+	for (auto &e : getChildren()) {
+		try {
+			auto &mob = dynamic_cast<Mob&>(e);
+			mob.destroy();
+		} catch (const std::bad_cast&) {}
+	}
+	collectGarbage();
 }
 
 Tile& Field::at(const irr::core::vector2di &pos)
 {
-	if (pos.Y >= 0 && pos.Y < m_tiles.size()) {
+	if (pos.Y >= 0 && pos.Y < (int)m_tiles.size()) {
 		auto &row = m_tiles.at(pos.Y);
-		if (pos.X >= 0 && pos.X < row.size())
+		if (pos.X >= 0 && pos.X < (int)row.size())
 			return row.at(pos.X);
 	}
 	return m_wall;
@@ -49,6 +63,58 @@ Tile& Field::at(const irr::core::vector2di &pos)
 Tile::Type Field::typeAt(const irr::core::vector2di &pos)
 {
 	return at(pos).getType();
+}
+
+void Field::nuke(const irr::core::vector2di &pos)
+{
+	if (typeAt(pos) == Tile::Type::Box)
+		genItem(pos);
+	at(pos).setType(Tile::Type::Air);
+}
+
+void Field::genItem(const irr::core::vector2di &pos)
+{
+	static const std::map<size_t, const std::function<void (void)>> items = {
+		{1, [&](){
+			addMob<PowerUp::PassUp>(pos);
+		}},
+		{2, [&](){
+			addMob<PowerUp::SpeedUp>(pos);
+		}},
+		{2, [&](){
+			addMob<PowerUp::FireUp>(pos);
+		}},
+		{3, [&](){
+			addMob<PowerUp::BombUp>(pos);
+		}},
+		{8, [](){
+		}}
+	};
+	size_t sum = 0;
+
+	for (auto &p : items)
+		sum += p.first;
+
+	size_t got = world.session.randInt(sum);
+
+	size_t goti = 0;
+	for (auto &p : items) {
+		if (goti >= got) {
+			p.second();
+			return;
+		}
+		goti += p.first;
+	}
+}
+
+size_t Field::getWidth(void) const
+{
+	return m_w;
+}
+
+size_t Field::getHeight(void) const
+{
+	return m_h;
 }
 
 std::vector<std::vector<Tile::Type>> Field::genField(void)

@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.11)
+
 
 project(bomberman)
 
@@ -11,6 +12,7 @@ endif()
 set(CMAKE_MODULE_PATH "./cmake_modules")
 
 include(${CMAKE_MODULE_PATH}/FindIrrlicht.cmake)
+include(${CMAKE_MODULE_PATH}/FindSFMLAudio.cmake)
 
 #ADD .CPP HERE
 set(SRCS 
@@ -26,12 +28,20 @@ set(SRCS
 	./src/Engine/ui/GuiButton.cpp
 
 	./src/Bomberman/Game.cpp
+	./src/Bomberman/Gui.cpp
 	./src/Bomberman/Field.cpp
 	./src/Bomberman/Player.cpp
 	./src/Bomberman/Camera.cpp
 	./src/Bomberman/Model.cpp
 	./src/Bomberman/Tile.cpp
-	./src/Bomberman/Gui.cpp
+	./src/Bomberman/Mob.cpp
+	./src/Bomberman/Bomb.cpp
+	./src/Bomberman/Sparks.cpp
+	./src/Bomberman/PowerUp/Base.cpp
+	./src/Bomberman/PowerUp/PassUp.cpp
+	./src/Bomberman/PowerUp/SpeedUp.cpp
+	./src/Bomberman/PowerUp/FireUp.cpp
+	./src/Bomberman/PowerUp/BombUp.cpp
 
 	./src/main.cpp
 )
@@ -42,6 +52,7 @@ include_directories(${CMAKE_MODULE_PATH}/include)
 add_executable(bomberman ${SRCS})
 
 target_link_libraries(bomberman ${Irrlicht_LIBRARIES})
+target_link_libraries(bomberman ${SFMLAudio_LIBRARIES})
 target_compile_features(bomberman PRIVATE cxx_std_17)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")

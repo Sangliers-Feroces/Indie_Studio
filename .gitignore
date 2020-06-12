@@ -9,3 +9,5 @@ Makefile
 
 doc/html
 doc/latex
+
+*.vs

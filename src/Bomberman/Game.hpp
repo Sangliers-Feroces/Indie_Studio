@@ -12,9 +12,13 @@ public:
 	Game(void);
 	~Game(void) override;
 
+protected:
+	bool isDone(void) const override;
+
 private:
 	Field &m_field;
 	Gui &m_gui;
+	bool m_stop_run;
 };
 
 }

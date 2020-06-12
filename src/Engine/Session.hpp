@@ -1,5 +1,7 @@
 #pragma once
 
+#include <random>
+#include <SFML/Audio.hpp>
 #include "World.hpp"
 #include "EntityGuiWorld.hpp"
 #include "IrrReceiver.hpp"
@@ -7,7 +9,7 @@
 
 namespace Engine {
 
-class Session
+class Session : public Bindings::Dependency::Socket
 {
 public:
 	Session(void);
@@ -17,6 +19,10 @@ public:
 	Event::IrrReceiver events;
 
 	void closeDevice(void);
+	double rand(void);
+	size_t randInt(size_t max);
+
+	void playSound(const std::string &path, double volume = 1.0);
 
 protected:
 	template <class WorldType, typename ...Args>
@@ -38,6 +44,7 @@ protected:
 	}
 
 	void run(void);
+	virtual bool isDone(void) const = 0;
 
 private:
 
@@ -53,6 +60,9 @@ private:
 	irr::gui::IGUIEnvironment &m_irr_env;
 	util::unique_set<World> m_worlds;
 	util::unique_set<EntityGuiWorld> m_gui_worlds;
+	std::mt19937_64 m_rand_gen;
+	util::cache<std::string, sf::SoundBuffer> m_sound_buffer_cache;
+	std::vector<std::unique_ptr<sf::Sound>> m_playing_sounds;
 };
 
 }

@@ -1,6 +1,14 @@
 #pragma once
 
+
+#ifdef _MSC_VER
+#pragma warning(push, 0)
+#endif
 #include <irrlicht/irrlicht.h>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <stack>
 #include <functional>
 #include "Event.hpp"
@@ -8,6 +16,7 @@
 
 namespace Engine {
 
+class Session;
 class World;
 
 class Entity : public Bindings::Dependency::Socket
@@ -61,6 +70,8 @@ protected:
 		return res;
 	}
 
+	util::unique_set<Entity>& getChildren(void);
+	void collectGarbage(void);
 	void destroy(void);
 
 	const irr::core::vector3df& getPos(void) const;
@@ -72,7 +83,7 @@ protected:
 	void setScale(const irr::core::vector3df& scale);
 
 	const irr::video::SMaterial& getMaterial(const irr::u32& num);
-	irr::u32 getMaterialCount() const;
+	irr::u32 getMaterialCount(void) const;
 
 	void setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue);
 	void setMaterialTexture(irr::u32 textureLayer, irr::video::ITexture *texture);
@@ -83,6 +94,11 @@ private:
 	Entity *m_parent;
 	util::irr_shared<irr::scene::ISceneNode, true> m_irr_node;
 	util::unique_set<Entity> m_children;
+	bool m_to_destroy;
+
+	friend Session;
+	bool destroyIfMarked(void);
+	bool tryDestroyChild(void);
 };
 
 template <class ISceneNodeType>
