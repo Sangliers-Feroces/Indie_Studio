@@ -16,6 +16,8 @@ public:
 	irr::scene::IAnimatedMesh& getMesh(const std::string &path);
 	Event::IrrReceiver events;
 
+	void closeDevice(void);
+
 protected:
 	template <class WorldType, typename ...Args>
 	WorldType& add(Args &&...args)

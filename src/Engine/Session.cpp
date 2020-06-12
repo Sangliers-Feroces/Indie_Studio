@@ -1,4 +1,5 @@
 #include "Session.hpp"
+#include <iostream>
 
 namespace Engine {
 
@@ -13,6 +14,12 @@ Session::Session(void) :
 
 Session::~Session(void)
 {
+}
+
+void Session::closeDevice(void)
+{
+	std::cerr << "Session Closed" << std::endl;
+	m_irr_device->closeDevice();
 }
 
 void Session::run(void)

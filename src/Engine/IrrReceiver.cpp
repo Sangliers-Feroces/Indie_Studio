@@ -87,3 +87,4 @@ IrrReceiver::Gui::GuiEvent::~GuiEvent(void)
 }
 
 }
+}

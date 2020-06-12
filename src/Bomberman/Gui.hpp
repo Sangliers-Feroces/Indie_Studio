@@ -9,6 +9,7 @@
 
 #include "Engine/EntityGuiWorld.hpp"
 #include "Engine/ui/GuiButton.hpp"
+#include "Engine/Session.hpp"
 
 namespace Bomberman {
 class Gui : public en::EntityGuiWorld {
@@ -17,6 +18,7 @@ public:
 	~Gui(void);
 private:
 	en::GuiButton &m_button;
+	en::GuiButton &m_button2;
 };
 
 }
