@@ -22,7 +22,7 @@ protected:
 	virtual extract_type extract(const src_type&) = 0;
 };
 
-template <typename src_type>
+template <typename src_type, typename extract_type>
 class GenDispatcherExtract
 {
 public:
@@ -34,14 +34,14 @@ public:
 	}
 
 protected:
-	virtual src_type extract(const src_type &src)
+	virtual extract_type extract(const src_type &src)
 	{
 		return src;
 	}
 };
 
 template <typename SrcType, typename DstType, typename ExtractType>
-class GenDispatcher : public std::conditional<std::is_convertible<SrcType, ExtractType>::value, GenDispatcherExtract<SrcType>, GenDispatcherPureExtract<SrcType, ExtractType>>::type
+class GenDispatcher : public std::conditional<std::is_convertible<SrcType, ExtractType>::value, GenDispatcherExtract<SrcType, ExtractType>, GenDispatcherPureExtract<SrcType, ExtractType>>::type
 {
 	using ListenerType = std::function<void (const DstType&)>;
 
