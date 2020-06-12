@@ -28,6 +28,7 @@ set(SRCS
 	./src/Engine/ui/GuiButton.cpp
 	./src/Engine/ui/ComboBox.cpp
 	./src/Engine/ui/EditBox.cpp
+	./src/Engine/ui/GuiScrollBar.cpp
 
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Gui.cpp
@@ -47,6 +48,7 @@ set(SRCS
 	./src/Bomberman/ui/Button.cpp
 	./src/Bomberman/ui/EditBox.cpp
 	./src/Bomberman/ui/ComboBox.cpp
+	./src/Bomberman/ui/ScrollBar.cpp
 	
 	./src/main.cpp
 )
