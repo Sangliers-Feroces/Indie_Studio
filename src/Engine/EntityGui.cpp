@@ -35,6 +35,11 @@ EntityGui::~EntityGui(void)
 {
 }
 
+bool EntityGui::operator==(irr::gui::IGUIElement *other)
+{
+	return &*m_irr_elem == other;
+}
+
 std::stack<EntityGui::Context>& EntityGui::getStack(void)
 {
 	static thread_local std::stack<EntityGui::Context> res;

@@ -19,4 +19,34 @@ std::stack<std::reference_wrapper<Session>>& EntityGuiWorld::getStack(void)
 	return res;
 }
 
+
+EntityGuiWorld::Events::Events(void)
+{
+}
+
+EntityGuiWorld::Events::~Events(void)
+{
+}
+
+void EntityGuiWorld::Events::updateObserver(void)
+{
+	update.updateObserver();
+}
+
+EntityGuiWorld::Events::Update::Update(void)
+{
+}
+
+EntityGuiWorld::Events::Update::~Update(void)
+{
+}
+
+void EntityGuiWorld::Events::Update::updateObserver(void)
+{
+	auto now = std::chrono::high_resolution_clock::now();
+	double res = std::chrono::duration<double>(now - m_time_before).count();
+	m_time_before = now;
+	newEvent(res);
+}
+
 }

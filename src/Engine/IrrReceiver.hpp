@@ -40,6 +40,28 @@ public:
 		extract_type extract(const src_type&) override;
 	} key;
 
+	class Gui : public Dispatcher<irr::SEvent, irr::SEvent::SGUIEvent>
+	{
+	public:
+		Gui(void);
+		~Gui(void);
+
+		class GuiEvent : public CopyDispatcher<irr::SEvent::SGUIEvent>
+		{
+		public:
+			GuiEvent(void);
+			~GuiEvent(void);
+		private:
+			friend Gui;
+		};
+
+		GuiEvent button_pressed;
+
+	private:
+		friend IrrReceiver;
+		extract_type extract(const src_type&) override;
+	} gui;
+
 private:
 	bool OnEvent(const irr::SEvent& event) override;
 };

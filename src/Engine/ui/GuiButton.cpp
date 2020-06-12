@@ -9,9 +9,9 @@
 
 namespace Engine {
 
-GuiButton::GuiButton(irr::core::rect<irr::s32> pos) :
-	EntityGui::IGUIElementDerived<irr::gui::IGUIButton>([&pos](auto &env, auto parent){
-		return env.addButton(pos, parent);
+GuiButton::GuiButton(irr::core::rect<irr::s32> pos, const wchar_t *text, const wchar_t *tooltiptext) :
+	EntityGui::IGUIElementDerived<irr::gui::IGUIButton>([&pos, &text, &tooltiptext](auto &env, auto parent){
+		return env.addButton(pos, parent, -1, text, tooltiptext);
 	})
 {
 }

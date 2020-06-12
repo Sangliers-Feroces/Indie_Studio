@@ -14,7 +14,7 @@ namespace Engine {
 class GuiButton : public EntityGui::IGUIElementDerived<irr::gui::IGUIButton>
 {
 public:
-	GuiButton(irr::core::rect<irr::s32> pos);
+	GuiButton(irr::core::rect<irr::s32> pos, const wchar_t *text=0, const wchar_t *tooltiptext=0);
 	~GuiButton(void);
 
 protected:

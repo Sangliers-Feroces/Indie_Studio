@@ -20,6 +20,8 @@ void Session::run(void)
 	while (m_irr_device->run()) {
 		for (auto &w : m_worlds)
 			w.events.updateObserver();
+		for (auto &gw : m_gui_worlds)
+			gw.events.updateObserver();
 		driver.beginScene(true, true, irr::video::SColor(255,0,0,0));
 		m_irr_scene.drawAll();
 		m_irr_env.drawAll();

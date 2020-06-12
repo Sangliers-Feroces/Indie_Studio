@@ -1,4 +1,5 @@
 #include "IrrReceiver.hpp"
+#include <iostream>
 
 namespace Engine {
 namespace Event {
@@ -14,6 +15,7 @@ IrrReceiver::~IrrReceiver(void)
 bool IrrReceiver::OnEvent(const irr::SEvent& event)
 {
 	key.newEvent(event);
+	gui.newEvent(event);
 	return false;
 }
 
@@ -53,5 +55,35 @@ IrrReceiver::Key::KeyEvent::~KeyEvent(void)
 {
 }
 
+
+IrrReceiver::Gui::Gui(void)
+{
 }
+
+IrrReceiver::Gui::~Gui(void)
+{
+}
+
+IrrReceiver::Gui::extract_type IrrReceiver::Gui::extract(const IrrReceiver::Gui::src_type &src)
+{
+	if (src.EventType == irr::EET_GUI_EVENT) {
+		switch (src.GUIEvent.EventType) {
+			case irr::gui::EGET_BUTTON_CLICKED:
+				button_pressed.newEvent(src.GUIEvent);
+			default:
+				break;
+		}
+		return src.GUIEvent;
+	} else
+		return std::nullopt;
+}
+
+IrrReceiver::Gui::GuiEvent::GuiEvent(void)
+{
+}
+
+IrrReceiver::Gui::GuiEvent::~GuiEvent(void)
+{
+}
+
 }

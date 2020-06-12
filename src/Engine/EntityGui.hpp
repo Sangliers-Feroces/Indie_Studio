@@ -41,6 +41,8 @@ public:
 	EntityGui(void);
 	EntityGui(const Context &ctx, irr::gui::IGUIEnvironment &env);
 
+	bool operator==(irr::gui::IGUIElement *other);
+
 protected:
 	EntityGui(irr::gui::IGUIElement *irrelem);
 	static EntityGuiWorld& getStackWorld(void);
