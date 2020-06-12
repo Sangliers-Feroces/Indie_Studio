@@ -8,8 +8,8 @@
 
 namespace Bomberman {
 
-Field::Field(void) :
-	m_env(Env::Mario),
+Field::Field(Env env) :
+	m_env(env),
 	m_tiles(genTiles()),
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),

@@ -13,7 +13,12 @@ class Player;
 class Field : public en::World
 {
 public:
-	Field(void);
+	enum class Env {
+		Overworld,
+		Mario
+	};
+
+	Field(Env env=Env::Overworld);
 	~Field(void);
 
 	en::Event::Generator<> game_done;
@@ -26,10 +31,6 @@ public:
 	template <class MobType, typename ...Args>
 	MobType& addMob(Args &&...args);
 
-	enum class Env {
-		Overworld,
-		Mario
-	};
 
 
 	size_t getWidth(void) const;
