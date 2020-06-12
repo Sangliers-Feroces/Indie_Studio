@@ -3,8 +3,9 @@
 
 namespace Bomberman {
 
-Tile::Tile(Type type, const irr::core::vector2di &pos) :
-	Model("res/models/box.obj", typeToTexture(type)),
+Tile::Tile(Type type, const irr::core::vector2di &pos, Field &field) :
+	m_field(field),
+	Model("res/models/box.obj", m_field.typeToTexture(type)),
 	m_type(type)
 {
 	auto npos = pos;
@@ -56,7 +57,7 @@ bool Tile::tryRemoveMob(Mob &mob)
 
 void Tile::renderType(void)
 {
-	setMaterialTexture(0, world.session.driver.getTexture(typeToTexture(m_type).c_str()));
+	setMaterialTexture(0, world.session.driver.getTexture(m_field.typeToTexture(m_type).c_str()));
 	if (m_type == Type::Air)
 		setScale(irr::core::vector3df(0.0));
 	else

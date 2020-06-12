@@ -18,7 +18,7 @@ public:
 		Ground
 	};
 
-	Tile(Type type, const irr::core::vector2di &pos);
+	Tile(Type type, const irr::core::vector2di &pos, Field &field);
 	~Tile(void);
 
 	Type getType(void) const;
@@ -27,26 +27,8 @@ public:
 
 private:
 	Type m_type;
+	Field &m_field;
 	std::vector<std::reference_wrapper<Mob>> m_mobs;	// mobs on that tile
-
-	static const std::string& typeToTexture(Type type, Field::Env env)
-	{
-		static const std::map<Field::Env, std::map<Type, std::string>> table = {
-			{Field::Env::Overworld, {
-				{Type::Box, "res/models/crate.jpg"},
-				{Type::Wall, "res/models/wall.jpg"},
-				{Type::Air, "res/models/crate.jpg"},
-				{Type::Ground, "res/models/grass.jpg"}
-			}}, {Field::Env::Mario, {
-				{Type::Box, "res/models/crate.jpg"},
-				{Type::Wall, "res/models/wall.jpg"},
-				{Type::Air, "res/models/crate.jpg"},
-				{Type::Ground, "res/models/grass.jpg"}
-			}}
-		};
-
-		return table.at(env).at(type);
-	}
 
 	void renderType(void);
 	friend Mob;
@@ -58,3 +40,4 @@ private:
 }
 
 #include "Mob.hpp"
+#include "Field.hpp"

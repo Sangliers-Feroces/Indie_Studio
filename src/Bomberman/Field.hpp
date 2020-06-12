@@ -3,11 +3,12 @@
 #include <vector>
 #include "Engine/World.hpp"
 #include "Camera.hpp"
+#include "Tile.hpp"
+
 
 namespace Bomberman {
 
 class Player;
-class Tile;
 
 class Field : public en::World
 {
@@ -25,16 +26,19 @@ public:
 	template <class MobType, typename ...Args>
 	MobType& addMob(Args &&...args);
 
-	size_t getWidth(void) const;
-	size_t getHeight(void) const;
-
 	enum class Env {
 		Overworld,
 		Mario
-	} Env;
+	};
+
+
+	size_t getWidth(void) const;
+	size_t getHeight(void) const;
+	const std::string& typeToTexture(Tile::Type type);
+
 
 private:
-	Field::Env m_env;
+	Env m_env;
 	std::vector<std::vector<std::reference_wrapper<Tile>>> m_tiles;
 	size_t m_w;
 	size_t m_h;
@@ -62,4 +66,3 @@ MobType& Bomberman::Field::addMob(Args &&...args)
 	return res;
 }
 
-#include "Tile.hpp"

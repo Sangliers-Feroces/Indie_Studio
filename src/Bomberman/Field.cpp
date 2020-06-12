@@ -14,16 +14,16 @@ Field::Field(void) :
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
 	m_camera(add<Camera>(m_w, m_h)),
-	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000))),
+	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000), *this)),
 	m_players_alive(0)
 {
 	int64_t radius = 1;
 	for (int64_t i = -radius; i < ((int64_t)m_h + radius); i++)
 		for (int64_t j = -radius; j < ((int64_t)m_w + radius); j++) {
 			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
-				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
+				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i), *this);
 			else
-				add<Tile>(Tile::Type::Ground, irr::core::vector2di(j, i));
+				add<Tile>(Tile::Type::Ground, irr::core::vector2di(j, i), *this);
 		}
 	for (size_t i = 0; i < 4; i++) {
 		auto &p = addMob<Player>(i);
@@ -170,6 +170,25 @@ std::vector<std::vector<Tile::Type>> Field::genField(void)
 	return res;
 }
 
+const std::string& Field::typeToTexture(Tile::Type type)
+{
+	static const std::map<Env, std::map<Tile::Type, std::string>> table = {
+		{Env::Overworld, {
+			{Tile::Type::Box, "res/models/crate.jpg"},
+			{Tile::Type::Wall, "res/models/wall.jpg"},
+			{Tile::Type::Air, "res/models/crate.jpg"},
+			{Tile::Type::Ground, "res/models/grass.jpg"}
+		}}, {Env::Mario, {
+			{Tile::Type::Box, "res/models/crate.jpg"},
+			{Tile::Type::Wall, "res/models/wall.jpg"},
+			{Tile::Type::Air, "res/models/crate.jpg"},
+			{Tile::Type::Ground, "res/models/grass.jpg"}
+		}}
+	};
+
+	return table.at(m_env).at(type);
+}
+
 std::vector<std::vector<std::reference_wrapper<Tile>>> Field::genTiles(void)
 {
 	std::vector<std::vector<std::reference_wrapper<Tile>>> res;
@@ -179,7 +198,7 @@ std::vector<std::vector<std::reference_wrapper<Tile>>> Field::genTiles(void)
 		auto &field_row = field.at(i);
 		std::vector<std::reference_wrapper<Tile>> row;
 		for (size_t j = 0; j < field_row.size(); j++)
-			row.emplace_back(add<Tile>(field_row.at(j), irr::core::vector2di(j, i)));
+			row.emplace_back(add<Tile>(field_row.at(j), irr::core::vector2di(j, i), *this));
 		res.emplace_back(row);
 	}
 	return res;
