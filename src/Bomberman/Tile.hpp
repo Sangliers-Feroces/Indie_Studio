@@ -6,6 +6,7 @@
 namespace Bomberman {
 
 class Mob;
+class Field;
 
 class Tile : public Model
 {
@@ -28,16 +29,23 @@ private:
 	Type m_type;
 	std::vector<std::reference_wrapper<Mob>> m_mobs;	// mobs on that tile
 
-	static const std::string& typeToTexture(Type type)
+	static const std::string& typeToTexture(Type type, Field::Env env)
 	{
-		static const std::map<Type, std::string> table = {
-			{Type::Box, "res/models/crate.jpg"},
-			{Type::Wall, "res/models/wall.jpg"},
-			{Type::Air, "res/models/crate.jpg"},
-			{Type::Ground, "res/models/grass.jpg"}
+		static const std::map<Field::Env, std::map<Type, std::string>> table = {
+			{Field::Env::Overworld, {
+				{Type::Box, "res/models/crate.jpg"},
+				{Type::Wall, "res/models/wall.jpg"},
+				{Type::Air, "res/models/crate.jpg"},
+				{Type::Ground, "res/models/grass.jpg"}
+			}}, {Field::Env::Mario, {
+				{Type::Box, "res/models/crate.jpg"},
+				{Type::Wall, "res/models/wall.jpg"},
+				{Type::Air, "res/models/crate.jpg"},
+				{Type::Ground, "res/models/grass.jpg"}
+			}}
 		};
 
-		return table.at(type);
+		return table.at(env).at(type);
 	}
 
 	void renderType(void);

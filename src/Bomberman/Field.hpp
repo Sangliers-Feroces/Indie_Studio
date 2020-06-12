@@ -2,12 +2,12 @@
 
 #include <vector>
 #include "Engine/World.hpp"
-#include "Tile.hpp"
 #include "Camera.hpp"
 
 namespace Bomberman {
 
 class Player;
+class Tile;
 
 class Field : public en::World
 {
@@ -28,7 +28,13 @@ public:
 	size_t getWidth(void) const;
 	size_t getHeight(void) const;
 
+	enum class Env {
+		Overworld,
+		Mario
+	} Env;
+
 private:
+	Field::Env m_env;
 	std::vector<std::vector<std::reference_wrapper<Tile>>> m_tiles;
 	size_t m_w;
 	size_t m_h;
@@ -55,3 +61,5 @@ MobType& Bomberman::Field::addMob(Args &&...args)
 	s.pop();
 	return res;
 }
+
+#include "Tile.hpp"

@@ -9,6 +9,7 @@
 namespace Bomberman {
 
 Field::Field(void) :
+	m_env(Env::Overworld),
 	m_tiles(genTiles()),
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
