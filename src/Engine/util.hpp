@@ -251,5 +251,36 @@ void fatal_throw(const CallbackType &callback)
 	}
 }
 
+template <typename Key, typename Value>
+class cache
+{
+public:
+	cache(const std::function<void (const Key &, Value&)> &constructor) :
+		m_constructor(constructor)
+	{
+	}
+
+	~cache(void)
+	{
+	}
+
+	Value& resolve(const Key& key)
+	{
+		auto got = m_cache.find(key);
+
+		if (got != m_cache.end())
+			return got->second;
+		else {
+			Value value;
+			m_constructor(key, value);
+			return (*m_cache.emplace(key, value).first).second;
+		}
+	}
+
+private:
+	const std::function<void (const Key &, Value&)> m_constructor;
+	std::map<Key, Value> m_cache;
+};
+
 }
 }
