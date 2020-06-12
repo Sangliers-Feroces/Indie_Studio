@@ -8,8 +8,7 @@
 #pragma once
 
 #include "Engine/EntityGuiWorld.hpp"
-#include "Engine/ui/GuiButton.hpp"
-#include "Engine/Session.hpp"
+#include "ui/Button.hpp"
 
 namespace Bomberman {
 class Gui : public en::EntityGuiWorld {
@@ -17,8 +16,7 @@ public:
 	Gui(void);
 	~Gui(void);
 private:
-	en::GuiButton &m_button;
-	en::GuiButton &m_button2;
+	Button &m_button;
 };
 
 }

@@ -36,7 +36,7 @@ void Session::run(void)
 			gw.events.updateObserver();
 		driver.beginScene(true, true, irr::video::SColor(255,0,0,0));
 		m_irr_scene.drawAll();
-		//m_irr_env.drawAll();
+		m_irr_env.drawAll();
 		driver.endScene();
 	}
 }
