@@ -5,7 +5,7 @@ namespace Bomberman {
 
 Tile::Tile(Type type, const irr::core::vector2di &pos, Field &field) :
 	m_field(field),
-	Model("res/models/box.obj", m_field.typeToTexture(type)),
+	Model("res/models/box.obj", field.typeToTexture(type)),
 	m_type(type)
 {
 	auto npos = pos;

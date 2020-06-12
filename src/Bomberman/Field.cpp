@@ -9,7 +9,7 @@
 namespace Bomberman {
 
 Field::Field(void) :
-	m_env(Env::Overworld),
+	m_env(Env::Mario),
 	m_tiles(genTiles()),
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
@@ -179,8 +179,8 @@ const std::string& Field::typeToTexture(Tile::Type type)
 			{Tile::Type::Air, "res/models/crate.jpg"},
 			{Tile::Type::Ground, "res/models/grass.jpg"}
 		}}, {Env::Mario, {
-			{Tile::Type::Box, "res/models/crate.jpg"},
-			{Tile::Type::Wall, "res/models/wall.jpg"},
+			{Tile::Type::Box, "res/models/mario-box.jpg"},
+			{Tile::Type::Wall, "res/models/mario-wall.jpg"},
 			{Tile::Type::Air, "res/models/crate.jpg"},
 			{Tile::Type::Ground, "res/models/grass.jpg"}
 		}}
