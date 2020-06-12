@@ -30,6 +30,7 @@ set(SRCS
 	./src/Engine/ui/EditBox.cpp
 	./src/Engine/ui/GuiScrollBar.cpp
 	./src/Engine/ui/GuiCheckBox.cpp
+	./src/Engine/ui/GuiStaticText.cpp
 
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Gui.cpp
@@ -51,6 +52,7 @@ set(SRCS
 	./src/Bomberman/ui/ComboBox.cpp
 	./src/Bomberman/ui/ScrollBar.cpp
 	./src/Bomberman/ui/CheckBox.cpp
+	./src/Bomberman/ui/StaticText.cpp
 	
 	./src/main.cpp
 )
