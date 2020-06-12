@@ -12,6 +12,7 @@ endif()
 set(CMAKE_MODULE_PATH "./cmake_modules")
 
 include(${CMAKE_MODULE_PATH}/FindIrrlicht.cmake)
+include(${CMAKE_MODULE_PATH}/FindSFMLAudio.cmake)
 
 #ADD .CPP HERE
 set(SRCS 
@@ -47,6 +48,7 @@ include_directories(${CMAKE_MODULE_PATH}/include)
 add_executable(bomberman ${SRCS})
 
 target_link_libraries(bomberman ${Irrlicht_LIBRARIES})
+target_link_libraries(bomberman ${SFMLAudio_LIBRARIES})
 target_compile_features(bomberman PRIVATE cxx_std_17)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
