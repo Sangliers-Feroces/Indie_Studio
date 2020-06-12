@@ -1,6 +1,7 @@
 #pragma once
 
 #include <random>
+#include <SFML/Audio.hpp>
 #include "World.hpp"
 #include "IrrReceiver.hpp"
 #include "util.hpp"
@@ -18,6 +19,8 @@ public:
 
 	double rand(void);
 	size_t randInt(size_t max);
+
+	void playSound(const std::string &path, double volume = 1.0);
 
 protected:
 	template <class WorldType, typename ...Args>
@@ -43,6 +46,8 @@ private:
 	irr::scene::ISceneManager &m_irr_scene;
 	util::unique_set<World> m_worlds;
 	std::mt19937_64 m_rand_gen;
+	util::cache<std::string, sf::SoundBuffer> m_sound_buffer_cache;
+	std::vector<std::unique_ptr<sf::Sound>> m_playing_sounds;
 };
 
 }
