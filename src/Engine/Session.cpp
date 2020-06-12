@@ -8,8 +8,7 @@ Session::Session(void) :
 	driver(*m_irr_device->getVideoDriver()),
 	m_irr_scene(*m_irr_device->getSceneManager()),
 	m_sound_buffer_cache([](const std::string &soundPath, sf::SoundBuffer &buffer){
-		if (!buffer.loadFromFile(soundPath))
-			throw std::invalid_argument("Can't open sound");
+		buffer.loadFromFile(soundPath);
 	})
 {
 }
