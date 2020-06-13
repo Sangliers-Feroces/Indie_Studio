@@ -9,12 +9,13 @@
 
 #include "Engine/EntityGuiWorld.hpp"
 #include "ui/uiComponent.hpp"
+#include "Game.hpp"
 
 namespace Bomberman {
 
 class PreGame : public en::EntityGuiWorld {
 public:
-	PreGame(void);
+	PreGame(std::vector<Field::PlayerMeta> &players);
 	~PreGame(void);
 
 private:

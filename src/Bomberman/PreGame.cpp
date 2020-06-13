@@ -10,7 +10,7 @@
 
 namespace Bomberman {
 
-PreGame::PreGame(void) :
+PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_background(add<Image>(session.driver.getTexture("res/GUI/menu_background.png"), irr::core::position2d<irr::s32>(0, 0))),
 	m_back(add<Button>(irr::core::rect<irr::s32>(0, 800, 100, 900), L"Back")),
 	m_play(add<Button>(irr::core::rect<irr::s32>(1500, 800, 1600, 900), L"Play")),
@@ -24,12 +24,17 @@ PreGame::PreGame(void) :
 	m_maps.addItem(L"Map2");
 	m_maps.addItem(L"Map3");
 	m_maps.addItem(L"Map4");
-	bind(session.events.gui.button_pressed, [this](auto gui) {
+	bind(session.events.gui.button_pressed, [this, &players](auto gui) {
 		if (m_back == gui.Caller) {
 			session.switch_Menu = true;
 		}
-		if (m_play == gui.Caller)
+		if (m_play == gui.Caller) {
+			(m_p1.isChecked()) ? players.push_back({true, "Player1"}) : players.push_back({false, "Bot1"});
+			(m_p2.isChecked()) ? players.push_back({true, "Player2"}) : players.push_back({false, "Bot2"});
+			(m_p3.isChecked()) ? players.push_back({true, "Player3"}) : players.push_back({false, "Bot3"});
+			(m_p4.isChecked()) ? players.push_back({true, "Player4"}) : players.push_back({false, "Bot4"});
 			session.switch_Game = true;
+		}
 	});
 }
 

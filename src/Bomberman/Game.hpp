@@ -23,6 +23,7 @@ private:
 	std::reference_wrapper<en::EntityGuiWorld> m_gui;
 	en::World *m_world;
 	bool m_stop_run;
+	std::vector<Field::PlayerMeta> m_players;
 };
 
 }

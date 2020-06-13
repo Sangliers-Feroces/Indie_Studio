@@ -13,9 +13,15 @@ namespace Engine {
 class Session : public Bindings::Dependency::Socket
 {
 public:
+	struct IGOptions {
+		bool vol_mute;
+		double vol;
+		bool full_screen;
+	};
 	Session(void);
 	virtual ~Session(void) = 0;
 
+	IGOptions m_options;
 	irr::scene::IAnimatedMesh& getMesh(const std::string &path);
 	Event::IrrReceiver events;
 

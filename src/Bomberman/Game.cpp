@@ -16,7 +16,7 @@ Game::Game(void) :
 	bind(events.update, [&](auto){
 		if (switch_preGame) {
 			removeGui(m_gui);
-			m_gui = addGui<PreGame>();
+			m_gui = addGui<PreGame>(m_players);
 			switch_preGame = false;
 		}
 
@@ -31,7 +31,7 @@ Game::Game(void) :
 		if (switch_Game) {
 			removeGui(m_gui);
 			m_gui = addGui<Gui>();
-			m_world = &add<Field>(std::vector<Field::PlayerMeta>({{false, ""}, {false, ""}, {true, ""}, {true, ""}}));
+			m_world = &add<Field>(m_players);
 			switch_Game = false;
 		}
 

@@ -4,6 +4,7 @@
 namespace Engine {
 
 Session::Session(void) :
+	m_options({false, 50, false}),
 	m_irr_device(irr::createDevice(irr::video::EDT_OPENGL,
 	irr::core::dimension2d<irr::u32>(1600, 900), 32, false, false, true, &events)),
 	driver(*m_irr_device->getVideoDriver()),

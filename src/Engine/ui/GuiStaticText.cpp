@@ -50,5 +50,9 @@ void GuiStaticText::setOverrideFont(irr::gui::IGUIFont *font)
 	m_irr_elem_der.setOverrideFont(font);
 }
 
+void GuiStaticText::setText(const wchar_t *text)
+{
+	m_irr_elem_der.setText(text);
+}
 
 }
