@@ -131,7 +131,7 @@ void Player::botUpdate(void)
 
 	field.updateBombMap();
 	if (field.isBombed(getPos()))
-		botEscape();
+		botEscape(getPos());
 	else if (shouldPutBomb())
 		m_next_bot_moves.emplace(Controller::Key::Fire);
 	else {
@@ -139,7 +139,7 @@ void Player::botUpdate(void)
 	}
 }
 
-void Player::botEscape(void)
+bool Player::botEscape(const irr::core::vector2di &pos)
 {
 	static const std::vector<irr::core::vector2di> dir = {
 		{-1, 0},
@@ -152,17 +152,18 @@ void Player::botEscape(void)
 		auto p = getPos() + d;
 		if (isSafeToGo(p)) {
 			m_next_bot_moves.emplace(dirToKey(d));
-			return;
+			return true;
 		} else if (canMoveTo(p)) {
 			for (auto &dd : dir) {
 				auto pp = p + dd;
 				if (isSafeToGo(pp)) {
 					m_next_bot_moves.emplace(dirToKey(d));
-					return;
+					return true;
 				}
 			}
 		}
 	}
+	return false;
 }
 
 bool Player::shouldPutBomb(void)

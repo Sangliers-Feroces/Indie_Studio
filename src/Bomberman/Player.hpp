@@ -47,7 +47,7 @@ private:
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
 	void onMove(const irr::core::vector2di &newpos) override;
 	bool isSafeToGo(const irr::core::vector2di &pos);
-	void botEscape(void);
+	bool botEscape(const irr::core::vector2di &pos);
 	void botUpdate(void);
 	bool shouldPutBomb(void);
 
