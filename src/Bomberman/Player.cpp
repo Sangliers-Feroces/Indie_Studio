@@ -12,6 +12,7 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 	m_dead(false),
 	m_name(name),
 	m_is_bot(is_bot),
+	m_player_id(player_id),
 	m_controller(genController(is_bot, player_id))
 {
 	int w_max = field.getWidth() - 1;
@@ -64,6 +65,20 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 
 Player::~Player(void)
 {
+}
+
+void Player::write(std::ostream &o)
+{
+	en::util::write(o, en::util::type_id<decltype(*this)>());
+	Mob::write(o);
+	en::util::write(o, m_stats);
+	en::util::write(o, m_bombs);
+	en::util::write(o, m_time_before_bomb);
+	en::util::write(o, m_dead);
+	en::util::write(o, m_name.size());
+	o.write(m_name.data(), m_name.size());
+	en::util::write(o, m_is_bot);
+	en::util::write(o, m_player_id);
 }
 
 void Player::hitByBomb(void)

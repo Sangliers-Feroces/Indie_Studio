@@ -9,6 +9,7 @@ class SpeedUp : public Base
 {
 public:
 	SpeedUp(const irr::core::vector2di &pos);
+	void write(std::ostream &o) override;
 	~SpeedUp(void) override;
 
 	void onPlayerCollect(Player &player) override;

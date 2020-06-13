@@ -8,6 +8,7 @@ class Sparks : public Mob
 {
 public:
 	Sparks(const irr::core::vector2di &pos);
+	void write(std::ostream &o) override;
 	~Sparks(void);
 
 	void simulate(void);

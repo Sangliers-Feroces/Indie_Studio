@@ -33,6 +33,14 @@ Mob::~Mob(void)
 	field.at(getPos()).removeMob(*this);
 }
 
+void Mob::write(std::ostream &o)
+{
+	en::util::write(o, m_pos);
+	en::util::write(o, m_dir);
+	en::util::write(o, m_speed);
+	en::util::write(o, m_move_ratio);
+}
+
 bool Mob::move(const irr::core::vector2di &dir, double speed)
 {
 	if (m_move_ratio == 1.0 && (std::abs(dir.X) + std::abs(dir.Y)) > 0 && canMoveTo(m_pos + dir)) {

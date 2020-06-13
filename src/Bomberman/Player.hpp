@@ -13,6 +13,7 @@ class Player : public Mob
 {
 public:
 	Player(bool is_bot, const std::string &name, size_t id, size_t player_id);
+	void write(std::ostream &o) override;
 	~Player(void);
 
 	void hitByBomb(void);
@@ -45,6 +46,7 @@ private:
 	bool m_dead;
 	const std::string m_name;
 	bool m_is_bot;
+	size_t m_player_id;
 
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
 	void onMove(const irr::core::vector2di &newpos) override;

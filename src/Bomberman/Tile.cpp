@@ -32,6 +32,8 @@ void Tile::write(std::ostream &o)
 {
 	en::util::write(o, m_type);
 	en::util::write(o, m_pos);
+	for (auto &m : m_mobs)
+		m.get().write(o);
 }
 
 Tile::Type Tile::getType(void) const

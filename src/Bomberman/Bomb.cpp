@@ -24,6 +24,15 @@ Bomb::~Bomb(void)
 {
 }
 
+void Bomb::write(std::ostream &o)
+{
+	en::util::write(o, en::util::type_id<decltype(*this)>());
+	Mob::write(o);
+	en::util::write(o, m_time_bef_expl);
+	en::util::write(o, m_radius);
+	en::util::write(o, m_defuzed);
+}
+
 void Bomb::nuke(bool is_simulation)
 {
 	static const std::vector<irr::core::vector2di> dirs = {

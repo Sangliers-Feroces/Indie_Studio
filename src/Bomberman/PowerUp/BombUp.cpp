@@ -12,6 +12,12 @@ BombUp::~BombUp(void)
 {
 }
 
+void BombUp::write(std::ostream &o)
+{
+	en::util::write(o, en::util::type_id<decltype(*this)>());
+	Base::write(o);
+}
+
 void BombUp::onPlayerCollect(Player &player)
 {
 	auto &stats = getPlayerStats(player);

@@ -8,6 +8,7 @@ class Bomb : public Mob
 {
 public:
 	Bomb(const irr::core::vector2di &pos, size_t radius);
+	void write(std::ostream &o) override;
 	~Bomb(void);
 
 	void nuke(bool is_simulation = false);

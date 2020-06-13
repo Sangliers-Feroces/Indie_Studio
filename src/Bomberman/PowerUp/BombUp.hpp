@@ -9,6 +9,7 @@ class BombUp : public Base
 {
 public:
 	BombUp(const irr::core::vector2di &pos);
+	void write(std::ostream &o) override;
 	~BombUp(void) override;
 
 	void onPlayerCollect(Player &player) override;

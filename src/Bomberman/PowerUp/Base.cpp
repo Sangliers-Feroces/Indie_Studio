@@ -15,6 +15,12 @@ Base::~Base(void)
 {
 }
 
+void Base::write(std::ostream &o)
+{
+	Mob::write(o);
+	en::util::write(o, m_collected);
+}
+
 void Base::collect(Player &player)
 {
 	if (m_collected)

@@ -29,6 +29,13 @@ Sparks::~Sparks(void)
 {
 }
 
+void Sparks::write(std::ostream &o)
+{
+	en::util::write(o, en::util::type_id<decltype(*this)>());
+	Mob::write(o);
+	en::util::write(o, m_time_bef_death);
+}
+
 void Sparks::simulate(void)
 {
 	if (stillDeadly())
