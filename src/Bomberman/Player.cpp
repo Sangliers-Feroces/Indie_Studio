@@ -102,7 +102,7 @@ void Player::onMove(const irr::core::vector2di &newpos)
 		} catch (const std::bad_cast&) {}
 	}
 	if (m_is_bot) {
-
+		field.updateBombMap();
 	}
 }
 

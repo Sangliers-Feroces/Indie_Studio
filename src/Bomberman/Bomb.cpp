@@ -23,7 +23,7 @@ Bomb::~Bomb(void)
 {
 }
 
-void Bomb::nuke(void)
+void Bomb::nuke(bool is_simulation)
 {
 	static const std::vector<irr::core::vector2di> dirs = {
 		{1, 0},
@@ -33,10 +33,10 @@ void Bomb::nuke(void)
 	};
 
 	for (auto &d : dirs)
-		nukeLine(getPos(), d, m_radius);
+		nukeLine(getPos(), d, m_radius, is_simulation);
 }
 
-void Bomb::nukeLine(const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t max, size_t penetration)
+void Bomb::nukeLine(const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t max, size_t penetration, bool is_simulation)
 {
 	size_t got = 0;
 
@@ -44,7 +44,7 @@ void Bomb::nukeLine(const irr::core::vector2di &pos, const irr::core::vector2di 
 		auto p = pos + dir * i;
 		auto t = field.typeAt(p);
 		if (t == Tile::Type::Box) {
-			field.nuke(p);
+			field.nuke(p, is_simulation);
 			got++;
 			field.addMob<Sparks>(p);
 			if (got >= penetration)

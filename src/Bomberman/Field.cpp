@@ -3,6 +3,7 @@
 #include "PowerUp/SpeedUp.hpp"
 #include "PowerUp/FireUp.hpp"
 #include "PowerUp/BombUp.hpp"
+#include "Bomb.hpp"
 
 #include <iostream>
 #include <sstream>
@@ -72,11 +73,15 @@ Tile::Type Field::typeAt(const irr::core::vector2di &pos)
 	return at(pos).getType();
 }
 
-void Field::nuke(const irr::core::vector2di &pos)
+void Field::nuke(const irr::core::vector2di &pos, bool is_simulation)
 {
-	if (typeAt(pos) == Tile::Type::Box)
-		genItem(pos);
-	at(pos).setType(Tile::Type::Air);
+	if (is_simulation) {
+		m_bombs.at(pos.Y).at(pos.X) = true;
+	} else {
+		if (typeAt(pos) == Tile::Type::Box)
+			genItem(pos);
+		at(pos).setType(Tile::Type::Air);
+	}
 }
 
 void Field::genItem(const irr::core::vector2di &pos)
@@ -122,6 +127,34 @@ size_t Field::getWidth(void) const
 size_t Field::getHeight(void) const
 {
 	return m_h;
+}
+
+void Field::updateBombMap(void)
+{
+	m_bombs.clear();
+
+	for (size_t i = 0; i < m_h; i++) {
+		std::vector<bool> row;
+		for (size_t j = 0; j < m_w; j++)
+			row.emplace_back(false);
+		m_bombs.emplace_back(std::move(row));
+	}
+	for (auto &r : m_tiles)
+		for (auto &t : r)
+			for (auto &m : t.get().getMobs()) {
+				auto &mob = m.get();
+				try {
+					dynamic_cast<Bomb&>(mob).nuke(true);
+				} catch (const std::bad_cast&) {}
+			}
+}
+
+bool Field::isBombed(const irr::core::vector2di &pos)
+{
+	if (pos.Y >= 0 && pos.Y < (int64_t)m_h && pos.X >= 0 && pos.X < (int64_t)m_w)
+		return m_bombs.at(pos.Y).at(pos.X);
+	else
+		return false;
 }
 
 std::string Field::id_to_str(size_t id)
