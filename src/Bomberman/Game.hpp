@@ -14,9 +14,6 @@ public:
 	Game(void);
 	~Game(void) override;
 
-	void switchToPreGame(void);
-	void switchToMenu(void);
-
 protected:
 	bool isDone(void) const override;
 

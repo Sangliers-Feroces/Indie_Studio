@@ -42,16 +42,4 @@ bool Game::isDone(void) const
 	return m_stop_run;
 }
 
-void Game::switchToPreGame(void)
-{
-	removeGui(m_gui);
-	m_gui = addGui<PreGame>();
-}
-
-void Game::switchToMenu(void)
-{
-	removeGui(m_gui);
-	m_gui = addGui<Menu>();
-}
-
 }

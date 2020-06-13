@@ -29,7 +29,6 @@ public:
 	Event::Generator<> switch_preGame;
 	Event::Generator<> switch_Menu;
 	Event::Generator<> switch_Game;
-
 protected:
 	template <class WorldType, typename ...Args>
 	WorldType& add(Args &&...args)
