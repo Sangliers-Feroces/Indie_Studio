@@ -12,12 +12,13 @@
 
 namespace Bomberman {
 
-Field::Field(const std::vector<PlayerMeta> &players) :
+Field::Field(const std::vector<PlayerMeta> &players, Env env) :
+	m_env(env),
 	m_tiles(genTiles()),
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
 	m_camera(add<Camera>(m_w, m_h)),
-	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000))),
+	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000), *this)),
 	m_players_alive(0)
 {
 	addBarrier();
@@ -64,6 +65,17 @@ void Field::bindPlayer(Player &p)
 	});
 }
 
+void Field::write(std::ostream &o)
+{
+	en::util::write(o, m_env);
+	en::util::write(o, m_w);
+	en::util::write(o, m_h);
+	for (auto &r : m_tiles)
+		for (auto &t : r)
+			t.get().write(o);
+	m_wall.write(o);
+}
+
 std::vector<std::vector<std::reference_wrapper<Tile>>> Field::readTiles(std::istream &i)
 {
 	std::vector<std::vector<std::reference_wrapper<Tile>>> res;
@@ -80,6 +92,7 @@ std::vector<std::vector<std::reference_wrapper<Tile>>> Field::readTiles(std::ist
 }
 
 Field::Field(std::istream &i) :
+	m_env(en::util::read<decltype(m_env)>(i)),
 	m_tiles(readTiles(i)),
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
@@ -109,16 +122,6 @@ Field::~Field(void)
 		} catch (const std::bad_cast&) {}
 	}
 	collectGarbage();
-}
-
-void Field::write(std::ostream &o)
-{
-	en::util::write(o, m_w);
-	en::util::write(o, m_h);
-	for (auto &r : m_tiles)
-		for (auto &t : r)
-			t.get().write(o);
-	m_wall.write(o);
 }
 
 Tile& Field::at(const irr::core::vector2di &pos)
@@ -251,8 +254,8 @@ std::string Field::id_to_str(size_t id)
 std::vector<std::vector<Tile::Type>> Field::genField(void)
 {
 	std::vector<std::vector<Tile::Type>> res;
-	size_t h = 11;
-	size_t w = 21;
+	size_t h = 10;
+	size_t w = 14;
 	int wi = w;
 	int hi = h;
 	std::vector<irr::core::vector2di> air = {
@@ -279,12 +282,15 @@ std::vector<std::vector<Tile::Type>> Field::genField(void)
 			auto p = irr::core::vector2di(j, i);
 			auto type = Tile::Type::Air;
 			bool isAir = false;
+			size_t random_number = world.session.randInt(6);
 			for (auto &a : air)
 				if (a == p)
 					isAir = true;
 			if (!isAir) {
-				if ((j & 1) && (i & 1))
+				if (random_number == 0)
 					type = Tile::Type::Wall;
+				else if (random_number == 1)
+					type = Tile::Type::Air;
 				else
 					type = Tile::Type::Box;
 			}
@@ -293,6 +299,25 @@ std::vector<std::vector<Tile::Type>> Field::genField(void)
 		res.emplace_back(row);
 	}
 	return res;
+}
+
+const std::string& Field::typeToTexture(Tile::Type type)
+{
+	static const std::map<Env, std::map<Tile::Type, std::string>> table = {
+		{Env::Overworld, {
+			{Tile::Type::Box, "res/models/crate.jpg"},
+			{Tile::Type::Wall, "res/models/wall.jpg"},
+			{Tile::Type::Air, "res/models/crate.jpg"},
+			{Tile::Type::Ground, "res/models/grass.jpg"}
+		}}, {Env::Mario, {
+			{Tile::Type::Box, "res/models/mario-box.jpg"},
+			{Tile::Type::Wall, "res/models/mario-wall.jpg"},
+			{Tile::Type::Air, "res/models/crate.jpg"},
+			{Tile::Type::Ground, "res/models/grass.jpg"}
+		}}
+	};
+
+	return table.at(m_env).at(type);
 }
 
 std::vector<std::vector<std::reference_wrapper<Tile>>> Field::genTiles(void)
@@ -304,7 +329,7 @@ std::vector<std::vector<std::reference_wrapper<Tile>>> Field::genTiles(void)
 		auto &field_row = field.at(i);
 		std::vector<std::reference_wrapper<Tile>> row;
 		for (size_t j = 0; j < field_row.size(); j++)
-			row.emplace_back(add<Tile>(field_row.at(j), irr::core::vector2di(j, i)));
+			row.emplace_back(add<Tile>(field_row.at(j), irr::core::vector2di(j, i), *this));
 		res.emplace_back(row);
 	}
 	return res;
@@ -312,11 +337,17 @@ std::vector<std::vector<std::reference_wrapper<Tile>>> Field::genTiles(void)
 
 void Field::addBarrier(void)
 {
-	int64_t radius = 3;
+	int64_t radius = 1;
 	for (int64_t i = -radius; i < ((int64_t)m_h + radius); i++)
 		for (int64_t j = -radius; j < ((int64_t)m_w + radius); j++) {
 			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
-				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
+				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i), *this);
+		}
+	
+	radius = 7;
+	for (int64_t i = -radius; i < ((int64_t)m_h + radius); i++)
+		for (int64_t j = -radius; j < ((int64_t)m_w + radius); j++) {
+			add<Tile>(Tile::Type::Ground, irr::core::vector2di(j, i), *this, -1);
 		}
 }
 

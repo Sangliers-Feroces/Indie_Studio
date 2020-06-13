@@ -9,15 +9,27 @@
 
 namespace Bomberman {
 
-Tile::Tile(Type type, const irr::core::vector2di &pos) :
-	Model("res/models/box.obj", typeToTexture(type)),
+Tile::Tile(Type type, const irr::core::vector2di &pos, Field &field, int32_t height) :
+	Model("res/models/box.obj", field.typeToTexture(type)),
+	m_field(field),
 	m_type(type),
-	m_pos(pos)
+	m_pos(pos),
+	m_height(height)
 {
 	auto npos = pos;
 
-	setPos(irr::core::vector3df(npos.X, 0.0, npos.Y));
+	setPos(irr::core::vector3df(npos.X, m_height, npos.Y));
 	renderType();
+}
+
+void Tile::write(std::ostream &o)
+{
+	en::util::write(o, m_type);
+	en::util::write(o, m_pos);
+	en::util::write(o, m_height);
+	en::util::write(o, m_mobs.size());
+	for (auto &m : m_mobs)
+		m.get().write(o);
 }
 
 template <typename First, typename ...Args>
@@ -31,8 +43,8 @@ void Tile::genReadersImpl(Tile::reader_table &res)
 		genReadersImpl<Args...>(res);
 }
 
-Tile::Tile(std::istream &i, Field &field, Type type) :
-	Tile(type, en::util::read<irr::core::vector2di>(i))
+Tile::Tile(std::istream &i, const irr::core::vector2di &pos, Field &field, Type type) :
+	Tile(type, pos, field, en::util::read<int32_t>(i))
 {
 	static const auto ctors = genReaders<Player, Bomb, Sparks, PowerUp::BombUp, PowerUp::FireUp, PowerUp::PassUp, PowerUp::SpeedUp>();
 
@@ -45,6 +57,11 @@ Tile::Tile(std::istream &i, Field &field, Type type) :
 	}
 }
 
+Tile::Tile(std::istream &i, Field &field, Type type) :
+	Tile(i, en::util::read<irr::core::vector2di>(i), field, type)
+{
+}
+
 Tile::Tile(std::istream &i, Field &field) :
 	Tile(i, field, en::util::read<Type>(i))
 {
@@ -52,15 +69,6 @@ Tile::Tile(std::istream &i, Field &field) :
 
 Tile::~Tile(void)
 {
-}
-
-void Tile::write(std::ostream &o)
-{
-	en::util::write(o, m_type);
-	en::util::write(o, m_pos);
-	en::util::write(o, m_mobs.size());
-	for (auto &m : m_mobs)
-		m.get().write(o);
 }
 
 Tile::Type Tile::getType(void) const
@@ -102,7 +110,7 @@ bool Tile::tryRemoveMob(Mob &mob)
 
 void Tile::renderType(void)
 {
-	setMaterialTexture(0, world.session.driver.getTexture(typeToTexture(m_type).c_str()));
+	setMaterialTexture(0, world.session.driver.getTexture(m_field.typeToTexture(m_type).c_str()));
 	if (m_type == Type::Air)
 		setScale(irr::core::vector3df(0.0));
 	else

@@ -2,6 +2,8 @@
 #include <ctime>
 #include <iostream>
 
+#include <ctime>
+
 namespace Engine {
 
 Session::Session(void) :

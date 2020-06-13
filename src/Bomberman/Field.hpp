@@ -3,8 +3,9 @@
 #include <iostream>
 #include <vector>
 #include "Engine/World.hpp"
-#include "Tile.hpp"
 #include "Camera.hpp"
+#include "Tile.hpp"
+
 
 namespace Bomberman {
 
@@ -18,11 +19,17 @@ public:
 		std::string name;
 	};
 
-	Field(const std::vector<PlayerMeta> &players);
+	enum class Env {
+		Overworld,
+		Mario
+	};
+
+	Field(const std::vector<PlayerMeta> &players, Env env = Env::Overworld);
 	void init(void);
 	void bindPlayer(Player &p);
 	std::vector<std::vector<std::reference_wrapper<Tile>>> readTiles(std::istream &i);
 	Field(std::istream &i);
+
 	~Field(void);
 
 	en::Event::Generator<> game_done;
@@ -35,8 +42,12 @@ public:
 	template <class MobType, typename ...Args>
 	MobType& addMob(Args &&...args);
 
+
+
 	size_t getWidth(void) const;
 	size_t getHeight(void) const;
+	const std::string& typeToTexture(Tile::Type type);
+
 
 	void updateBombMap(void);
 	bool isBombed(const irr::core::vector2di &pos);
@@ -47,6 +58,7 @@ public:
 	void write(std::ostream&);
 
 private:
+	Env m_env;
 	std::vector<std::vector<std::reference_wrapper<Tile>>> m_tiles;
 	std::vector<std::vector<bool>> m_bombs;
 	size_t m_w;
@@ -57,7 +69,8 @@ private:
 	std::vector<std::reference_wrapper<Player>> m_players;
 
 	static std::string id_to_str(size_t id);
-	static std::vector<std::vector<Tile::Type>> genField(void);
+
+	std::vector<std::vector<Tile::Type>> genField(void);
 	std::vector<std::vector<std::reference_wrapper<Tile>>> genTiles(void);
 	void addBarrier(void);
 };
@@ -76,3 +89,4 @@ MobType& Bomberman::Field::addMob(Args &&...args)
 	s.pop();
 	return res;
 }
+

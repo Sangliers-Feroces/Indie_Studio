@@ -15,10 +15,12 @@ public:
 	enum class Type {
 		Wall,
 		Air,
-		Box
+		Box,
+		Ground
 	};
 
-	Tile(Type type, const irr::core::vector2di &pos);
+	Tile(Type type, const irr::core::vector2di &pos, Field &field, int32_t height = 0);
+	Tile(std::istream &i, const irr::core::vector2di &pos, Field &field, Type type);
 	Tile(std::istream &i, Field &field, Type type);
 	Tile(std::istream&, Field&);
 	~Tile(void);
@@ -30,20 +32,11 @@ public:
 	const std::vector<std::reference_wrapper<Mob>>& getMobs(void);
 
 private:
+	Field &m_field;
 	Type m_type;
 	irr::core::vector2di m_pos;
+	int32_t m_height;
 	std::vector<std::reference_wrapper<Mob>> m_mobs;	// mobs on that tile
-
-	static const std::string& typeToTexture(Type type)
-	{
-		static const std::map<Type, std::string> table = {
-			{Type::Box, "res/models/crate.jpg"},
-			{Type::Wall, "res/models/wall.jpg"},
-			{Type::Air, "res/models/crate.jpg"}
-		};
-
-		return table.at(type);
-	}
 
 	void renderType(void);
 	friend Mob;
