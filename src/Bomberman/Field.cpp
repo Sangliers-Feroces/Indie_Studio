@@ -25,22 +25,17 @@ Field::Field(const std::vector<PlayerMeta> &players) :
 	size_t player_id = 0;
 	for (auto &m : players) {
 		auto &p = addMob<Player>(m.is_bot, m.name.size() == 0 ? id_to_str(id) : m.name, id, player_id);
-		m_players.emplace_back(p);
-		bind(p.died, [&](){
-			m_players_alive--;
-			if (m_players_alive == 1) {
-				for (auto &p : m_players)
-					if (!p.get().isDead()) {
-						std::cout << "PLAYER " << p.get().getName() << " WON!!" << std::endl;
-						game_done.emit();
-					}
-			}
-		});
+		bindPlayer(p);
 		m_players_alive++;
 		if (!m.is_bot)
 			player_id++;
 		id++;
 	}
+	init();
+}
+
+void Field::init(void)
+{
 	bind(world.session.events.key.pressed, [&](auto key){
 		if (key == irr::KEY_ESCAPE)
 			session.switch_Pause = true;
@@ -54,6 +49,21 @@ Field::Field(const std::vector<PlayerMeta> &players) :
 	});
 }
 
+void Field::bindPlayer(Player &p)
+{
+	m_players.emplace_back(p);
+	bind(p.died, [&](){
+		m_players_alive--;
+		if (m_players_alive == 1) {
+			for (auto &p : m_players)
+				if (!p.get().isDead()) {
+					std::cout << "PLAYER " << p.get().getName() << " WON!!" << std::endl;
+					game_done.emit();
+				}
+		}
+	});
+}
+
 std::vector<std::vector<std::reference_wrapper<Tile>>> Field::readTiles(std::istream &i)
 {
 	std::vector<std::vector<std::reference_wrapper<Tile>>> res;
@@ -63,7 +73,7 @@ std::vector<std::vector<std::reference_wrapper<Tile>>> Field::readTiles(std::ist
 	for (size_t it = 0; it < h; it++) {
 		std::vector<std::reference_wrapper<Tile>> row;
 		for (size_t j = 0; j < w; j++)
-			row.emplace_back(add<Tile>(i));
+			row.emplace_back(add<Tile>(i, *this));
 		res.emplace_back(std::move(row));
 	}
 	return res;
@@ -74,10 +84,20 @@ Field::Field(std::istream &i) :
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
 	m_camera(add<Camera>(m_w, m_h)),
-	m_wall(add<Tile>(i)),
+	m_wall(add<Tile>(i, *this)),
 	m_players_alive(0)
 {
 	addBarrier();
+	for (auto &r : m_tiles)
+		for (auto &t : r)
+			for (auto &m : t.get().getMobs()) {
+				auto &mob = m.get();
+				try {
+					auto &player = dynamic_cast<Player&>(mob);
+					bindPlayer(player);
+				} catch (const std::bad_cast&) {}
+			}
+	init();
 }
 
 Field::~Field(void)

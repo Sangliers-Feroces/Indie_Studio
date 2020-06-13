@@ -11,7 +11,11 @@ Mob::Mob(const std::string &model_path, const std::string &texture_path) :
 	m_move_ratio(1.0)
 {
 	field.at(getPos()).addMob(*this);
+	init();
+}
 
+void Mob::init(void)
+{
 	bind(world.events.update, [this](auto delta){
 		if (m_move_ratio == 1.0) {
 			//onIntersection(getOptions());
@@ -28,17 +32,30 @@ Mob::Mob(const std::string &model_path, const std::string &texture_path) :
 	});
 }
 
-Mob::~Mob(void)
-{
-	field.at(getPos()).removeMob(*this);
-}
-
 void Mob::write(std::ostream &o)
 {
+	Model::write(o);
 	en::util::write(o, m_pos);
 	en::util::write(o, m_dir);
 	en::util::write(o, m_speed);
 	en::util::write(o, m_move_ratio);
+}
+
+Mob::Mob(std::istream &i) :
+	Model(i),
+	field(getStack().top()),
+	m_pos(en::util::read<decltype(m_pos)>(i)),
+	m_dir(en::util::read<decltype(m_dir)>(i)),
+	m_speed(en::util::read<decltype(m_speed)>(i)),
+	m_move_ratio(en::util::read<decltype(m_move_ratio)>(i))
+{
+	init();
+	updatePos();
+}
+
+Mob::~Mob(void)
+{
+	field.at(getPos()).removeMob(*this);
 }
 
 bool Mob::move(const irr::core::vector2di &dir, double speed)

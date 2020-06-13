@@ -1,5 +1,7 @@
 #include <algorithm>
 #include "Tile.hpp"
+#include "Bomb.hpp"
+#include "Sparks.hpp"
 
 namespace Bomberman {
 
@@ -14,13 +16,32 @@ Tile::Tile(Type type, const irr::core::vector2di &pos) :
 	renderType();
 }
 
-Tile::Tile(std::istream &i, Type type) :
+Tile::Tile(std::istream &i, Field &field, Type type) :
 	Tile(type, en::util::read<irr::core::vector2di>(i))
 {
+	static const std::map<en::util::type_id_t, std::function<Mob& (std::istream&, Field&)>> ctors = {
+		{en::util::type_id<Player>(), [](std::istream &i, Field &f) -> auto& {
+			return f.addMob<Player>(i);
+		}},
+		{en::util::type_id<Bomb>(), [](std::istream &i, Field &f) -> auto& {
+			return f.addMob<Bomb>(i);
+		}},
+		{en::util::type_id<Sparks>(), [](std::istream &i, Field &f) -> auto& {
+			return f.addMob<Sparks>(i);
+		}}
+	};
+
+	auto size = en::util::read<size_t>(i);
+
+	for (size_t it = 0; it < size; it++) {
+		auto id = en::util::read<en::util::type_id_t>(i);
+
+		m_mobs.emplace_back(ctors.at(id)(i, field));
+	}
 }
 
-Tile::Tile(std::istream &i) :
-	Tile(i, en::util::read<Type>(i))
+Tile::Tile(std::istream &i, Field &field) :
+	Tile(i, field, en::util::read<Type>(i))
 {
 }
 
@@ -32,6 +53,7 @@ void Tile::write(std::ostream &o)
 {
 	en::util::write(o, m_type);
 	en::util::write(o, m_pos);
+	en::util::write(o, m_mobs.size());
 	for (auto &m : m_mobs)
 		m.get().write(o);
 }

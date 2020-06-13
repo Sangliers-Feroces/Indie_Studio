@@ -10,6 +10,11 @@ Bomb::Bomb(const irr::core::vector2di &pos, size_t radius) :
 	m_defuzed(false)
 {
 	setPos(pos);
+	init();
+}
+
+void Bomb::init(void)
+{
 	setScale(irr::core::vector3df(0.3));
 	bind(world.events.update, [this](auto delta){
 		m_time_bef_expl -= delta;
@@ -20,17 +25,27 @@ Bomb::Bomb(const irr::core::vector2di &pos, size_t radius) :
 	});
 }
 
-Bomb::~Bomb(void)
-{
-}
-
 void Bomb::write(std::ostream &o)
 {
 	en::util::write(o, en::util::type_id<decltype(*this)>());
+
 	Mob::write(o);
 	en::util::write(o, m_time_bef_expl);
 	en::util::write(o, m_radius);
 	en::util::write(o, m_defuzed);
+}
+
+Bomb::Bomb(std::istream &i) :
+	Mob(i),
+	m_time_bef_expl(en::util::read<decltype(m_time_bef_expl)>(i)),
+	m_radius(en::util::read<decltype(m_radius)>(i)),
+	m_defuzed(en::util::read<decltype(m_defuzed)>(i))
+{
+	init();
+}
+
+Bomb::~Bomb(void)
+{
 }
 
 void Bomb::nuke(bool is_simulation)

@@ -19,6 +19,8 @@ public:
 	};
 
 	Field(const std::vector<PlayerMeta> &players);
+	void init(void);
+	void bindPlayer(Player &p);
 	std::vector<std::vector<std::reference_wrapper<Tile>>> readTiles(std::istream &i);
 	Field(std::istream &i);
 	~Field(void);

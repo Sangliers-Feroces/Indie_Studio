@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ostream>
+#include <iostream>
 #include "Model.hpp"
 
 namespace Bomberman {
@@ -11,7 +11,9 @@ class Mob : public Model
 {
 public:
 	Mob(const std::string &model_path, const std::string &texture_path);
+	void init(void);
 	virtual void write(std::ostream &o);
+	Mob(std::istream &i);
 	virtual ~Mob(void) = 0;
 
 protected:

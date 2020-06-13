@@ -7,6 +7,12 @@ Sparks::Sparks(const irr::core::vector2di &pos) :
 	m_time_bef_death(life)
 {
 	setPos(pos);
+
+	init();
+}
+
+void Sparks::init(void)
+{
 	setScale(irr::core::vector3df(0.5));
 	bind(world.events.update, [this](auto delta){
 		m_time_bef_death -= delta;
@@ -25,6 +31,13 @@ Sparks::Sparks(const irr::core::vector2di &pos) :
 	});
 }
 
+Sparks::Sparks(std::istream &i) :
+	Mob(i),
+	m_time_bef_death(en::util::read<decltype(m_time_bef_death)>(i))
+{
+	init();
+}
+
 Sparks::~Sparks(void)
 {
 }
@@ -32,6 +45,7 @@ Sparks::~Sparks(void)
 void Sparks::write(std::ostream &o)
 {
 	en::util::write(o, en::util::type_id<decltype(*this)>());
+
 	Mob::write(o);
 	en::util::write(o, m_time_bef_death);
 }

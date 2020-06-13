@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <queue>
 #include "Mob.hpp"
 
@@ -13,7 +14,9 @@ class Player : public Mob
 {
 public:
 	Player(bool is_bot, const std::string &name, size_t id, size_t player_id);
+	void init(void);
 	void write(std::ostream &o) override;
+	Player(std::istream &i);
 	~Player(void);
 
 	void hitByBomb(void);

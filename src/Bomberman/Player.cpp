@@ -25,6 +25,12 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 	};
 
 	setPos(irr::core::vector2di(spawns.at(id)));
+
+	init();
+}
+
+void Player::init(void)
+{
 	setScale(irr::core::vector3df(0.5));
 
 	static const std::map<Controller::Key, irr::core::vector2di> directions = {
@@ -63,22 +69,36 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 	});
 }
 
-Player::~Player(void)
-{
-}
-
 void Player::write(std::ostream &o)
 {
 	en::util::write(o, en::util::type_id<decltype(*this)>());
+
 	Mob::write(o);
 	en::util::write(o, m_stats);
 	en::util::write(o, m_bombs);
 	en::util::write(o, m_time_before_bomb);
 	en::util::write(o, m_dead);
-	en::util::write(o, m_name.size());
-	o.write(m_name.data(), m_name.size());
+	en::util::write_string(o, m_name),
 	en::util::write(o, m_is_bot);
 	en::util::write(o, m_player_id);
+}
+
+Player::Player(std::istream &i) :
+	Mob(i),
+	m_stats(en::util::read<decltype(m_stats)>(i)),
+	m_bombs(en::util::read<decltype(m_bombs)>(i)),
+	m_time_before_bomb(en::util::read<decltype(m_time_before_bomb)>(i)),
+	m_dead(en::util::read<decltype(m_dead)>(i)),
+	m_name(en::util::read_string(i)),
+	m_is_bot(en::util::read<decltype(m_is_bot)>(i)),
+	m_player_id(en::util::read<decltype(m_player_id)>(i)),
+	m_controller(genController(m_is_bot, m_player_id))
+{
+	init();
+}
+
+Player::~Player(void)
+{
 }
 
 void Player::hitByBomb(void)

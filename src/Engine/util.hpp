@@ -297,45 +297,30 @@ T read(Istream &&i)
 	return res;
 }
 
-class type_id_t
+inline std::string read_string(std::istream &i)
 {
-	using t = type_id_t();
+	auto size = read<size_t>(i);
 
-	t* id;
-	type_id_t(t* id) :
-		id {id}
-	{
+	std::string res;
+	for (size_t it = 0; it < size; it++) {
+		auto cur = read<char>(i);
+		res.push_back(cur);
 	}
+	return res;
+}
 
-public:
-	bool operator<(const type_id_t &other) const
-	{
-		return id < other.id;
-	}
+inline void write_string(std::ostream &o, const std::string &str)
+{
+	write(o, str.size());
+	o.write(str.data(), str.size());
+}
 
-	bool operator<=(const type_id_t &other) const
-	{
-		return id <= other.id;
-	}
-
-	bool operator==(const type_id_t &other) const
-	{
-		return id == other.id;
-	}
-
-	bool operator!=(const type_id_t &other) const
-	{
-		return id != other.id;
-	}
-
-	template<typename T>
-	friend type_id_t type_id();
-};
+using type_id_t = size_t;
 
 template<typename T>
 type_id_t type_id(void)
 {
-	return &type_id<T>;
+	return typeid(T).hash_code();
 }
 
 }

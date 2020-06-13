@@ -7,6 +7,7 @@
 namespace Bomberman {
 
 class Mob;
+class Field;
 
 class Tile : public Model
 {
@@ -18,8 +19,8 @@ public:
 	};
 
 	Tile(Type type, const irr::core::vector2di &pos);
-	Tile(std::istream &i, Type type);
-	Tile(std::istream&);
+	Tile(std::istream &i, Field &field, Type type);
+	Tile(std::istream&, Field&);
 	~Tile(void);
 
 	void write(std::ostream&);
@@ -54,3 +55,4 @@ private:
 }
 
 #include "Mob.hpp"
+#include "Field.hpp"
