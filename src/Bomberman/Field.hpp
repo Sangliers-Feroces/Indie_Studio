@@ -12,7 +12,12 @@ class Player;
 class Field : public en::World
 {
 public:
-	Field(void);
+	struct PlayerMeta {
+		bool is_bot;
+		std::string name;
+	};
+
+	Field(const std::vector<PlayerMeta> &players);
 	~Field(void);
 
 	en::Event::Generator<> game_done;
@@ -37,6 +42,7 @@ private:
 	size_t m_players_alive;
 	std::vector<std::reference_wrapper<Player>> m_players;
 
+	static std::string id_to_str(size_t id);
 	static std::vector<std::vector<Tile::Type>> genField(void);
 	std::vector<std::vector<std::reference_wrapper<Tile>>> genTiles(void);
 };

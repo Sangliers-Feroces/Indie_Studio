@@ -5,10 +5,11 @@
 #include "PowerUp/BombUp.hpp"
 
 #include <iostream>
+#include <sstream>
 
 namespace Bomberman {
 
-Field::Field(void) :
+Field::Field(const std::vector<PlayerMeta> &players) :
 	m_tiles(genTiles()),
 	m_w(m_tiles.at(0).size()),
 	m_h(m_tiles.size()),
@@ -22,20 +23,26 @@ Field::Field(void) :
 			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
 				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
 		}
-	for (size_t i = 0; i < 4; i++) {
-		auto &p = addMob<Player>(i);
+
+	size_t id = 0;
+	size_t player_id = 0;
+	for (auto &m : players) {
+		auto &p = addMob<Player>(m.is_bot, m.name.size() == 0 ? id_to_str(id) : m.name, id);
 		m_players.emplace_back(p);
 		bind(p.died, [&](){
 			m_players_alive--;
 			if (m_players_alive == 1) {
 				for (auto &p : m_players)
 					if (!p.get().isDead()) {
-						std::cout << "PLAYER " << p.get().getId() + 1 << " WON!!" << std::endl;
+						std::cout << "PLAYER " << p.get().getName() << " WON!!" << std::endl;
 						game_done.emit();
 					}
 			}
 		});
 		m_players_alive++;
+		if (!m.is_bot)
+			player_id++;
+		id++;
 	}
 }
 
@@ -115,6 +122,14 @@ size_t Field::getWidth(void) const
 size_t Field::getHeight(void) const
 {
 	return m_h;
+}
+
+std::string Field::id_to_str(size_t id)
+{
+	std::stringstream ss;
+
+	ss << (id + 1);
+	return ss.str();
 }
 
 std::vector<std::vector<Tile::Type>> Field::genField(void)

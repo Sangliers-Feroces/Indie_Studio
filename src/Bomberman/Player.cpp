@@ -6,13 +6,13 @@
 
 namespace Bomberman {
 
-Player::Player(size_t id) :
+Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id) :
 	Mob("res/models/box.obj", "res/models/Steve.png"),
 	m_bombs(1),
 	m_time_before_bomb(reload_rate),
 	m_dead(false),
-	m_id(id),
-	m_controller(genController(id))
+	m_name(name),
+	m_controller(genController(is_bot, player_id))
 {
 	int w_max = field.getWidth() - 1;
 	int h_max = field.getHeight() - 1;
@@ -77,9 +77,9 @@ bool Player::isDead(void) const
 	return m_dead;
 }
 
-size_t Player::getId(void) const
+const std::string& Player::getName(void) const
 {
-	return m_id;
+	return m_name;
 }
 
 bool Player::canMoveTo(const irr::core::vector2di &pos) const
@@ -109,14 +109,19 @@ Player::Stats& Player::getStats(void)
 
 double Player::reload_rate = 3.0;
 
-std::unique_ptr<Player::Controller> Player::genController(size_t id)
+std::unique_ptr<Player::Controller> Player::genController(bool is_bot, size_t player_id)
 {
-	if (id == 0)
-		return std::make_unique<LocalController>(world.session, LocalController::Layout::Zqsd);
-	else if (id == 1)
-		return std::make_unique<LocalController>(world.session, LocalController::Layout::Arrows);
-	else
+	static const std::map<size_t, LocalController::Layout> = {
+		{0, LocalController::Layout::Zqsd},
+		{1, LocalController::Layout::Arrows},
+		{2, LocalController::Layout::Oklm},
+		{3, LocalController::Layout::Numpad},
+	};
+
+	if (is_bot)
 		return std::make_unique<BotController>(field, *this);
+	else
+		return std::make_unique<LocalController>(world.session, LocalController::Layout::Arrows);
 }
 
 void Player::Controller::scan(void)

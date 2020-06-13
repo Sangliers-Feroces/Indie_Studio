@@ -11,13 +11,13 @@ class Base;
 class Player : public Mob
 {
 public:
-	Player(size_t id);
+	Player(bool is_bot, const std::string &name, size_t id, size_t player_id);
 	~Player(void);
 
 	void hitByBomb(void);
 	en::Event::Generator<> died;
 	bool isDead(void) const;
-	size_t getId(void) const;
+	const std::string& getName(void) const;
 
 	struct Stats
 	{
@@ -40,7 +40,7 @@ private:
 	size_t m_bombs;
 	double m_time_before_bomb;
 	bool m_dead;
-	size_t m_id;
+	const std::string m_name;
 
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
 	void onMove(const irr::core::vector2di &newpos) override;
@@ -80,14 +80,16 @@ private:
 	};
 
 	std::unique_ptr<Controller> m_controller;
-	std::unique_ptr<Controller> genController(size_t id);
+	std::unique_ptr<Controller> genController(bool is_bot, size_t player_id);
 
 	class LocalController : public Controller
 	{
 	public:
 		enum class Layout {
 			Zqsd,
-			Arrows
+			Arrows,
+			Oklm,
+			Numpad,
 		};
 
 		LocalController(en::Session &session, Layout layout);
