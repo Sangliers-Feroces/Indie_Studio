@@ -89,7 +89,7 @@ private:
 			Zqsd,
 			Arrows,
 			Oklm,
-			Numpad,
+			Yghj,
 		};
 
 		LocalController(en::Session &session, Layout layout);

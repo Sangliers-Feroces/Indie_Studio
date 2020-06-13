@@ -111,17 +111,17 @@ double Player::reload_rate = 3.0;
 
 std::unique_ptr<Player::Controller> Player::genController(bool is_bot, size_t player_id)
 {
-	static const std::map<size_t, LocalController::Layout> = {
+	static const std::map<size_t, LocalController::Layout> layouts = {
 		{0, LocalController::Layout::Zqsd},
 		{1, LocalController::Layout::Arrows},
 		{2, LocalController::Layout::Oklm},
-		{3, LocalController::Layout::Numpad},
+		{3, LocalController::Layout::Yghj},
 	};
 
 	if (is_bot)
 		return std::make_unique<BotController>(field, *this);
 	else
-		return std::make_unique<LocalController>(world.session, LocalController::Layout::Arrows);
+		return std::make_unique<LocalController>(world.session, layouts.at(player_id));
 }
 
 void Player::Controller::scan(void)
@@ -183,7 +183,7 @@ const std::map<Player::Controller::Key, irr::EKEY_CODE>& Player::LocalController
 			{Key::Right, irr::KEY_KEY_D},
 			{Key::Up, irr::KEY_KEY_Z},
 			{Key::Down, irr::KEY_KEY_S},
-			{Key::Fire, irr::KEY_SPACE}
+			{Key::Fire, irr::KEY_KEY_E}
 		}},
 		{Layout::Arrows, {
 			{Key::Left, irr::KEY_LEFT},
@@ -191,6 +191,20 @@ const std::map<Player::Controller::Key, irr::EKEY_CODE>& Player::LocalController
 			{Key::Up, irr::KEY_UP},
 			{Key::Down, irr::KEY_DOWN},
 			{Key::Fire, irr::KEY_RCONTROL}
+		}},
+		{Layout::Oklm, {
+			{Key::Left, irr::KEY_KEY_K},
+			{Key::Right, irr::KEY_KEY_M},
+			{Key::Up, irr::KEY_KEY_O},
+			{Key::Down, irr::KEY_KEY_L},
+			{Key::Fire, irr::KEY_KEY_P}
+		}},
+		{Layout::Yghj, {
+			{Key::Left, irr::KEY_KEY_G},
+			{Key::Right, irr::KEY_KEY_J},
+			{Key::Up, irr::KEY_KEY_Y},
+			{Key::Down, irr::KEY_KEY_H},
+			{Key::Fire, irr::KEY_KEY_U}
 		}}
 	};
 

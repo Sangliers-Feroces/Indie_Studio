@@ -27,7 +27,7 @@ Field::Field(const std::vector<PlayerMeta> &players) :
 	size_t id = 0;
 	size_t player_id = 0;
 	for (auto &m : players) {
-		auto &p = addMob<Player>(m.is_bot, m.name.size() == 0 ? id_to_str(id) : m.name, id);
+		auto &p = addMob<Player>(m.is_bot, m.name.size() == 0 ? id_to_str(id) : m.name, id, player_id);
 		m_players.emplace_back(p);
 		bind(p.died, [&](){
 			m_players_alive--;
