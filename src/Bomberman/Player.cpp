@@ -132,7 +132,7 @@ void Player::botUpdate(void)
 	field.updateBombMap();
 	if (field.isBombed(getPos()))
 		botEscape(getPos());
-	else if (shouldPutBomb())
+	else if (false)
 		m_next_bot_moves.emplace(Controller::Key::Fire);
 	else {
 		m_next_bot_moves.emplace(Controller::getKeys().at(world.session.randInt(4)));
@@ -168,7 +168,12 @@ bool Player::botEscape(const irr::core::vector2di &pos)
 
 bool Player::shouldPutBomb(void)
 {
-	return false;
+	auto &b = field.addMob<Bomb>(getPos(), m_stats.bomb_radius);
+
+	field.updateBombMap();
+	auto res = botEscape(getPos());
+	b.defuze();
+	return res;
 }
 
 Player::Stats& Player::getStats(void)

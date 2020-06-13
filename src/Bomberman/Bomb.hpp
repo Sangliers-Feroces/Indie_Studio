@@ -11,10 +11,12 @@ public:
 	~Bomb(void);
 
 	void nuke(bool is_simulation = false);
+	void defuze(void);
 
 private:
 	double m_time_bef_expl;
 	size_t m_radius;
+	bool m_defuzed;
 
 	static double explosion_delay;
 
