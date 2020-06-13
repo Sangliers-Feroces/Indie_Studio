@@ -15,6 +15,8 @@ public:
 	struct PlayerMeta {
 		bool is_bot;
 		std::string name;
+
+		int difficulty;
 	};
 
 	Field(const std::vector<PlayerMeta> &players);

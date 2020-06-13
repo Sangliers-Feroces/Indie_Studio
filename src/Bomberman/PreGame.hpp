@@ -27,6 +27,7 @@ private:
 	CheckBox &m_p3;
 	CheckBox &m_p4;
 	ComboBox &m_maps;
+	ComboBox &m_difficulty;
 };
 
 }
