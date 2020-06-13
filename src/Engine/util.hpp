@@ -297,5 +297,46 @@ T read(Istream &&i)
 	return res;
 }
 
+class type_id_t
+{
+	using t = type_id_t();
+
+	t* id;
+	type_id_t(t* id) :
+		id {id}
+	{
+	}
+
+public:
+	bool operator<(const type_id_t &other) const
+	{
+		return id < other.id;
+	}
+
+	bool operator<=(const type_id_t &other) const
+	{
+		return id <= other.id;
+	}
+
+	bool operator==(const type_id_t &other) const
+	{
+		return id == other.id;
+	}
+
+	bool operator!=(const type_id_t &other) const
+	{
+		return id != other.id;
+	}
+
+	template<typename T>
+	friend type_id_t type_id();
+};
+
+template<typename T>
+type_id_t type_id(void)
+{
+	return &type_id<T>;
+}
+
 }
 }
