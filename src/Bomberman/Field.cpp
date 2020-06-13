@@ -6,6 +6,7 @@
 #include "Bomb.hpp"
 #include "Sparks.hpp"
 
+#include <fstream>
 #include <iostream>
 #include <sstream>
 
@@ -19,13 +20,7 @@ Field::Field(const std::vector<PlayerMeta> &players) :
 	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000))),
 	m_players_alive(0)
 {
-	int64_t radius = 3;
-	for (int64_t i = -radius; i < ((int64_t)m_h + radius); i++)
-		for (int64_t j = -radius; j < ((int64_t)m_w + radius); j++) {
-			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
-				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
-		}
-
+	addBarrier();
 	size_t id = 0;
 	size_t player_id = 0;
 	for (auto &m : players) {
@@ -49,7 +44,40 @@ Field::Field(const std::vector<PlayerMeta> &players) :
 	bind(world.session.events.key.pressed, [&](auto key){
 		if (key == irr::KEY_ESCAPE)
 			session.switch_Pause = true;
+		else if (key == irr::KEY_RETURN) {
+			std::ofstream save("save.BOMBS", std::ios::trunc | std::ios::binary);
+
+			write(save);
+		} else if (key == irr::KEY_RSHIFT) {
+			session.load_game = true;
+		}
 	});
+}
+
+std::vector<std::vector<std::reference_wrapper<Tile>>> Field::readTiles(std::istream &i)
+{
+	std::vector<std::vector<std::reference_wrapper<Tile>>> res;
+	auto w = en::util::read<size_t>(i);
+	auto h = en::util::read<size_t>(i);
+
+	for (size_t it = 0; it < h; it++) {
+		std::vector<std::reference_wrapper<Tile>> row;
+		for (size_t j = 0; j < w; j++)
+			row.emplace_back(add<Tile>(i));
+		res.emplace_back(std::move(row));
+	}
+	return res;
+}
+
+Field::Field(std::istream &i) :
+	m_tiles(readTiles(i)),
+	m_w(m_tiles.at(0).size()),
+	m_h(m_tiles.size()),
+	m_camera(add<Camera>(m_w, m_h)),
+	m_wall(add<Tile>(i)),
+	m_players_alive(0)
+{
+	addBarrier();
 }
 
 Field::~Field(void)
@@ -61,6 +89,16 @@ Field::~Field(void)
 		} catch (const std::bad_cast&) {}
 	}
 	collectGarbage();
+}
+
+void Field::write(std::ostream &o)
+{
+	en::util::write(o, m_w);
+	en::util::write(o, m_h);
+	for (auto &r : m_tiles)
+		for (auto &t : r)
+			t.get().write(o);
+	m_wall.write(o);
 }
 
 Tile& Field::at(const irr::core::vector2di &pos)
@@ -250,6 +288,16 @@ std::vector<std::vector<std::reference_wrapper<Tile>>> Field::genTiles(void)
 		res.emplace_back(row);
 	}
 	return res;
+}
+
+void Field::addBarrier(void)
+{
+	int64_t radius = 3;
+	for (int64_t i = -radius; i < ((int64_t)m_h + radius); i++)
+		for (int64_t j = -radius; j < ((int64_t)m_w + radius); j++) {
+			if (!((i >= 0 && i < (int64_t)m_h) && (j >= 0 && j < (int64_t)m_w)))
+				add<Tile>(Tile::Type::Wall, irr::core::vector2di(j, i));
+		}
 }
 
 }

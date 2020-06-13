@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include "ui/uiSwitch.hpp"
+#include <fstream>
 #include <iostream>
 
 namespace Bomberman {
@@ -54,6 +55,17 @@ Game::Game(void) :
 			removeGui(m_gui);
 			m_gui = addGui<Options>();
 			switch_Options = false;
+		}
+
+		if (load_game) {
+			std::ifstream save("save.BOMBS", std::ios::binary);
+
+			if (save.good()) {
+				if (m_world)
+					removeWorld(*m_world);
+				m_world = &add<Field>(save);
+			}
+			load_game = false;
 		}
 	});
 	run();

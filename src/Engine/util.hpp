@@ -282,5 +282,20 @@ private:
 	std::map<Key, Value> m_cache;
 };
 
+template <typename T, typename Ostream>
+void write(Ostream &&o, T &&t)
+{
+	o.write(reinterpret_cast<char*>(&t), sizeof(T));
+}
+
+template <typename T, typename Istream>
+T read(Istream &&i)
+{
+	T res;
+
+	i.read(reinterpret_cast<char*>(&res), sizeof(T));
+	return res;
+}
+
 }
 }

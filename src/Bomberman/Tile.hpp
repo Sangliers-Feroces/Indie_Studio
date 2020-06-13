@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <iostream>
 #include "Model.hpp"
 
 namespace Bomberman {
@@ -17,7 +18,11 @@ public:
 	};
 
 	Tile(Type type, const irr::core::vector2di &pos);
+	Tile(std::istream &i, Type type);
+	Tile(std::istream&);
 	~Tile(void);
+
+	void write(std::ostream&);
 
 	Type getType(void) const;
 	void setType(Type type);
@@ -25,6 +30,7 @@ public:
 
 private:
 	Type m_type;
+	irr::core::vector2di m_pos;
 	std::vector<std::reference_wrapper<Mob>> m_mobs;	// mobs on that tile
 
 	static const std::string& typeToTexture(Type type)

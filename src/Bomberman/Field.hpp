@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include "Engine/World.hpp"
 #include "Tile.hpp"
@@ -18,6 +19,8 @@ public:
 	};
 
 	Field(const std::vector<PlayerMeta> &players);
+	std::vector<std::vector<std::reference_wrapper<Tile>>> readTiles(std::istream &i);
+	Field(std::istream &i);
 	~Field(void);
 
 	en::Event::Generator<> game_done;
@@ -39,6 +42,8 @@ public:
 
 	std::vector<std::reference_wrapper<Player>> getPlayers(void);
 
+	void write(std::ostream&);
+
 private:
 	std::vector<std::vector<std::reference_wrapper<Tile>>> m_tiles;
 	std::vector<std::vector<bool>> m_bombs;
@@ -52,6 +57,7 @@ private:
 	static std::string id_to_str(size_t id);
 	static std::vector<std::vector<Tile::Type>> genField(void);
 	std::vector<std::vector<std::reference_wrapper<Tile>>> genTiles(void);
+	void addBarrier(void);
 };
 
 }

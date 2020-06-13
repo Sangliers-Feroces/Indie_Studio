@@ -5,7 +5,8 @@ namespace Bomberman {
 
 Tile::Tile(Type type, const irr::core::vector2di &pos) :
 	Model("res/models/box.obj", typeToTexture(type)),
-	m_type(type)
+	m_type(type),
+	m_pos(pos)
 {
 	auto npos = pos;
 
@@ -13,8 +14,24 @@ Tile::Tile(Type type, const irr::core::vector2di &pos) :
 	renderType();
 }
 
+Tile::Tile(std::istream &i, Type type) :
+	Tile(type, en::util::read<irr::core::vector2di>(i))
+{
+}
+
+Tile::Tile(std::istream &i) :
+	Tile(i, en::util::read<Type>(i))
+{
+}
+
 Tile::~Tile(void)
 {
+}
+
+void Tile::write(std::ostream &o)
+{
+	en::util::write(o, m_type);
+	en::util::write(o, m_pos);
 }
 
 Tile::Type Tile::getType(void) const
