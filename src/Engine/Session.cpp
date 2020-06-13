@@ -34,6 +34,7 @@ void Session::run(void)
 		}
 		for (auto &gw : m_gui_worlds)
 			gw.events.updateObserver();
+		events.update.updateObserver();
 		driver.beginScene(true, true, irr::video::SColor(255,0,0,0));
 		m_irr_scene.drawAll();
 		m_irr_env.drawAll();

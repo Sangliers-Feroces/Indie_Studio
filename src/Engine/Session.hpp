@@ -26,9 +26,9 @@ public:
 
 	void playSound(const std::string &path, double volume = 1.0);
 
-	Event::Generator<> switch_preGame;
-	Event::Generator<> switch_Menu;
-	Event::Generator<> switch_Game;
+	bool switch_preGame = false;
+	bool switch_Menu = false;
+	bool switch_Game = false;
 protected:
 	template <class WorldType, typename ...Args>
 	WorldType& add(Args &&...args)

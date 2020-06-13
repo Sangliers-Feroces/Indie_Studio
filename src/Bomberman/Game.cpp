@@ -13,22 +13,27 @@ Game::Game(void) :
 		m_stop_run = true;
 	});*/
 
-	bind(switch_preGame, [&]{
-		removeGui(m_gui);
-		m_gui = addGui<PreGame>();
-	});
+	bind(events.update, [&](auto){
+		if (switch_preGame) {
+			removeGui(m_gui);
+			m_gui = addGui<PreGame>();
+			switch_preGame = false;
+		}
 
-	bind(switch_Menu, [&]{
-		removeGui(m_gui);
-		m_gui = addGui<Menu>();
-		if (m_world)
-			removeWorld(*m_world);
-	});
+		if (switch_Menu) {
+			removeGui(m_gui);
+			m_gui = addGui<Menu>();
+			if (m_world)
+				removeWorld(*m_world);
+			switch_Menu = false;
+		}
 
-	bind(switch_Game, [&]{
-		removeGui(m_gui);
-		m_gui = addGui<Gui>();
-		m_world = &add<Field>();
+		if (switch_Game) {
+			removeGui(m_gui);
+			m_gui = addGui<Gui>();
+			m_world = &add<Field>();
+			switch_Game = false;
+		}
 	});
 	run();
 }

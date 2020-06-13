@@ -26,10 +26,10 @@ PreGame::PreGame(void) :
 	m_maps.addItem(L"Map4");
 	bind(session.events.gui.button_pressed, [this](auto gui) {
 		if (m_back == gui.Caller) {
-			session.switch_Menu.emit();
+			session.switch_Menu = true;
 		}
 		if (m_play == gui.Caller)
-			session.switch_Game.emit();
+			session.switch_Game = true;
 	});
 }
 

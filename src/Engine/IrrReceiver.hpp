@@ -8,9 +8,13 @@
 #pragma warning(pop)
 #endif
 
+#include <chrono>
 #include "Event.hpp"
 
 namespace Engine {
+
+class Session;
+
 namespace Event {
 
 class IrrReceiver : public irr::IEventReceiver
@@ -70,6 +74,19 @@ public:
 		friend IrrReceiver;
 		extract_type extract(const src_type&) override;
 	} gui;
+
+	class Update : public Event::CopyDispatcher<double>
+	{
+	public:
+		Update(void);
+		~Update(void);
+
+	private:
+		std::chrono::high_resolution_clock::time_point m_time_before;
+
+		friend Session;
+		void updateObserver(void);
+	} update;
 
 private:
 	bool OnEvent(const irr::SEvent& event) override;

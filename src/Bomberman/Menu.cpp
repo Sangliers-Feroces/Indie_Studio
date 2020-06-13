@@ -16,7 +16,7 @@ Menu::Menu(void) :
 {
 	bind(session.events.gui.button_pressed, [this](auto gui) {
 		if (m_play == gui.Caller)
-			session.switch_preGame.emit();
+			session.switch_preGame = true;
 		else if (m_quit == gui.Caller)
 			session.closeDevice();
 	});

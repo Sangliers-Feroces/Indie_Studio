@@ -93,5 +93,22 @@ IrrReceiver::Gui::GuiEvent::~GuiEvent(void)
 {
 }
 
+IrrReceiver::Update::Update(void) :
+	m_time_before(std::chrono::high_resolution_clock::now())
+{
+}
+
+IrrReceiver::Update::~Update(void)
+{
+}
+
+void IrrReceiver::Update::updateObserver(void)
+{
+	auto now = std::chrono::high_resolution_clock::now();
+	double res = std::chrono::duration<double>(now - m_time_before).count();
+	m_time_before = now;
+	newEvent(res);
+}
+
 }
 }

@@ -16,7 +16,7 @@ Gui::Gui() :
 {
 	bind(session.events.gui.button_pressed, [this](auto gui) {
 		if (m_button == gui.Caller)
-			session.switch_Menu.emit();
+			session.switch_Menu = true;
 	});
 	m_button.isAlphaChannelUsed();
 }
