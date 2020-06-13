@@ -70,6 +70,13 @@ IrrReceiver::Gui::extract_type IrrReceiver::Gui::extract(const IrrReceiver::Gui:
 		switch (src.GUIEvent.EventType) {
 			case irr::gui::EGET_BUTTON_CLICKED:
 				button_pressed.newEvent(src.GUIEvent);
+				break;
+			case irr::gui::EGET_CHECKBOX_CHANGED:
+				checkbox_pressed.newEvent(src.GUIEvent);
+				break;
+			case irr::gui::EGET_LISTBOX_CHANGED:
+				listbox_modified.newEvent(src.GUIEvent);
+				break;
 			default:
 				break;
 		}
@@ -84,6 +91,23 @@ IrrReceiver::Gui::GuiEvent::GuiEvent(void)
 
 IrrReceiver::Gui::GuiEvent::~GuiEvent(void)
 {
+}
+
+IrrReceiver::Update::Update(void) :
+	m_time_before(std::chrono::high_resolution_clock::now())
+{
+}
+
+IrrReceiver::Update::~Update(void)
+{
+}
+
+void IrrReceiver::Update::updateObserver(void)
+{
+	auto now = std::chrono::high_resolution_clock::now();
+	double res = std::chrono::duration<double>(now - m_time_before).count();
+	m_time_before = now;
+	newEvent(res);
 }
 
 }

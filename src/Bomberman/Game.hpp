@@ -2,7 +2,11 @@
 
 #include "Engine/Session.hpp"
 #include "Field.hpp"
+#include "Menu.hpp"
 #include "Gui.hpp"
+#include "Pause.hpp"
+#include "IGOptions.hpp"
+#include "PreGame.hpp"
 
 namespace Bomberman {
 
@@ -16,8 +20,8 @@ protected:
 	bool isDone(void) const override;
 
 private:
-	Field &m_field;
-	Gui &m_gui;
+	std::reference_wrapper<en::EntityGuiWorld> m_gui;
+	en::World *m_world;
 	bool m_stop_run;
 };
 

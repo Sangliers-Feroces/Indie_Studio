@@ -11,3 +11,4 @@ doc/html
 doc/latex
 
 *.vs
+valgrind_res

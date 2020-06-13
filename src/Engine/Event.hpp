@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <optional>
+#include <iostream>
 #include "Bindings.hpp"
 
 namespace Engine {
@@ -68,9 +69,10 @@ protected:
 	{
 		auto got = this->extract(event);
 		
-		if (got)
+		if (got) {
 			for (auto &l : m_listeners)
 				l(convertExtracted(got));
+		}
 	}
 
 private:

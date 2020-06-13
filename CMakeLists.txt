@@ -26,9 +26,19 @@ set(SRCS
 	./src/Engine/EntityGui.cpp
 	./src/Engine/EntityGuiWorld.cpp
 	./src/Engine/ui/GuiButton.cpp
+	./src/Engine/ui/ComboBox.cpp
+	./src/Engine/ui/EditBox.cpp
+	./src/Engine/ui/GuiScrollBar.cpp
+	./src/Engine/ui/GuiCheckBox.cpp
+	./src/Engine/ui/GuiStaticText.cpp
+	./src/Engine/ui/GuiImage.cpp
 
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Gui.cpp
+	./src/Bomberman/Menu.cpp
+	./src/Bomberman/PreGame.cpp
+	./src/Bomberman/Pause.cpp
+	./src/Bomberman/IGOptions.cpp
 	./src/Bomberman/Field.cpp
 	./src/Bomberman/Player.cpp
 	./src/Bomberman/Camera.cpp
@@ -42,7 +52,14 @@ set(SRCS
 	./src/Bomberman/PowerUp/SpeedUp.cpp
 	./src/Bomberman/PowerUp/FireUp.cpp
 	./src/Bomberman/PowerUp/BombUp.cpp
-
+	./src/Bomberman/ui/Button.cpp
+	./src/Bomberman/ui/EditBox.cpp
+	./src/Bomberman/ui/ComboBox.cpp
+	./src/Bomberman/ui/ScrollBar.cpp
+	./src/Bomberman/ui/CheckBox.cpp
+	./src/Bomberman/ui/StaticText.cpp
+	./src/Bomberman/ui/Image.cpp
+	
 	./src/main.cpp
 )
 

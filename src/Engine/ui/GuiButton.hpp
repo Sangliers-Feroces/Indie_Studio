@@ -17,7 +17,6 @@ public:
 	GuiButton(irr::core::rect<irr::s32> pos, const wchar_t *text=0, const wchar_t *tooltiptext=0);
 	~GuiButton(void);
 
-protected:
 	irr::gui::IGUIFont *getActiveFont(void) const;
 	bool isAlphaChannelUsed(void) const;
 	bool isDrawingBorder(void) const;

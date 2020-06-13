@@ -44,6 +44,10 @@ Field::Field(const std::vector<PlayerMeta> &players) :
 			player_id++;
 		id++;
 	}
+	bind(world.session.events.key.pressed, [&](auto key){
+		if (key == irr::KEY_ESCAPE)
+			session.switch_Pause = true;
+	});
 }
 
 Field::~Field(void)
