@@ -12,6 +12,7 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 	m_time_before_bomb(reload_rate),
 	m_dead(false),
 	m_name(name),
+	m_is_bot(is_bot),
 	m_controller(genController(is_bot, player_id))
 {
 	int w_max = field.getWidth() - 1;
@@ -99,6 +100,9 @@ void Player::onMove(const irr::core::vector2di &newpos)
 		try {
 			dynamic_cast<PowerUp::Base&>(mob).collect(*this);
 		} catch (const std::bad_cast&) {}
+	}
+	if (m_is_bot) {
+
 	}
 }
 
@@ -229,11 +233,15 @@ Player::BotController::~BotController(void)
 void Player::BotController::refresh(void)
 {
 	auto &keys = getKeys();
-	size_t sel = rand() % keys.size();
+	std::map<Key, bool> to_press;
 
-	size_t i = 0;
+	while (m_me.m_next_bot_moves.size() > 0) {
+		auto &cur = m_me.m_next_bot_moves.front();
+		to_press[cur] = true;
+		m_me.m_next_bot_moves.pop();
+	}
 	for (auto &k : keys)
-		m_keys[k] = i++ == sel;
+		m_keys[k] = to_press[k];
 }
 
 bool Player::BotController::getState(Key key) const

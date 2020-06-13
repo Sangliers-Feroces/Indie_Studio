@@ -1,5 +1,6 @@
 #pragma once
 
+#include <queue>
 #include "Mob.hpp"
 
 namespace Bomberman {
@@ -41,6 +42,7 @@ private:
 	double m_time_before_bomb;
 	bool m_dead;
 	const std::string m_name;
+	bool m_is_bot;
 
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
 	void onMove(const irr::core::vector2di &newpos) override;
@@ -80,6 +82,7 @@ private:
 	};
 
 	std::unique_ptr<Controller> m_controller;
+	std::queue<Controller::Key> m_next_bot_moves;
 	std::unique_ptr<Controller> genController(bool is_bot, size_t player_id);
 
 	class LocalController : public Controller
