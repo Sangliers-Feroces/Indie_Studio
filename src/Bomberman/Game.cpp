@@ -9,7 +9,7 @@ Game::Game(void) :
 	m_gui(addGui<Menu>()),
 	m_world(nullptr)
 {
-	bind(events.update, [&](auto){
+	bind(events.update, [&](auto) {
 		if (switch_preGame) {
 			removeGui(m_gui);
 			m_gui = addGui<PreGame>(m_players);
@@ -22,6 +22,7 @@ Game::Game(void) :
 			if (m_world)
 				removeWorld(*m_world);
 			m_world = nullptr;
+			m_players.clear();
 			switch_Menu = false;
 		}
 
@@ -65,6 +66,7 @@ Game::Game(void) :
 			}
 			load_game = false;
 		}
+
 		if (isDone()) {
 			removeGui(m_gui);
 			m_gui = addGui<WinScreen>();

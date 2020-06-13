@@ -95,4 +95,9 @@ void GuiButton::setUseAlphaChannel(bool useAlphaChannel)
 	m_irr_elem_der.setUseAlphaChannel(useAlphaChannel);
 }
 
+void GuiButton::setIsDrawBorder(bool draw)
+{
+	m_irr_elem_der.setDrawBorder(draw);
+}
+
 }

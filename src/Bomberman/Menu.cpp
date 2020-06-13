@@ -10,11 +10,24 @@
 namespace Bomberman {
 
 Menu::Menu(void) :
-	m_background(add<Image>(session.driver.getTexture("res/GUI/menu_background.png"), irr::core::position2d<irr::s32>(0, 0))),
-	m_play(add<Button>(irr::core::rect<irr::s32>(200, 500, 700, 600), L"Play")),
-	m_opt(add<Button>(irr::core::rect<irr::s32>(200, 600, 700, 700), L"Options")),
-	m_quit(add<Button>(irr::core::rect<irr::s32>(200, 700, 700, 800), L"Quit"))
+	m_background(add<Image>(session.driver.getTexture("res/GUI/menu_background.jpg"), irr::core::position2d<irr::s32>(0, 0))),
+	m_play(add<Button>(irr::core::rect<irr::s32>(1000, 350, 1500, 500), L"")),
+	m_opt(add<Button>(irr::core::rect<irr::s32>(1000, 500, 1500, 650), L"")),
+	m_quit(add<Button>(irr::core::rect<irr::s32>(1000, 650, 1500, 800), L""))
 {
+	m_play.setImage(session.driver.getTexture("res/GUI/menu_play.png"));
+	m_play.setIsDrawBorder(false);
+	m_play.setUseAlphaChannel(true);
+
+	m_opt.setImage(session.driver.getTexture("res/GUI/menu_options.png"));
+	m_opt.setIsDrawBorder(false);
+	m_opt.setUseAlphaChannel(true);
+
+	m_quit.setImage(session.driver.getTexture("res/GUI/menu_exit.png"));
+	m_quit.setIsDrawBorder(false);
+	m_quit.setUseAlphaChannel(true);
+
+
 	bind(session.events.gui.button_pressed, [this](auto gui) {
 		if (m_play == gui.Caller)
 			session.switch_preGame = true;

@@ -33,5 +33,6 @@ public:
 	void setSprite(irr::gui::EGUI_BUTTON_STATE state, irr::s32 index, irr::video::SColor color, bool loop);
 	void setSpriteBank(irr::gui::IGUISpriteBank *bank);
 	void setUseAlphaChannel(bool useAlphaChannel);
+	void setIsDrawBorder(bool draw);
 };
 }
