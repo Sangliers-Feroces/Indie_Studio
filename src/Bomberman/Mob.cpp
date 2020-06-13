@@ -76,6 +76,11 @@ void Mob::onMove(const irr::core::vector2di&)
 {
 }
 
+bool Mob::isMoving(void)
+{
+	return m_move_ratio < 1.0;
+}
+
 void Mob::updatePos(void)
 {
 	auto pos = irr::core::vector3df(m_pos.X, 0.0, m_pos.Y);

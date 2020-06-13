@@ -57,6 +57,9 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 				}
 			}
 		}
+
+		if (!isMoving())
+			botUpdate();
 	});
 }
 
@@ -101,9 +104,70 @@ void Player::onMove(const irr::core::vector2di &newpos)
 			dynamic_cast<PowerUp::Base&>(mob).collect(*this);
 		} catch (const std::bad_cast&) {}
 	}
-	if (m_is_bot) {
-		field.updateBombMap();
+	botUpdate();
+}
+
+bool Player::isSafeToGo(const irr::core::vector2di &pos)
+{
+	return !field.isBombed(pos) && canMoveTo(pos);
+}
+
+Player::Controller::Key Player::dirToKey(const irr::core::vector2di &dir)
+{
+	static const std::map<irr::core::vector2di, Player::Controller::Key> keys = {
+		{{-1, 0}, Controller::Key::Left},
+		{{1, 0}, Controller::Key::Right},
+		{{0, 1}, Controller::Key::Up},
+		{{0, -1}, Controller::Key::Down},
+	};
+
+	return keys.at(dir);
+}
+
+void Player::botUpdate(void)
+{
+	if (!m_is_bot)
+		return;
+
+	field.updateBombMap();
+	if (field.isBombed(getPos()))
+		botEscape();
+	else if (shouldPutBomb())
+		m_next_bot_moves.emplace(Controller::Key::Fire);
+	else {
+		m_next_bot_moves.emplace(Controller::getKeys().at(world.session.randInt(4)));
 	}
+}
+
+void Player::botEscape(void)
+{
+	static const std::vector<irr::core::vector2di> dir = {
+		{-1, 0},
+		{1, 0},
+		{0, -1},
+		{0, 1},
+	};
+
+	for (auto &d : dir) {
+		auto p = getPos() + d;
+		if (isSafeToGo(p)) {
+			m_next_bot_moves.emplace(dirToKey(d));
+			return;
+		} else if (canMoveTo(p)) {
+			for (auto &dd : dir) {
+				auto pp = p + dd;
+				if (isSafeToGo(pp)) {
+					m_next_bot_moves.emplace(dirToKey(d));
+					return;
+				}
+			}
+		}
+	}
+}
+
+bool Player::shouldPutBomb(void)
+{
+	return false;
 }
 
 Player::Stats& Player::getStats(void)

@@ -35,6 +35,7 @@ public:
 
 	void updateBombMap(void);
 	bool isBombed(const irr::core::vector2di &pos);
+	bool isSafeToGo(const irr::core::vector2di &pos);
 
 private:
 	std::vector<std::vector<std::reference_wrapper<Tile>>> m_tiles;

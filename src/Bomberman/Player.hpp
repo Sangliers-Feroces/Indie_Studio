@@ -46,6 +46,10 @@ private:
 
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
 	void onMove(const irr::core::vector2di &newpos) override;
+	bool isSafeToGo(const irr::core::vector2di &pos);
+	void botEscape(void);
+	void botUpdate(void);
+	bool shouldPutBomb(void);
 
 	static double reload_rate;
 
@@ -66,6 +70,7 @@ private:
 			Down,
 			Fire
 		};
+		static const std::vector<Key>& getKeys(void);
 
 		virtual bool getState(Key key) const = 0;
 		bool isPressed(Key key);
@@ -73,8 +78,6 @@ private:
 
 	protected:
 		virtual void refresh(void) = 0;
-
-		static const std::vector<Key>& getKeys(void);
 
 	private:
 		std::map<Key, bool> m_last_state;
@@ -84,6 +87,7 @@ private:
 	std::unique_ptr<Controller> m_controller;
 	std::queue<Controller::Key> m_next_bot_moves;
 	std::unique_ptr<Controller> genController(bool is_bot, size_t player_id);
+	static Controller::Key dirToKey(const irr::core::vector2di &dir);
 
 	class LocalController : public Controller
 	{
