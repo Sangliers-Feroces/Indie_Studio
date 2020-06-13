@@ -161,6 +161,11 @@ bool Field::isBombed(const irr::core::vector2di &pos)
 		return false;
 }
 
+std::vector<std::reference_wrapper<Player>> Field::getPlayers(void)
+{
+	return m_players;
+}
+
 std::string Field::id_to_str(size_t id)
 {
 	std::stringstream ss;

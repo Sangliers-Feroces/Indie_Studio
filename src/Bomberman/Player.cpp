@@ -1,3 +1,4 @@
+#include <optional>
 #include "Player.hpp"
 #include "Bomb.hpp"
 #include "PowerUp/Base.hpp"
@@ -133,9 +134,29 @@ Player::Controller::Key Player::dirToKey(const irr::core::vector2di &dir)
 	return keys.at(dir);
 }
 
+irr::core::vector2df Player::ivectof(const irr::core::vector2di &vec)
+{
+	return irr::core::vector2df(vec.X, vec.Y);
+}
+
+irr::core::vector2di Player::nearestPlayerVec(void)
+{
+	std::optional<irr::core::vector2di> res;
+
+	for (auto &p : field.getPlayers()) {
+		auto &pl = p.get();
+		if (&pl == this)
+			continue;
+		auto v = pl.getPos() - getPos();
+		if (!res || (ivectof(v).getLength() < ivectof(*res).getLength()))
+			res = v;
+	}
+	return *res;
+}
+
 void Player::botUpdate(void)
 {
-	static const std::vector<irr::core::vector2di> dir = {
+	static const std::vector<irr::core::vector2di> dirs = {
 		{-1, 0},
 		{1, 0},
 		{0, -1},
@@ -149,18 +170,23 @@ void Player::botUpdate(void)
 	if (field.isBombed(getPos())) {
 		if (!botEscape(getPos())) {}
 			//std::cout << m_name << ": well im fucked :(" << std::endl;
-	} else if (shouldPutBomb());
-	else {
+	} else {
 		field.updateBombMap();
-		for (size_t i = 0; i < 64; i++) {
-			auto d = dir.at(world.session.randInt(4));
-			auto p = getPos() + d;
-			if (isSafeToGo(p)) {
-				m_next_bot_moves.emplace(dirToKey(d));
-				break;
+		auto n = nearestPlayerVec();
+		auto nf = irr::core::vector2df(n.X, n.Y);
+		std::map<double, irr::core::vector2di> table;
+
+		for (auto &d : dirs)
+			if (isSafeToGo(getPos() + d)) {
+				double prod = ivectof(d).dotProduct(nf);
+				if (prod >= 0.0 || world.session.randInt(50) == 0)
+					table.emplace(prod, d);
 			}
-		}
+		if (table.size() > 0)
+			m_next_bot_moves.emplace(dirToKey(table.rbegin()->second));
 	}
+	if (world.session.randInt(3) == 0)
+		shouldPutBomb();
 }
 
 void Player::insertEntry(std::map<size_t, irr::core::vector2di> &res, const irr::core::vector2di &dir, size_t depth)
@@ -255,10 +281,28 @@ bool Player::shouldPutBomb(void)
 	if (m_bombs == 0)
 		return false;
 
+	static const std::vector<irr::core::vector2di> dirs = {
+		{-1, 0},
+		{1, 0},
+		{0, -1},
+		{0, 1},
+	};
+
+	bool found_box = false;
+	for (auto &d : dirs)
+		if (field.typeAt(getPos() + d) == Tile::Type::Box)
+			found_box = true;
+
+	if (!found_box)
+		if (ivectof(nearestPlayerVec()).getLength() > 6.0)
+			return false;
+
 	auto &b = field.addMob<Bomb>(getPos(), m_stats.bomb_radius);
 
 	field.updateBombMap();
 	auto res = botEscape(getPos());
+	while (m_next_bot_moves.size() > 0)
+		m_next_bot_moves.pop();
 	if (!res)
 		b.defuze();
 	else

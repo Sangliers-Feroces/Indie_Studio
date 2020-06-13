@@ -53,6 +53,8 @@ private:
 	void insertEntry(std::map<size_t, irr::core::vector2di> &res, const irr::core::vector2di &dir, size_t depth);
 	void fillRange(size_t range[4]);
 	void checkDir(const irr::core::vector2di &basedir, const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t depth, std::map<size_t, irr::core::vector2di> &res, std::vector<irr::core::vector2di> &path);
+	irr::core::vector2di nearestPlayerVec(void);
+	irr::core::vector2df ivectof(const irr::core::vector2di &vec);
 	void botUpdate(void);
 	bool shouldPutBomb(void);
 
