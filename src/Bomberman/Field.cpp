@@ -37,6 +37,10 @@ Field::Field(void) :
 		});
 		m_players_alive++;
 	}
+	bind(world.session.events.key.pressed, [&](auto key){
+		if (key == irr::KEY_SPACE)
+			session.switch_Pause = true;
+	});
 }
 
 Field::~Field(void)

@@ -34,6 +34,20 @@ Game::Game(void) :
 			m_world = &add<Field>();
 			switch_Game = false;
 		}
+
+		if (switch_Pause) {
+			removeGui(m_gui);
+			m_gui = addGui<Pause>();
+			m_world->events.update.setScale(0);
+			switch_Pause = false;
+		}
+
+		if (resume_Pause) {
+			removeGui(m_gui);
+			m_gui = addGui<Gui>();
+			m_world->events.update.setScale(1);
+			resume_Pause = false;
+		}
 	});
 	run();
 }

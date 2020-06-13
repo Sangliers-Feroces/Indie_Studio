@@ -4,6 +4,7 @@
 #include "Field.hpp"
 #include "Menu.hpp"
 #include "Gui.hpp"
+#include "Pause.hpp"
 #include "PreGame.hpp"
 
 namespace Bomberman {

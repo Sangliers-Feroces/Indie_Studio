@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2020
 ** OOP_indie_studio_2019
 ** File description:
-** Menu
+** Pause
 */
 
 #pragma once
@@ -12,16 +12,15 @@
 
 namespace Bomberman {
 
-class Menu : public en::EntityGuiWorld {
+class Pause : public en::EntityGuiWorld {
 public:
-	Menu(void);
-	~Menu(void);
-
+	Pause(void);
+	~Pause(void);
 private:
-	Image &m_background;
-	Button &m_play;
-	Button &m_opt;
-	Button &m_quit;
+	Button &m_resume;
+	Button &m_save;
+	Button &m_menu;
+	Button &m_leave;
 };
 
 }
