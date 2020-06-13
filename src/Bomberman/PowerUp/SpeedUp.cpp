@@ -8,14 +8,19 @@ SpeedUp::SpeedUp(const irr::core::vector2di &pos) :
 {
 }
 
-SpeedUp::~SpeedUp(void)
-{
-}
-
 void SpeedUp::write(std::ostream &o)
 {
 	en::util::write(o, en::util::type_id<decltype(*this)>());
 	Base::write(o);
+}
+
+SpeedUp::SpeedUp(std::istream &i) :
+	Base(i)
+{
+}
+
+SpeedUp::~SpeedUp(void)
+{
 }
 
 void SpeedUp::onPlayerCollect(Player &player)

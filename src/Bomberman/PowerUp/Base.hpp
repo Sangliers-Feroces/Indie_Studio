@@ -9,7 +9,9 @@ class Base : public Mob
 {
 public:
 	Base(const irr::core::vector2di &pos, const std::string &texture_path);
+	void init(void);
 	void write(std::ostream &o) override;
+	Base(std::istream &i);
 	virtual ~Base(void) = 0;
 
 	void collect(Player &player);

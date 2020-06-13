@@ -2,6 +2,10 @@
 #include "Tile.hpp"
 #include "Bomb.hpp"
 #include "Sparks.hpp"
+#include "PowerUp/BombUp.hpp"
+#include "PowerUp/FireUp.hpp"
+#include "PowerUp/PassUp.hpp"
+#include "PowerUp/SpeedUp.hpp"
 
 namespace Bomberman {
 
@@ -16,20 +20,21 @@ Tile::Tile(Type type, const irr::core::vector2di &pos) :
 	renderType();
 }
 
+template <typename First, typename ...Args>
+void Tile::genReadersImpl(Tile::reader_table &res)
+{
+	res.emplace(en::util::type_id<First>(), [](std::istream &i, Field &f) -> auto& {
+		return f.addMob<First>(i);
+	});
+
+	if constexpr (!std::is_same_v<std::tuple<Args...>, std::tuple<>>)
+		genReadersImpl<Args...>(res);
+}
+
 Tile::Tile(std::istream &i, Field &field, Type type) :
 	Tile(type, en::util::read<irr::core::vector2di>(i))
 {
-	static const std::map<en::util::type_id_t, std::function<Mob& (std::istream&, Field&)>> ctors = {
-		{en::util::type_id<Player>(), [](std::istream &i, Field &f) -> auto& {
-			return f.addMob<Player>(i);
-		}},
-		{en::util::type_id<Bomb>(), [](std::istream &i, Field &f) -> auto& {
-			return f.addMob<Bomb>(i);
-		}},
-		{en::util::type_id<Sparks>(), [](std::istream &i, Field &f) -> auto& {
-			return f.addMob<Sparks>(i);
-		}}
-	};
+	static const auto ctors = genReaders<Player, Bomb, Sparks, PowerUp::BombUp, PowerUp::FireUp, PowerUp::PassUp, PowerUp::SpeedUp>();
 
 	auto size = en::util::read<size_t>(i);
 

@@ -50,6 +50,21 @@ private:
 	void addMob(Mob &mob);
 	void removeMob(Mob &mob);
 	bool tryRemoveMob(Mob &mob);
+
+	using reader_type = std::function<Mob& (std::istream&, Field&)>;
+	using reader_table = std::map<en::util::type_id_t, reader_type>;
+
+	template <typename First, typename ...Args>
+	static void genReadersImpl(reader_table &res);
+
+	template <typename ...Args>
+	static reader_table genReaders(void)
+	{
+		reader_table res;
+
+		genReadersImpl<Args...>(res);
+		return res;
+	}
 };
 
 }
