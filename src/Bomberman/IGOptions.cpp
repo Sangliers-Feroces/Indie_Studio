@@ -21,6 +21,7 @@ Options::Options(void) :
 	m_vol(add<StaticText>(L"", irr::core::rect<irr::s32>(1000, 700, 1200, 800))),
 	m_voldown(add<Button>(irr::core::rect<irr::s32>(800, 700, 1000, 800), L"-"))
 {
+	m_vol.setOverrideFont(session.m_font);
 	setVolume();
 	bind(session.events.gui.button_pressed, [&](auto gui) {
 		if (m_back == gui.Caller)

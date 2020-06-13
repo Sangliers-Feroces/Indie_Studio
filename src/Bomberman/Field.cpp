@@ -34,8 +34,7 @@ Field::Field(const std::vector<PlayerMeta> &players) :
 			if (m_players_alive == 1) {
 				for (auto &p : m_players)
 					if (!p.get().isDead()) {
-						std::cout << "PLAYER " << p.get().getName() << " WON!!" << std::endl;
-						game_done.emit();
+						session.stop_run(p.get().getName());
 					}
 			}
 		});

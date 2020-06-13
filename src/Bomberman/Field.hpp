@@ -15,14 +15,10 @@ public:
 	struct PlayerMeta {
 		bool is_bot;
 		std::string name;
-
-		int difficulty;
 	};
 
 	Field(const std::vector<PlayerMeta> &players);
 	~Field(void);
-
-	en::Event::Generator<> game_done;
 
 	Tile& at(const irr::core::vector2di &pos);
 	Tile::Type typeAt(const irr::core::vector2di &pos);

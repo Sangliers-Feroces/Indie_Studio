@@ -17,6 +17,10 @@ public:
 		bool vol_mute;
 		double vol;
 		bool full_screen;
+
+		int level;
+
+		int map;
 	};
 	Session(void);
 	virtual ~Session(void) = 0;
@@ -32,12 +36,18 @@ public:
 
 	void playSound(const std::string &path, double volume = 1.0);
 
+	void reset_run(void);
+	void stop_run(std::string winner);
+	bool isDone(void);
+	std::string getWinner(void);
+
 	bool switch_preGame = false;
 	bool switch_Menu = false;
 	bool switch_Game = false;
 	bool switch_Pause = false;
 	bool resume_Pause = false;
 	bool switch_Options = false;
+
 protected:
 	template <class WorldType, typename ...Args>
 	WorldType& add(Args &&...args)
@@ -60,7 +70,6 @@ protected:
 	void removeGui(EntityGuiWorld &world);
 
 	void run(void);
-	virtual bool isDone(void) const = 0;
 
 private:
 
@@ -79,6 +88,12 @@ private:
 	std::mt19937_64 m_rand_gen;
 	util::cache<std::string, sf::SoundBuffer> m_sound_buffer_cache;
 	std::vector<std::unique_ptr<sf::Sound>> m_playing_sounds;
+
+	bool m_stop_run;
+	std::string m_winner;
+	//temp
+public:
+	irr::gui::IGUIFont *m_font;
 };
 
 }

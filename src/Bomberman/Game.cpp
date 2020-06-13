@@ -6,13 +6,8 @@ namespace Bomberman {
 
 Game::Game(void) :
 	m_gui(addGui<Menu>()),
-	m_world(nullptr),
-	m_stop_run(false)
+	m_world(nullptr)
 {
-	/*bind(m_field.game_done, [&]{
-		m_stop_run = true;
-	});*/
-
 	bind(events.update, [&](auto){
 		if (switch_preGame) {
 			removeGui(m_gui);
@@ -23,15 +18,20 @@ Game::Game(void) :
 		if (switch_Menu) {
 			removeGui(m_gui);
 			m_gui = addGui<Menu>();
-			if (m_world)
+			if (m_world) {
 				removeWorld(*m_world);
+				m_world = nullptr;
+			}
 			switch_Menu = false;
 		}
 
 		if (switch_Game) {
 			removeGui(m_gui);
-			m_gui = addGui<Gui>();
+			m_gui = addGui<Gui>();m_world->events.update.setScale(0);
+			if (m_world)
+				removeWorld(*m_world);
 			m_world = &add<Field>(m_players);
+			m_world->events.update.setScale(1);
 			switch_Game = false;
 		}
 
@@ -54,17 +54,19 @@ Game::Game(void) :
 			m_gui = addGui<Options>();
 			switch_Options = false;
 		}
+
+		if (isDone()) {
+			removeGui(m_gui);
+			m_gui = addGui<WinScreen>();
+			m_world->events.update.setScale(0);
+			reset_run();
+		}
 	});
 	run();
 }
 
 Game::~Game(void)
 {
-}
-
-bool Game::isDone(void) const
-{
-	return m_stop_run;
 }
 
 }
