@@ -38,9 +38,11 @@ protected:
 	template <class WorldType, typename ...Args>
 	WorldType& add(Args &&...args)
 	{
-		World::getStack().emplace(*this);
+		auto &s = World::getStack();
+
+		s.emplace(*this);
 		auto &res = m_worlds.emplace<WorldType>(std::forward<Args>(args)...);
-		World::getStack().pop();
+		s.pop();
 		return res;
 	}
 	void removeWorld(World &world);
@@ -48,9 +50,11 @@ protected:
 	template<class WorldType, typename ...Args>
 	WorldType& addGui(Args &&...args)
 	{
-		EntityGuiWorld::getStack().emplace(*this);
+		auto &s = EntityGuiWorld::getStack();
+
+		s.emplace(*this);
 		auto &res = m_gui_worlds.emplace<WorldType>(std::forward<Args>(args)...);
-		EntityGuiWorld::getStack().pop();
+		s.pop();
 		return res;
 	}
 	void removeGui(EntityGuiWorld &world);

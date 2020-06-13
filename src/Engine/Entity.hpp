@@ -64,9 +64,11 @@ protected:
 	template <class EntityType, typename ...Args>
 	EntityType& add(Args &&...args)
 	{
-		getStack().emplace(world, this);
+		auto &s = getStack();
+
+		s.emplace(world, this);
 		auto &res = m_children.emplace<EntityType>(std::forward<Args>(args)...);
-		getStack().pop();
+		s.pop();
 		return res;
 	}
 
