@@ -165,6 +165,18 @@ bool Field::isBombed(const irr::core::vector2di &pos)
 		return false;
 }
 
+bool Field::anySpark(const irr::core::vector2di &pos)
+{
+	for (auto &m : at(pos).getMobs()) {
+		try {
+			auto &s = dynamic_cast<Sparks&>(m.get());
+			if (s.stillDeadly())
+				return true;
+		} catch (const std::bad_cast&) {}
+	}
+	return false;
+}
+
 std::vector<std::reference_wrapper<Player>> Field::getPlayers(void)
 {
 	return m_players;

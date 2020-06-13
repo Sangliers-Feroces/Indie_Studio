@@ -11,11 +11,11 @@ public:
 	~Sparks(void);
 
 	void simulate(void);
+	bool stillDeadly(void);
 
 private:
 	double m_time_bef_death;
 
-	bool stillDeadly(void);
 	double getRatio(void);
 
 	static double life;

@@ -35,6 +35,7 @@ public:
 
 	void updateBombMap(void);
 	bool isBombed(const irr::core::vector2di &pos);
+	bool anySpark(const irr::core::vector2di &pos);
 
 	std::vector<std::reference_wrapper<Player>> getPlayers(void);
 

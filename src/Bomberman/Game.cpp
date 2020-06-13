@@ -32,7 +32,7 @@ Game::Game(void) :
 		if (switch_Game) {
 			removeGui(m_gui);
 			m_gui = addGui<Gui>();
-			m_world = &add<Field>(std::vector<Field::PlayerMeta>({{false, ""}, {false, ""}, {true, ""}, {true, ""}}));
+			m_world = &add<Field>(std::vector<Field::PlayerMeta>({{true, ""}, {true, ""}, {true, ""}, {true, ""}}));
 			switch_Game = false;
 		}
 

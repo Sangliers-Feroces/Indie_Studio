@@ -145,13 +145,16 @@ irr::core::vector2di Player::nearestPlayerVec(void)
 
 	for (auto &p : field.getPlayers()) {
 		auto &pl = p.get();
-		if (&pl == this)
+		if (&pl == this || pl.isDead())
 			continue;
 		auto v = pl.getPos() - getPos();
 		if (!res || (ivectof(v).getLength() < ivectof(*res).getLength()))
 			res = v;
 	}
-	return *res;
+	if (res)
+		return *res;
+	else
+		return irr::core::vector2di(0, 0);
 }
 
 void Player::botUpdate(void)
@@ -171,22 +174,23 @@ void Player::botUpdate(void)
 		if (!botEscape(getPos())) {}
 			//std::cout << m_name << ": well im fucked :(" << std::endl;
 	} else {
-		field.updateBombMap();
-		auto n = nearestPlayerVec();
-		auto nf = irr::core::vector2df(n.X, n.Y);
-		std::map<double, irr::core::vector2di> table;
-
-		for (auto &d : dirs)
-			if (isSafeToGo(getPos() + d)) {
-				double prod = ivectof(d).dotProduct(nf);
-				if (prod >= 0.0 || world.session.randInt(50) == 0)
-					table.emplace(prod, d);
-			}
-		if (table.size() > 0)
-			m_next_bot_moves.emplace(dirToKey(table.rbegin()->second));
-	}
-	if (world.session.randInt(3) == 0)
 		shouldPutBomb();
+		{
+			field.updateBombMap();
+			auto n = nearestPlayerVec();
+			auto nf = irr::core::vector2df(n.X, n.Y);
+			std::map<double, irr::core::vector2di> table;
+
+			for (auto &d : dirs)
+				if (isSafeToGo(getPos() + d)) {
+					double prod = ivectof(d).dotProduct(nf);
+					if (prod >= 0.0)
+						table.emplace(prod, d);
+				}
+			if (table.size() > 0)
+				m_next_bot_moves.emplace(dirToKey(table.rbegin()->second));
+		}
+	}
 }
 
 void Player::insertEntry(std::map<size_t, irr::core::vector2di> &res, const irr::core::vector2di &dir, size_t depth)
@@ -238,6 +242,9 @@ void Player::checkDir(const irr::core::vector2di &basedir, const irr::core::vect
 		return;
 
 	if (!(p.X >= 0 && p.X < (int64_t)field.getWidth() && p.Y >= 0 && p.Y < (int64_t)field.getHeight()))
+		return;
+
+	if (field.anySpark(p))
 		return;
 
 	if (isSafeToGo(p))
