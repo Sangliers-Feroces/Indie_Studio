@@ -36,7 +36,7 @@ void Bomb::nuke(bool is_simulation)
 	if (m_defuzed)
 		return;
 	for (auto &d : dirs)
-		nukeLine(getPos(), d, m_radius, is_simulation);
+		nukeLine(getPos(), d, m_radius, 1, is_simulation);
 }
 
 void Bomb::defuze(void)
@@ -56,12 +56,16 @@ void Bomb::nukeLine(const irr::core::vector2di &pos, const irr::core::vector2di 
 		if (t == Tile::Type::Box) {
 			field.nuke(p, is_simulation);
 			got++;
-			field.addMob<Sparks>(p);
+			if (!is_simulation)
+				field.addMob<Sparks>(p);
 			if (got >= penetration)
 				return;
 		} else if (t != Tile::Type::Air)
 			return;
-		field.addMob<Sparks>(p);
+		if (is_simulation)
+			field.nuke(p, is_simulation);
+		if (!is_simulation)
+			field.addMob<Sparks>(p);
 	}
 }
 

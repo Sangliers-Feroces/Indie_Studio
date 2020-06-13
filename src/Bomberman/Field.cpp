@@ -4,6 +4,7 @@
 #include "PowerUp/FireUp.hpp"
 #include "PowerUp/BombUp.hpp"
 #include "Bomb.hpp"
+#include "Sparks.hpp"
 
 #include <iostream>
 #include <sstream>
@@ -145,6 +146,9 @@ void Field::updateBombMap(void)
 				auto &mob = m.get();
 				try {
 					dynamic_cast<Bomb&>(mob).nuke(true);
+				} catch (const std::bad_cast&) {}
+				try {
+					dynamic_cast<Sparks&>(mob).simulate();
 				} catch (const std::bad_cast&) {}
 			}
 }
