@@ -26,7 +26,8 @@ public:
 			speed(5.0),
 			max_bombs(3),
 			bomb_radius(3),
-			wall_pass(false)
+			wall_pass(false),
+			wall_pass_used(false)
 		{
 		}
 
@@ -34,6 +35,7 @@ public:
 		size_t max_bombs;
 		size_t bomb_radius;
 		bool wall_pass;
+		bool wall_pass_used;
 	};
 
 private:
@@ -48,6 +50,9 @@ private:
 	void onMove(const irr::core::vector2di &newpos) override;
 	bool isSafeToGo(const irr::core::vector2di &pos);
 	bool botEscape(const irr::core::vector2di &pos);
+	void insertEntry(std::map<size_t, irr::core::vector2di> &res, const irr::core::vector2di &dir, size_t depth);
+	void fillRange(size_t range[4]);
+	void checkDir(const irr::core::vector2di &basedir, const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t depth, std::map<size_t, irr::core::vector2di> &res, std::vector<irr::core::vector2di> &path);
 	void botUpdate(void);
 	bool shouldPutBomb(void);
 

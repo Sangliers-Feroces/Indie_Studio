@@ -3,7 +3,7 @@
 namespace Bomberman {
 
 Game::Game(void) :
-	m_field(add<Field>(std::vector<Field::PlayerMeta>({{false, ""}, {false, ""}, {true, ""}, {true, ""}}))),
+	m_field(add<Field>(std::vector<Field::PlayerMeta>({{true, ""}, {true, ""}, {true, ""}, {true, ""}}))),
 	m_gui(addGui<Gui>()),
 	m_stop_run(false)
 {

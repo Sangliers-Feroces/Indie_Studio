@@ -2,8 +2,6 @@
 #include "Bomb.hpp"
 #include "PowerUp/Base.hpp"
 
-#include <iostream>
-
 namespace Bomberman {
 
 Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id) :
@@ -104,6 +102,17 @@ void Player::onMove(const irr::core::vector2di &newpos)
 			dynamic_cast<PowerUp::Base&>(mob).collect(*this);
 		} catch (const std::bad_cast&) {}
 	}
+	if (m_stats.wall_pass) {
+		if (m_stats.wall_pass_used) {
+			if (field.typeAt(getPos()) == Tile::Type::Air) {
+				m_stats.wall_pass = false;
+				m_stats.wall_pass_used = false;
+			}
+		} else {
+			if (field.typeAt(getPos()) == Tile::Type::Box)
+				m_stats.wall_pass_used = true;
+		}
+	}
 	botUpdate();
 }
 
@@ -154,31 +163,91 @@ void Player::botUpdate(void)
 	}
 }
 
-bool Player::botEscape(const irr::core::vector2di &pos)
+void Player::insertEntry(std::map<size_t, irr::core::vector2di> &res, const irr::core::vector2di &dir, size_t depth)
 {
-	static const std::vector<irr::core::vector2di> dir = {
+	if (res.find(depth) != res.end())
+		return;
+	else
+		res.emplace(depth, dir);
+}
+
+void Player::fillRange(size_t range[4])
+{
+	size_t i = 0;
+	bool done[4] = {false, false, false, false};
+
+	while (true) {
+		size_t got = world.session.randInt(4);
+		if (!done[got]) {
+			range[i++] = got;
+			done[got] = true;
+		}
+		if (i == 4)
+			return;
+	}
+}
+
+void Player::checkDir(const irr::core::vector2di &basedir, const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t depth, std::map<size_t, irr::core::vector2di> &res, std::vector<irr::core::vector2di> &path)
+{
+	static const std::vector<irr::core::vector2di> dirs = {
 		{-1, 0},
 		{1, 0},
 		{0, -1},
 		{0, 1},
 	};
+	size_t range[4];
+	fillRange(range);
 
-	for (auto &d : dir) {
-		auto p = pos + d;
-		if (isSafeToGo(p)) {
-			m_next_bot_moves.emplace(dirToKey(d));
-			return true;
-		} else if (canMoveTo(p)) {
-			for (auto &dd : dir) {
-				auto pp = p + dd;
-				if (isSafeToGo(pp)) {
-					m_next_bot_moves.emplace(dirToKey(d));
-					return true;
-				}
-			}
-		}
+	auto p = pos + dir;
+
+	for (size_t i = 0; i < path.size(); i++)
+		if (path.rbegin()[i] == p)
+			return;
+
+	if (res.size() > 0) {
+		if (res.begin()->first <= depth)
+			return;
 	}
-	return false;
+	if (depth > 128)
+		return;
+
+	if (!(p.X >= 0 && p.X < (int64_t)field.getWidth() && p.Y >= 0 && p.Y < (int64_t)field.getHeight()))
+		return;
+
+	if (isSafeToGo(p))
+		insertEntry(res, basedir, depth);
+	if (canMoveTo(p)) {
+		path.emplace_back(p);
+		for (size_t i = 0; i < 4; i++)
+			checkDir(basedir, p, dirs.at(range[i]), depth + 1, res, path);
+		path.pop_back();
+	}
+}
+
+bool Player::botEscape(const irr::core::vector2di &pos)
+{
+	static const std::vector<irr::core::vector2di> dirs = {
+		{-1, 0},
+		{1, 0},
+		{0, -1},
+		{0, 1},
+	};
+	static const auto zero = irr::core::vector2di(0, 0);
+	size_t range[4];
+	fillRange(range);
+
+	std::map<size_t, irr::core::vector2di> res;
+	std::vector<irr::core::vector2di> path;
+
+	for (size_t i = 0; i < 4; i++)
+		checkDir(dirs.at(range[i]), pos, dirs.at(range[i]), 0, res, path);
+	if (res.size() == 0)
+		return false;
+	else {
+		if (res.begin()->second != zero)
+			m_next_bot_moves.emplace(dirToKey(res.begin()->second));
+		return true;
+	}
 }
 
 bool Player::shouldPutBomb(void)

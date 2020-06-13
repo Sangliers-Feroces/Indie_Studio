@@ -17,6 +17,7 @@ void PassUp::onPlayerCollect(Player &player)
 	auto &stats = getPlayerStats(player);
 
 	stats.wall_pass = true;
+	stats.wall_pass_used = false;
 }
 
 }
