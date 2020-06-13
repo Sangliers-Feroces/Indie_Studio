@@ -87,7 +87,7 @@ void Field::nuke(const irr::core::vector2di &pos, bool is_simulation)
 
 void Field::genItem(const irr::core::vector2di &pos)
 {
-	static const std::map<size_t, const std::function<void (void)>> items = {
+	static const std::vector<std::pair<size_t, const std::function<void (void)>>> items = {
 		{1, [&](){
 			addMob<PowerUp::PassUp>(pos);
 		}},
