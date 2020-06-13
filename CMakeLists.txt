@@ -31,9 +31,11 @@ set(SRCS
 	./src/Engine/ui/GuiScrollBar.cpp
 	./src/Engine/ui/GuiCheckBox.cpp
 	./src/Engine/ui/GuiStaticText.cpp
+	./src/Engine/ui/GuiImage.cpp
 
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Gui.cpp
+	./src/Bomberman/Menu.cpp
 	./src/Bomberman/Field.cpp
 	./src/Bomberman/Player.cpp
 	./src/Bomberman/Camera.cpp
@@ -53,6 +55,7 @@ set(SRCS
 	./src/Bomberman/ui/ScrollBar.cpp
 	./src/Bomberman/ui/CheckBox.cpp
 	./src/Bomberman/ui/StaticText.cpp
+	./src/Bomberman/ui/Image.cpp
 	
 	./src/main.cpp
 )

@@ -21,6 +21,7 @@ public:
 	void closeDevice(void);
 	double rand(void);
 	size_t randInt(size_t max);
+	irr::gui::IGUISkin *getSkin(void);
 
 	void playSound(const std::string &path, double volume = 1.0);
 
@@ -33,6 +34,7 @@ protected:
 		World::getStack().pop();
 		return res;
 	}
+	void removeWorld(World &world);
 
 	template<class WorldType, typename ...Args>
 	WorldType& addGui(Args &&...args)
@@ -42,6 +44,7 @@ protected:
 		EntityGuiWorld::getStack().pop();
 		return res;
 	}
+	void removeGui(EntityGuiWorld &world);
 
 	void run(void);
 	virtual bool isDone(void) const = 0;

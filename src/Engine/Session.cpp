@@ -56,6 +56,11 @@ size_t Session::randInt(size_t max)
 	return m_rand_gen() % max;
 }
 
+irr::gui::IGUISkin * Session::getSkin(void)
+{
+	return m_irr_env.getSkin();
+}
+
 void Session::playSound(const std::string &path, double volume)
 {
 	m_playing_sounds.erase(std::remove_if(m_playing_sounds.begin(), m_playing_sounds.end(), [](const std::unique_ptr<sf::Sound> &sound){
@@ -67,6 +72,16 @@ void Session::playSound(const std::string &path, double volume)
 	sound->setVolume(volume * 100);
 	sound->play();
 	m_playing_sounds.emplace_back(sound);
+}
+
+void Session::removeWorld(World &world)
+{
+	m_worlds.erase(m_worlds.find(world));
+}
+
+void Session::removeGui(EntityGuiWorld &world)
+{
+	m_gui_worlds.erase(m_gui_worlds.find(world));
 }
 
 }
