@@ -7,6 +7,7 @@
 namespace Engine {
 
 Session::Session(void) :
+	m_options({false, 50, false, 0, 0}),
 	m_irr_device(irr::createDevice(irr::video::EDT_OPENGL,
 	irr::core::dimension2d<irr::u32>(1600, 900), 32, false, false, true, &events)),
 	driver(*m_irr_device->getVideoDriver()),
@@ -15,8 +16,12 @@ Session::Session(void) :
 	m_rand_gen(std::time(nullptr)),
 	m_sound_buffer_cache([](const std::string &soundPath, sf::SoundBuffer &buffer){
 		buffer.loadFromFile(soundPath);
-	})
+	}),
+	m_stop_run(false),
+	m_winner(""),
+	m_font(m_irr_env.getFont("res/GUI/DejaVuSansMono.png"))
 {
+	m_irr_env.getSkin()->setFont(m_font);
 }
 
 Session::~Session(void)
@@ -31,7 +36,7 @@ void Session::closeDevice(void)
 
 void Session::run(void)
 {
-	while (m_irr_device->run() && !isDone()) {
+	while (m_irr_device->run()) {
 		for (auto &w : m_worlds) {
 			w.events.updateObserver();
 			w.collectGarbage();
@@ -77,6 +82,27 @@ void Session::playSound(const std::string &path, double volume)
 	sound->setVolume(volume * 100);
 	sound->play();
 	m_playing_sounds.emplace_back(sound);
+}
+
+void Session::reset_run(void)
+{
+	m_stop_run = false;
+}
+
+void Session::stop_run(std::string winner)
+{
+	m_stop_run = true;
+	m_winner = winner;
+}
+
+std::string Session::getWinner(void)
+{
+	return m_winner;
+}
+
+bool Session::isDone(void)
+{
+	return m_stop_run;
 }
 
 void Session::removeWorld(World &world)

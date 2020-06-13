@@ -35,6 +35,11 @@ EntityGui::~EntityGui(void)
 {
 }
 
+void EntityGui::removeChild(EntityGui &child)
+{
+	world.m_children.erase(m_children.find(child));
+}
+
 bool EntityGui::operator==(irr::gui::IGUIElement *other)
 {
 	return &*m_irr_elem == other;

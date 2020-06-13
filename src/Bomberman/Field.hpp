@@ -32,8 +32,6 @@ public:
 
 	~Field(void);
 
-	en::Event::Generator<> game_done;
-
 	Tile& at(const irr::core::vector2di &pos);
 	Tile::Type typeAt(const irr::core::vector2di &pos);
 	void nuke(const irr::core::vector2di &pos, bool is_simulation = false);

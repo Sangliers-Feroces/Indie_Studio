@@ -24,6 +24,7 @@ public:
 	void setDrawBorder(bool draw);
 	void setOverrideColor(irr::video::SColor color);
 	void setOverrideFont(irr::gui::IGUIFont *font);
+	void setText(const wchar_t *text);
 };
 
 }

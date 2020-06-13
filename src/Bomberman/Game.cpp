@@ -7,17 +7,12 @@ namespace Bomberman {
 
 Game::Game(void) :
 	m_gui(addGui<Menu>()),
-	m_world(nullptr),
-	m_stop_run(false)
+	m_world(nullptr)
 {
-	/*bind(m_field.game_done, [&]{
-		m_stop_run = true;
-	});*/
-
 	bind(events.update, [&](auto){
 		if (switch_preGame) {
 			removeGui(m_gui);
-			m_gui = addGui<PreGame>();
+			m_gui = addGui<PreGame>(m_players);
 			switch_preGame = false;
 		}
 
@@ -33,7 +28,10 @@ Game::Game(void) :
 		if (switch_Game) {
 			removeGui(m_gui);
 			m_gui = addGui<Gui>();
-			m_world = &add<Field>(std::vector<Field::PlayerMeta>({{true, ""}, {true, ""}, {true, ""}, {true, ""}}));
+			if (m_world)
+				removeWorld(*m_world);
+			m_world = &add<Field>(m_players);
+			m_world->events.update.setScale(1);
 			switch_Game = false;
 		}
 
@@ -67,17 +65,18 @@ Game::Game(void) :
 			}
 			load_game = false;
 		}
+		if (isDone()) {
+			removeGui(m_gui);
+			m_gui = addGui<WinScreen>();
+			m_world->events.update.setScale(0);
+			reset_run();
+		}
 	});
 	run();
 }
 
 Game::~Game(void)
 {
-}
-
-bool Game::isDone(void) const
-{
-	return m_stop_run;
 }
 
 }

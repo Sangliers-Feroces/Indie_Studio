@@ -53,15 +53,14 @@ void Field::init(void)
 void Field::bindPlayer(Player &p)
 {
 	m_players.emplace_back(p);
-	bind(p.died, [&](){
-		m_players_alive--;
-		if (m_players_alive == 1) {
-			for (auto &p : m_players)
-				if (!p.get().isDead()) {
-					std::cout << "PLAYER " << p.get().getName() << " WON!!" << std::endl;
-					game_done.emit();
-				}
-		}
+		bind(p.died, [&](){
+			m_players_alive--;
+			if (m_players_alive == 1) {
+				for (auto &p : m_players)
+					if (!p.get().isDead()) {
+						session.stop_run(p.get().getName());
+					}
+			}
 	});
 }
 

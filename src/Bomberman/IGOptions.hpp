@@ -9,6 +9,7 @@
 
 #include "Engine/EntityGuiWorld.hpp"
 #include "ui/uiComponent.hpp"
+#include "Game.hpp"
 
 namespace Bomberman {
 
@@ -26,6 +27,9 @@ protected:
 	Button &m_volup;
 	StaticText &m_vol;
 	Button &m_voldown;
+
+private:
+	void setVolume(void);
 };
 
 }

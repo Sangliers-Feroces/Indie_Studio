@@ -41,6 +41,7 @@ public:
 	EntityGui(void);
 	EntityGui(const Context &ctx, irr::gui::IGUIEnvironment &env);
 
+	void removeChild(EntityGui &child);
 	bool operator==(irr::gui::IGUIElement *other);
 
 protected:
