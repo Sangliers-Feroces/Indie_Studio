@@ -16,8 +16,8 @@ Menu::Menu(void) :
 {
 	bind(session.events.gui.button_pressed, [this](auto gui) {
 		if (m_play == gui.Caller)
-			play_game.emit(UI_PREGAME);
-		if (m_quit == gui.Caller)
+			session.switch_preGame.emit();
+		else if (m_quit == gui.Caller)
 			session.closeDevice();
 	});
 	m_play.setPressedImage(session.driver.getTexture("res/GUI/menu_background.png"));

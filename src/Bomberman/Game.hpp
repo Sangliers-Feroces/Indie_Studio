@@ -3,6 +3,8 @@
 #include "Engine/Session.hpp"
 #include "Field.hpp"
 #include "Menu.hpp"
+#include "Gui.hpp"
+#include "PreGame.hpp"
 
 namespace Bomberman {
 
@@ -12,13 +14,15 @@ public:
 	Game(void);
 	~Game(void) override;
 
+	void switchToPreGame(void);
+	void switchToMenu(void);
+
 protected:
 	bool isDone(void) const override;
 
 private:
-	//std::reference_wrapper<en::EntityGuiWorld> m_gui;
-	//en::World *m_world;
-	Menu &m_menu;
+	std::reference_wrapper<en::EntityGuiWorld> m_gui;
+	en::World *m_world;
 	bool m_stop_run;
 };
 

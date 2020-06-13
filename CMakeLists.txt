@@ -36,6 +36,7 @@ set(SRCS
 	./src/Bomberman/Game.cpp
 	./src/Bomberman/Gui.cpp
 	./src/Bomberman/Menu.cpp
+	./src/Bomberman/PreGame.cpp
 	./src/Bomberman/Field.cpp
 	./src/Bomberman/Player.cpp
 	./src/Bomberman/Camera.cpp

@@ -6,6 +6,7 @@
 #include "EntityGuiWorld.hpp"
 #include "IrrReceiver.hpp"
 #include "util.hpp"
+#include "Bomberman/ui/uiSwitch.hpp"
 
 namespace Engine {
 
@@ -24,6 +25,10 @@ public:
 	irr::gui::IGUISkin *getSkin(void);
 
 	void playSound(const std::string &path, double volume = 1.0);
+
+	Event::Generator<> switch_preGame;
+	Event::Generator<> switch_Menu;
+	Event::Generator<> switch_Game;
 
 protected:
 	template <class WorldType, typename ...Args>

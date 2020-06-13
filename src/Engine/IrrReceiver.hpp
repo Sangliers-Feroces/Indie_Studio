@@ -63,6 +63,8 @@ public:
 		};
 
 		GuiEvent button_pressed;
+		GuiEvent checkbox_pressed;
+		GuiEvent listbox_modified;
 
 	private:
 		friend IrrReceiver;

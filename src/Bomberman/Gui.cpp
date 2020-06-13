@@ -16,7 +16,7 @@ Gui::Gui() :
 {
 	bind(session.events.gui.button_pressed, [this](auto gui) {
 		if (m_button == gui.Caller)
-			session.closeDevice();
+			session.switch_preGame.emit();
 	});
 	m_button.isAlphaChannelUsed();
 }
