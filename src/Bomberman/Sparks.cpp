@@ -10,9 +10,9 @@ Sparks::Sparks(const irr::core::vector2di &pos) :
 	setScale(irr::core::vector3df(0.5));
 	bind(world.events.update, [this](auto delta){
 		m_time_bef_death -= delta;
-		double ratio = m_time_bef_death / life;
+		double ratio = getRatio();
 		setScale(irr::core::vector3df(ratio * 0.5));
-		if (ratio > 0.35)
+		if (stillDeadly())
 			for (auto &m : field.at(getPos()).getMobs()) {
 				auto &mob = m.get();
 				try {
@@ -27,6 +27,22 @@ Sparks::Sparks(const irr::core::vector2di &pos) :
 
 Sparks::~Sparks(void)
 {
+}
+
+void Sparks::simulate(void)
+{
+	if (stillDeadly())
+		field.nuke(getPos(), true);
+}
+
+bool Sparks::stillDeadly(void)
+{
+	return getRatio() > 0.35;
+}
+
+double Sparks::getRatio(void)
+{
+	return m_time_bef_death / life;
 }
 
 double Sparks::life = 1.0;

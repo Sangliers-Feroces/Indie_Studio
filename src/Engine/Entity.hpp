@@ -82,6 +82,8 @@ protected:
 	void setRot(const irr::core::vector3df& rot);
 	void setScale(const irr::core::vector3df& scale);
 
+	void updateAbsolutePosition(void);
+
 	const irr::video::SMaterial& getMaterial(const irr::u32& num);
 	irr::u32 getMaterialCount(void) const;
 

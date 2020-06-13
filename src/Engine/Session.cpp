@@ -1,4 +1,5 @@
 #include "Session.hpp"
+#include <ctime>
 #include <iostream>
 
 namespace Engine {
@@ -9,6 +10,7 @@ Session::Session(void) :
 	driver(*m_irr_device->getVideoDriver()),
 	m_irr_scene(*m_irr_device->getSceneManager()),
 	m_irr_env(util::ptr_to_ref(m_irr_device->getGUIEnvironment())),
+	m_rand_gen(std::time(nullptr)),
 	m_sound_buffer_cache([](const std::string &soundPath, sf::SoundBuffer &buffer){
 		buffer.loadFromFile(soundPath);
 	})

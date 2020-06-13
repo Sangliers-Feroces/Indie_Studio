@@ -16,7 +16,7 @@ void BombUp::onPlayerCollect(Player &player)
 {
 	auto &stats = getPlayerStats(player);
 
-	stats.bomb_radius++;
+	stats.max_bombs++;
 }
 
 }

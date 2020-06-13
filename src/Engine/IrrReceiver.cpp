@@ -1,5 +1,4 @@
 #include "IrrReceiver.hpp"
-#include <iostream>
 
 namespace Engine {
 namespace Event {

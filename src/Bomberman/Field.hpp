@@ -24,7 +24,7 @@ public:
 
 	Tile& at(const irr::core::vector2di &pos);
 	Tile::Type typeAt(const irr::core::vector2di &pos);
-	void nuke(const irr::core::vector2di &pos);
+	void nuke(const irr::core::vector2di &pos, bool is_simulation = false);
 	void genItem(const irr::core::vector2di &pos);
 
 	template <class MobType, typename ...Args>
@@ -33,8 +33,14 @@ public:
 	size_t getWidth(void) const;
 	size_t getHeight(void) const;
 
+	void updateBombMap(void);
+	bool isBombed(const irr::core::vector2di &pos);
+
+	std::vector<std::reference_wrapper<Player>> getPlayers(void);
+
 private:
 	std::vector<std::vector<std::reference_wrapper<Tile>>> m_tiles;
+	std::vector<std::vector<bool>> m_bombs;
 	size_t m_w;
 	size_t m_h;
 	Camera &m_camera;

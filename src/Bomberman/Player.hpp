@@ -1,5 +1,6 @@
 #pragma once
 
+#include <queue>
 #include "Mob.hpp"
 
 namespace Bomberman {
@@ -25,7 +26,8 @@ public:
 			speed(5.0),
 			max_bombs(3),
 			bomb_radius(3),
-			wall_pass(false)
+			wall_pass(false),
+			wall_pass_used(false)
 		{
 		}
 
@@ -33,6 +35,7 @@ public:
 		size_t max_bombs;
 		size_t bomb_radius;
 		bool wall_pass;
+		bool wall_pass_used;
 	};
 
 private:
@@ -41,9 +44,19 @@ private:
 	double m_time_before_bomb;
 	bool m_dead;
 	const std::string m_name;
+	bool m_is_bot;
 
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
 	void onMove(const irr::core::vector2di &newpos) override;
+	bool isSafeToGo(const irr::core::vector2di &pos);
+	bool botEscape(const irr::core::vector2di &pos);
+	void insertEntry(std::map<size_t, irr::core::vector2di> &res, const irr::core::vector2di &dir, size_t depth);
+	void fillRange(size_t range[4]);
+	void checkDir(const irr::core::vector2di &basedir, const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t depth, std::map<size_t, irr::core::vector2di> &res, std::vector<irr::core::vector2di> &path);
+	irr::core::vector2di nearestPlayerVec(void);
+	irr::core::vector2df ivectof(const irr::core::vector2di &vec);
+	void botUpdate(void);
+	bool shouldPutBomb(void);
 
 	static double reload_rate;
 
@@ -64,6 +77,7 @@ private:
 			Down,
 			Fire
 		};
+		static const std::vector<Key>& getKeys(void);
 
 		virtual bool getState(Key key) const = 0;
 		bool isPressed(Key key);
@@ -72,15 +86,15 @@ private:
 	protected:
 		virtual void refresh(void) = 0;
 
-		static const std::vector<Key>& getKeys(void);
-
 	private:
 		std::map<Key, bool> m_last_state;
 		std::map<Key, bool> m_cur_state;
 	};
 
 	std::unique_ptr<Controller> m_controller;
+	std::queue<Controller::Key> m_next_bot_moves;
 	std::unique_ptr<Controller> genController(bool is_bot, size_t player_id);
+	static Controller::Key dirToKey(const irr::core::vector2di &dir);
 
 	class LocalController : public Controller
 	{

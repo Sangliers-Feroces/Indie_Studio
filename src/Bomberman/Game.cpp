@@ -25,6 +25,7 @@ Game::Game(void) :
 			m_gui = addGui<Menu>();
 			if (m_world)
 				removeWorld(*m_world);
+			m_world = nullptr;
 			switch_Menu = false;
 		}
 
