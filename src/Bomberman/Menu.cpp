@@ -20,6 +20,8 @@ Menu::Menu(void) :
 			session.switch_preGame = true;
 		else if (m_quit == gui.Caller)
 			session.closeDevice();
+		if (m_opt == gui.Caller)
+			session.switch_Options = true;
 	});
 	m_play.setPressedImage(session.driver.getTexture("res/GUI/menu_background.png"));
 }

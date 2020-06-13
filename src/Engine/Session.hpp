@@ -31,6 +31,7 @@ public:
 	bool switch_Game = false;
 	bool switch_Pause = false;
 	bool resume_Pause = false;
+	bool switch_Options = false;
 protected:
 	template <class WorldType, typename ...Args>
 	WorldType& add(Args &&...args)

@@ -5,6 +5,7 @@
 #include "Menu.hpp"
 #include "Gui.hpp"
 #include "Pause.hpp"
+#include "IGOptions.hpp"
 #include "PreGame.hpp"
 
 namespace Bomberman {

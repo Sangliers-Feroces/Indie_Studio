@@ -38,7 +38,7 @@ Field::Field(void) :
 		m_players_alive++;
 	}
 	bind(world.session.events.key.pressed, [&](auto key){
-		if (key == irr::KEY_SPACE)
+		if (key == irr::KEY_ESCAPE)
 			session.switch_Pause = true;
 	});
 }

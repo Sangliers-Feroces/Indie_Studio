@@ -48,6 +48,12 @@ Game::Game(void) :
 			m_world->events.update.setScale(1);
 			resume_Pause = false;
 		}
+
+		if (switch_Options) {
+			removeGui(m_gui);
+			m_gui = addGui<Options>();
+			switch_Options = false;
+		}
 	});
 	run();
 }

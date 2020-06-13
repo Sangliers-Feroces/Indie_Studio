@@ -38,6 +38,7 @@ set(SRCS
 	./src/Bomberman/Menu.cpp
 	./src/Bomberman/PreGame.cpp
 	./src/Bomberman/Pause.cpp
+	./src/Bomberman/IGOptions.cpp
 	./src/Bomberman/Field.cpp
 	./src/Bomberman/Player.cpp
 	./src/Bomberman/Camera.cpp
