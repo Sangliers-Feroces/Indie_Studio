@@ -417,6 +417,9 @@ void Field::addAnim(void)
 		}},
 		{Env::Mario, [&](){
 			return std::make_unique<AnimMario>(*this);
+		}},
+		{Env::Overworld, [&](){
+			return std::make_unique<AnimOw>(*this);
 		}}
 	};
 
@@ -568,6 +571,51 @@ Field::AnimMario::Thing::Thing(const irr::core::vector3df &pos, bool custom_scal
 }
 
 Field::AnimMario::Thing::~Thing(void)
+{
+}
+
+Field::AnimOw::AnimOw(Field &field)
+{
+	static const std::vector<irr::core::vector3df> ts = {
+		{-4.0, 1.0, 4.0},
+		{-3.75, 1.0, 9.0},
+		{-3.5, 1.0, 1.0},
+		{17.0, 1.0, 2.0},
+		{18.0, 1.0, 5.0},
+		{18.0, 1.0, 9.0},
+		{19.0, 1.0, 1.0},
+
+		{3.0, 1.0, 12.0},
+		{16.0, 1.0, 11.0},
+		{10.0, 1.0, 13.0},
+		{12.0, 1.0, -3.2},
+		{5.0, 1.0, -3.5},
+		{15.0, 1.0, -3.0},
+	};
+
+	for (auto &t : ts)
+		field.add<Grass>(t);
+}
+
+Field::AnimOw::~AnimOw(void)
+{
+}
+
+Field::AnimOw::Grass::Grass(const irr::core::vector3df &pos) :
+	Model("res/models/grass.obj", "res/env/ow/grass.jpg")
+{
+	setPos(pos);
+	setScale(2.0);
+
+	auto scale = 1.0 + world.session.rand() * 0.2;
+	bind(world.events.update, [&, pos, scale](auto){
+		auto t = world.events.update.getTime() * scale;
+		auto s = irr::core::vector3df(2.0 + sin(t) * 0.1, 2.0, 2.0 + cos(t) * 0.1);
+		setScale(s);
+	});
+}
+
+Field::AnimOw::Grass::~Grass(void)
 {
 }
 

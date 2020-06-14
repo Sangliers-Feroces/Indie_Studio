@@ -142,6 +142,24 @@ private:
 	private:
 	};
 
+	class AnimOw : public Anim
+	{
+	public:
+		AnimOw(Field &field);
+		~AnimOw(void) override;
+
+		class Grass : public Model
+		{
+		public:
+			Grass(const irr::core::vector3df &pos);
+			~Grass(void);
+
+		private:
+		};
+
+	private:
+	};
+
 	static std::string id_to_str(size_t id);
 
 	std::vector<std::vector<Tile::Type>> genField(void);
