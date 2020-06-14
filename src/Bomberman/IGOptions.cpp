@@ -60,7 +60,6 @@ Options::Options(void) :
 			if ((session.m_options.vol -= 10) < 0)
 				session.m_options.vol = 0;
 			setVolume();
-
 		}
 	});
 
@@ -86,5 +85,6 @@ void Options::setVolume(void)
 	irr::core::stringw str = L"";
 	str += (int)session.m_options.vol;
 	m_vol.setText(str.c_str());
+	world.session.volumeChanged();
 }
 }

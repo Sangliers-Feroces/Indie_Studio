@@ -35,8 +35,10 @@ public:
 	irr::gui::IGUISkin *getSkin(void);
 
 	double getVolume(void) const;
+	double getSfVolume(double in = 1.0) const;
 	void playSound(const std::string &path, double volume = 1.0);
 	void playSoundRnd(const std::string &path, size_t size, double volume = 1.0);
+	void volumeChanged(void);
 
 	void reset_run(void);
 	void stop_run(std::string winner);
@@ -78,6 +80,8 @@ protected:
 	void removeGui(EntityGuiWorld &world);
 
 	void run(void);
+
+	virtual void onVolumeChange(void);
 
 private:
 

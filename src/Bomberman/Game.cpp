@@ -5,10 +5,20 @@
 
 namespace Bomberman {
 
+void Game::onVolumeChange(void)
+{
+	m_music.setVolume(getSfVolume());
+}
+
 Game::Game(void) :
 	m_gui(addGui<Menu>()),
 	m_world(nullptr)
 {
+	m_music.openFromFile("res/music/menu.ogg");
+	m_music.setLoop(true);
+	m_music.setVolume(getSfVolume());
+	m_music.play();
+
 	player_reset();
 	bind(events.update, [&](auto) {
 		if (switch_preGame) {
@@ -24,6 +34,8 @@ Game::Game(void) :
 				removeWorld(*m_world);
 			m_world = nullptr;
 			player_reset();
+			if (m_music.getStatus() != sf::Music::Playing)
+				m_music.play();
 			switch_Menu = false;
 		}
 
@@ -34,6 +46,7 @@ Game::Game(void) :
 				removeWorld(*m_world);
 			m_world = &add<Field>(m_players, Field::getEnvs().at(m_options.map));
 			m_world->events.update.setScale(1);
+			m_music.pause();
 			switch_Game = false;
 		}
 
@@ -67,6 +80,7 @@ Game::Game(void) :
 					removeWorld(*m_world);
 				m_world = &add<Field>(save);
 			}
+			m_music.pause();
 			load_game = false;
 		}
 

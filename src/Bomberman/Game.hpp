@@ -22,6 +22,9 @@ private:
 	std::reference_wrapper<en::EntityGuiWorld> m_gui;
 	en::World *m_world;
 	std::vector<Field::PlayerMeta> m_players;
+	sf::Music m_music;
+
+	void onVolumeChange(void) override;
 };
 
 }

@@ -73,12 +73,14 @@ private:
 	Tile &m_wall;
 	size_t m_players_alive;
 	std::vector<std::reference_wrapper<Player>> m_players;
+	sf::Music m_music;
 
 	static std::string id_to_str(size_t id);
 
 	std::vector<std::vector<Tile::Type>> genField(void);
 	std::vector<std::vector<std::reference_wrapper<Tile>>> genTiles(void);
 	void addBarrier(void);
+	void playMusic(void);
 };
 
 }

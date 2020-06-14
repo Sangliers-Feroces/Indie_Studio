@@ -57,6 +57,7 @@ void Field::init(void)
 		if (key == irr::KEY_ESCAPE)
 			session.switch_Pause = true;
 	});
+	playMusic();
 }
 
 void Field::bindPlayer(Player &p)
@@ -401,6 +402,23 @@ void Field::addBarrier(void)
 		for (int64_t j = -radius; j < ((int64_t)m_w + radius); j++) {
 			add<Tile>(Tile::Type::Ground, irr::core::vector2di(j, i), *this, -1);
 		}
+}
+
+void Field::playMusic(void)
+{
+	static const std::map<Env, std::string> musics = {
+		{Env::Overworld, "res/music/ow.ogg"},
+		{Env::Mario, "res/music/mario.ogg"},
+		{Env::Beach, "res/music/beach.ogg"},
+		{Env::Doom, "res/music/doom.ogg"},
+		{Env::Sky, "res/music/sky heaven.ogg"},
+		{Env::Volcano, "res/music/volcano.ogg"},
+	};
+
+	m_music.openFromFile(musics.at(m_env));
+	m_music.setVolume(world.session.getSfVolume());
+	m_music.setLoop(true);
+	m_music.play();
 }
 
 }

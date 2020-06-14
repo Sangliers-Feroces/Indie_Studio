@@ -30,7 +30,6 @@ Session::Session(void) :
 
 	if (options.good())
 		m_options = en::util::read<decltype(m_options)>(options);
-	std::cout << m_options.level << std::endl;
 }
 
 Session::~Session(void)
@@ -62,6 +61,20 @@ void Session::run(void)
 		m_irr_env.drawAll();
 		driver.endScene();
 	}
+}
+
+double Session::getSfVolume(double in) const
+{
+	return getVolume() * 100.0 * in;
+}
+
+void Session::volumeChanged(void)
+{
+	onVolumeChange();
+}
+
+void Session::onVolumeChange(void)
+{
 }
 
 irr::scene::IAnimatedMesh& Session::getMesh(const std::string &path)
