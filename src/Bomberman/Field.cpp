@@ -311,15 +311,21 @@ const std::string& Field::typeToTexture(Tile::Type type)
 {
 	static const std::map<Env, std::map<Tile::Type, std::string>> table = {
 		{Env::Overworld, {
-			{Tile::Type::Box, "res/models/crate.jpg"},
-			{Tile::Type::Wall, "res/models/wall.jpg"},
-			{Tile::Type::Air, "res/models/crate.jpg"},
-			{Tile::Type::Ground, "res/models/grass.jpg"}
+			{Tile::Type::Box, "res/env/ow/box.jpg"},
+			{Tile::Type::Wall, "res/env/ow/wall.jpg"},
+			{Tile::Type::Air, "res/env/ow/box.jpg"},
+			{Tile::Type::Ground, "res/env/ow/grass.jpg"}
 		}}, {Env::Mario, {
-			{Tile::Type::Box, "res/models/mario-box.jpg"},
-			{Tile::Type::Wall, "res/models/mario-wall.jpg"},
-			{Tile::Type::Air, "res/models/crate.jpg"},
-			{Tile::Type::Ground, "res/models/grass.jpg"}
+			{Tile::Type::Box, "res/env/mario/box.jpg"},
+			{Tile::Type::Wall, "res/env/mario/wall.jpg"},
+			{Tile::Type::Air, "res/env/mario/box.jpg"},
+			{Tile::Type::Ground, "res/env/ow/grass.jpg"}
+		}},
+		{Env::Beach, {
+			{Tile::Type::Box, "res/env/beach/box.jpg"},
+			{Tile::Type::Wall, "res/env/beach/wall.jpg"},
+			{Tile::Type::Air, "res/env/beach/box.jpg"},
+			{Tile::Type::Ground, "res/env/beach/ground.jpg"}
 		}}
 	};
 

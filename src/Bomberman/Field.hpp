@@ -23,7 +23,9 @@ public:
 
 	enum class Env {
 		Overworld,
-		Mario
+		Mario,
+		Beach,
+		Sky
 	};
 
 	Field(const std::vector<PlayerMeta> &players, Env env = Env::Overworld);

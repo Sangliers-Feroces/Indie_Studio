@@ -32,7 +32,7 @@ Game::Game(void) :
 			m_gui = addGui<Gui>(m_players);
 			if (m_world)
 				removeWorld(*m_world);
-			m_world = &add<Field>(m_players);
+			m_world = &add<Field>(m_players, Field::Env::Beach);
 			m_world->events.update.setScale(1);
 			switch_Game = false;
 		}
