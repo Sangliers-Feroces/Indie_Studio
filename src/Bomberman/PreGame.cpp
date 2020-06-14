@@ -126,6 +126,16 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	});
 
 	bind(session.events.gui.checkbox_pressed, [&](auto gui) {
+		if (m_p1 == gui.Caller)
+			players.at(0).is_bot = !m_p1.isChecked();
+		if (m_p2 == gui.Caller) {
+			players.at(1).is_bot = !m_p2.isChecked();
+			//std::cout << players.at(1).is_bot << std::endl;
+		}
+		if (m_p3 == gui.Caller)
+			players.at(2).is_bot = !m_p3.isChecked();
+		if (m_p4 == gui.Caller)
+			players.at(3).is_bot = !m_p4.isChecked();
 	});
 }
 

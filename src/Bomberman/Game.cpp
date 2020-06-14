@@ -29,7 +29,7 @@ Game::Game(void) :
 
 		if (switch_Game) {
 			removeGui(m_gui);
-			m_gui = addGui<Gui>();
+			m_gui = addGui<Gui>(m_players);
 			if (m_world)
 				removeWorld(*m_world);
 			m_world = &add<Field>(m_players);
@@ -46,7 +46,7 @@ Game::Game(void) :
 
 		if (resume_Pause) {
 			removeGui(m_gui);
-			m_gui = addGui<Gui>();
+			m_gui = addGui<Gui>(m_players);
 			m_world->events.update.setScale(1);
 			resume_Pause = false;
 		}
