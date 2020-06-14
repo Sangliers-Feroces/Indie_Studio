@@ -327,5 +327,42 @@ type_id_t type_id(void)
 	return typeid(T).hash_code();
 }
 
+inline std::string strip_string(const std::string &str)
+{
+	std::string res;
+
+	for (auto &c : str)
+		if (!(c == '\n' || c == ' ' || c == '\t' || c == '\r'))
+			res.push_back(c);
+	return res;
+}
+
+template <typename T>
+T check_value_parsed(const std::string &str, size_t pos, T value)
+{
+	if (pos != str.size())
+		throw std::runtime_error("Can't convert such number");
+	else
+		return value;
+}
+
+template <typename T>
+T conv_safe(T (*conv)(const std::string&, size_t*), const std::string &str)
+{
+	size_t pos = 0;
+	T res = conv(str, &pos);
+
+	return check_value_parsed(str, pos, res);
+}
+
+template <typename T>
+T conv_safe(T (*conv)(const std::string&, size_t*, int), const std::string &str)
+{
+	size_t pos = 0;
+	T res = conv(str, &pos, 10);
+
+	return check_value_parsed(str, pos, res);
+}
+
 }
 }

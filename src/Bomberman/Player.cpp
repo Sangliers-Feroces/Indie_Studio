@@ -1,4 +1,6 @@
 #include <optional>
+#include <fstream>
+#include <sstream>
 #include "Player.hpp"
 #include "Bomb.hpp"
 #include "PowerUp/Base.hpp"
@@ -415,17 +417,10 @@ double Player::reload_rate = 3.0;
 
 std::unique_ptr<Player::Controller> Player::genController(bool is_bot, size_t player_id)
 {
-	static const std::map<size_t, LocalController::Layout> layouts = {
-		{0, LocalController::Layout::Zqsd},
-		{1, LocalController::Layout::Arrows},
-		{2, LocalController::Layout::Oklm},
-		{3, LocalController::Layout::Yghj},
-	};
-
 	if (is_bot)
 		return std::make_unique<BotController>(field, *this);
 	else
-		return std::make_unique<LocalController>(world.session, layouts.at(player_id));
+		return std::make_unique<LocalController>(world.session, player_id + 1);
 }
 
 void Player::Controller::scan(void)
@@ -459,7 +454,7 @@ const std::vector<Player::Controller::Key>& Player::Controller::getKeys(void)
 	return res;
 }
 
-Player::LocalController::LocalController(en::Session &session, Layout layout) :
+Player::LocalController::LocalController(en::Session &session, size_t layout) :
 	m_session(session),
 	m_layout(layout),
 	m_key_set(getKeySet(layout))
@@ -479,38 +474,106 @@ bool Player::LocalController::getState(Key key) const
 	return m_session.events.key.getState(getKeyCode(key));
 }
 
-const std::map<Player::Controller::Key, irr::EKEY_CODE>& Player::LocalController::getKeySet(Layout layout)
+std::map<size_t, std::map<Player::Controller::Key, irr::EKEY_CODE>> Player::LocalController::loadBindings(void)
 {
-	static const std::map<Layout, std::map<Key, irr::EKEY_CODE>> layouts = {
-		{Layout::Zqsd, {
-			{Key::Left, irr::KEY_KEY_Q},
-			{Key::Right, irr::KEY_KEY_D},
-			{Key::Up, irr::KEY_KEY_Z},
-			{Key::Down, irr::KEY_KEY_S},
-			{Key::Fire, irr::KEY_KEY_E}
-		}},
-		{Layout::Arrows, {
-			{Key::Left, irr::KEY_LEFT},
-			{Key::Right, irr::KEY_RIGHT},
-			{Key::Up, irr::KEY_UP},
-			{Key::Down, irr::KEY_DOWN},
-			{Key::Fire, irr::KEY_RCONTROL}
-		}},
-		{Layout::Oklm, {
-			{Key::Left, irr::KEY_KEY_K},
-			{Key::Right, irr::KEY_KEY_M},
-			{Key::Up, irr::KEY_KEY_O},
-			{Key::Down, irr::KEY_KEY_L},
-			{Key::Fire, irr::KEY_KEY_P}
-		}},
-		{Layout::Yghj, {
-			{Key::Left, irr::KEY_KEY_G},
-			{Key::Right, irr::KEY_KEY_J},
-			{Key::Up, irr::KEY_KEY_Y},
-			{Key::Down, irr::KEY_KEY_H},
-			{Key::Fire, irr::KEY_KEY_U}
-		}}
+	static const std::map<std::string, irr::EKEY_CODE> key_table {
+		{"a", irr::KEY_KEY_A},
+		{"b", irr::KEY_KEY_B},
+		{"c", irr::KEY_KEY_C},
+		{"d", irr::KEY_KEY_D},
+		{"e", irr::KEY_KEY_E},
+		{"f", irr::KEY_KEY_F},
+		{"g", irr::KEY_KEY_G},
+		{"h", irr::KEY_KEY_H},
+		{"i", irr::KEY_KEY_I},
+		{"j", irr::KEY_KEY_J},
+		{"k", irr::KEY_KEY_K},
+		{"l", irr::KEY_KEY_L},
+		{"m", irr::KEY_KEY_M},
+		{"n", irr::KEY_KEY_N},
+		{"o", irr::KEY_KEY_O},
+		{"p", irr::KEY_KEY_P},
+		{"q", irr::KEY_KEY_Q},
+		{"r", irr::KEY_KEY_R},
+		{"s", irr::KEY_KEY_S},
+		{"t", irr::KEY_KEY_T},
+		{"u", irr::KEY_KEY_U},
+		{"v", irr::KEY_KEY_V},
+		{"w", irr::KEY_KEY_W},
+		{"x", irr::KEY_KEY_X},
+		{"y", irr::KEY_KEY_Y},
+		{"z", irr::KEY_KEY_Z},
+		{"space", irr::KEY_SPACE},
+		{"lcontrol", irr::KEY_LCONTROL},
+		{"rcontrol", irr::KEY_RCONTROL},
+		{"lshift", irr::KEY_LSHIFT},
+		{"rshift", irr::KEY_RSHIFT},
+		{"enter", irr::KEY_RETURN},
+		{"backspace", irr::KEY_BACK},
+		{"left", irr::KEY_LEFT},
+		{"right", irr::KEY_RIGHT},
+		{"up", irr::KEY_UP},
+		{"down", irr::KEY_DOWN}
 	};
+
+	static const std::map<std::string, Key> id_table = {
+		{"left", Key::Left},
+		{"right", Key::Right},
+		{"up", Key::Up},
+		{"down", Key::Down},
+		{"fire", Key::Fire}
+	};
+
+	std::map<size_t, std::map<Key, irr::EKEY_CODE>> res;
+
+	std::ifstream file("controls.txt");
+
+	size_t cur_binding;
+	std::optional<std::map<Key, irr::EKEY_CODE>> cur;
+	std::string line;
+	while (std::getline(file, line)) {
+		line = en::util::strip_string(line);
+		for (auto &c : line)
+			if (c >= 'A' && c <= 'Z')
+				c += 32;
+
+		if (line.size() == 0)
+			continue;
+		if (cur) {
+			std::stringstream ss(line);
+			std::string id, val;
+			std::getline(ss, id, '=');
+			std::getline(ss, val, '=');
+
+			auto k = id_table.find(id);
+			if (k == id_table.end())
+				throw std::runtime_error(std::string("Can't find game key id: '") + id + std::string("'"));
+			auto v = key_table.find(val);
+			if (v == key_table.end())
+				throw std::runtime_error(std::string("Can't find irrlicht key id: '") + val + std::string("'"));
+			if (cur->find(k->second) != cur->end())
+				throw std::runtime_error(std::string("Rebinding key id: '") + id + std::string("'"));
+			cur->emplace(k->second, v->second);
+
+			if (cur->size() == 5) {
+				res[cur_binding] = *cur;
+				cur.reset();
+			}
+		} else {
+			if (line.at(0) != 'p')
+				throw std::runtime_error("Expected character P");
+			line.erase(line.begin());
+			cur_binding = en::util::conv_safe(std::stoull, line);
+			cur = std::map<Key, irr::EKEY_CODE>();
+		}
+	}
+
+	return res;
+}
+
+const std::map<Player::Controller::Key, irr::EKEY_CODE>& Player::LocalController::getKeySet(size_t layout)
+{
+	static const std::map<size_t, std::map<Key, irr::EKEY_CODE>> layouts = loadBindings();
 
 	return layouts.at(layout);
 }

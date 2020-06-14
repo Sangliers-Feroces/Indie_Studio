@@ -1,0 +1,27 @@
+P1
+up = Z
+down = S
+left = Q
+right = D
+fire = E
+
+P2
+left = left
+right = right
+up = up
+down = down
+fire = rcontrol
+
+P3
+left = K
+right = M
+up = O
+down = L
+fire = P
+
+P4
+left = G
+right = J
+up = Y
+down = H
+fire = U
