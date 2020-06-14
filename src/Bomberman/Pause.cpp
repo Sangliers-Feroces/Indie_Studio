@@ -24,6 +24,11 @@ Pause::Pause(void) :
 		if (m_leave == gui.Caller)
 			session.closeDevice();
 	});
+
+	bind(world.session.events.key.pressed, [&](auto key){
+		if (key == irr::KEY_ESCAPE)
+			session.resume_Pause = true;
+	});
 }
 
 Pause::~Pause(void)
