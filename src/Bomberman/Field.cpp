@@ -83,6 +83,7 @@ void Field::write(std::ostream &o)
 		for (auto &t : r)
 			t.get().write(o);
 	m_wall.write(o);
+	en::util::write(o, m_players_alive);
 }
 
 std::vector<std::vector<std::reference_wrapper<Tile>>> Field::readTiles(std::istream &i)
@@ -107,7 +108,7 @@ Field::Field(std::istream &i) :
 	m_h(m_tiles.size()),
 	m_camera(add<Camera>(m_w, m_h)),
 	m_wall(add<Tile>(i, *this)),
-	m_players_alive(0)
+	m_players_alive(en::util::read<decltype(m_players_alive)>(i))
 {
 	for (auto &r : m_tiles)
 		for (auto &t : r)

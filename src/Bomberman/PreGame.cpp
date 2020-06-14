@@ -77,7 +77,7 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_maps.addItem(L"DOOOOOOM", 3);
 	m_maps.addItem(L"Sky heaven", 4);
 	m_maps.addItem(L"Volcano", 5);
-	m_maps.setSelected(0);
+	m_maps.setSelected(session.m_options.map);
 
 	bind(session.events.gui.button_pressed, [this, &players](auto gui) {
 		session.playSound("res/sounds/ui_click2.ogg", session.m_options.vol);

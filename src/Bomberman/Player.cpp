@@ -41,6 +41,8 @@ void Player::init(void)
 		{Controller::Key::Right, irr::core::vector2di(1, 0)}
 	};
 
+	if (m_dead)
+		setScale(irr::core::vector3df(0.0));
 	bind(world.events.update, [&](auto deltaTime) {
 		m_controller->scan();
 
