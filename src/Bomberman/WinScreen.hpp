@@ -17,6 +17,8 @@ public:
 	WinScreen(void);
 	~WinScreen(void);
 private:
+
+	Image &m_background;
 	StaticText &m_winner;
 	Button &m_replay;
 	Button &m_menu;

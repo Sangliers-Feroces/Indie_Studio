@@ -19,7 +19,7 @@ Session::Session(void) :
 	}),
 	m_stop_run(false),
 	m_winner(""),
-	m_font(m_irr_env.getFont("res/GUI/DejaVuSansMono.png"))
+	m_font(m_irr_env.getFont("res/GUI/font2.png"))
 {
 	m_irr_env.getSkin()->setFont(m_font);
 }
