@@ -71,12 +71,12 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_e4.setMax(7);
 	setName(m_e4, players.at(3).name);
 
-	m_maps.addItem(L"Mario Map", 0);
-	m_maps.addItem(L"OverWorld Map", 1);
-	m_maps.addItem(L"Map3", 2);
-	m_maps.addItem(L"Map4", 3);
-	m_maps.addItem(L"Map5", 4);
-	m_maps.addItem(L"Map6", 5);
+	m_maps.addItem(L"Grassland", 0);
+	m_maps.addItem(L"Mario", 1);
+	m_maps.addItem(L"Beach", 2);
+	m_maps.addItem(L"DOOOOOOM", 3);
+	m_maps.addItem(L"Sky heaven", 4);
+	m_maps.addItem(L"Volcano", 5);
 	m_maps.setSelected(0);
 
 	bind(session.events.gui.button_pressed, [this, &players](auto gui) {

@@ -123,6 +123,20 @@ Field::~Field(void)
 	collectGarbage();
 }
 
+const std::vector<Field::Env>& Field::getEnvs(void)
+{
+	static const std::vector<Env> res = {
+		Env::Overworld,
+		Env::Mario,
+		Env::Beach,
+		Env::Doom,
+		Env::Sky,
+		Env::Volcano
+	};
+
+	return res;
+}
+
 Tile& Field::at(const irr::core::vector2di &pos)
 {
 	if (pos.Y >= 0 && pos.Y < (int)m_tiles.size()) {

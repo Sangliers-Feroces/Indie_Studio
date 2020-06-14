@@ -30,6 +30,8 @@ public:
 		Volcano
 	};
 
+	static const std::vector<Env>& getEnvs(void);
+
 	Field(const std::vector<PlayerMeta> &players, Env env = Env::Overworld);
 	void init(void);
 	void bindPlayer(Player &p);
