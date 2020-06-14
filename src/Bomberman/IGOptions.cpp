@@ -21,9 +21,9 @@ Options::Options(void) :
 	m_voldown(add<Button>(irr::core::rect<irr::s32>(700, 400, 750, 450), L"-")),
 	m_diff(add<ComboBox>(irr::core::rect<irr::s32>(650, 600, 950, 700)))
 {
-	m_diff.addItem(L"Tiede", 0);
+	m_diff.addItem(L"Tiède", 0);
 	m_diff.addItem(L"épicé", 1);
-	m_diff.addItem(L"Brulant", 2);
+	m_diff.addItem(L"Brûlant", 2);
 	m_diff.addItem(L"Infernal", 3);
 	m_diff.addItem(L"DOOOOOM", 4);
 	m_diff.setSelected(session.m_options.level);
