@@ -82,11 +82,12 @@ protected:
 
 	void setPos(const irr::core::vector3df& pos);
 	void setRot(const irr::core::vector3df& rot);
+	void setScale(double scale);
 	void setScale(const irr::core::vector3df& scale);
 
 	void updateAbsolutePosition(void);
 
-	const irr::video::SMaterial& getMaterial(const irr::u32& num);
+	irr::video::SMaterial& getMaterial(const irr::u32& num);
 	irr::u32 getMaterialCount(void) const;
 
 	void setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue);

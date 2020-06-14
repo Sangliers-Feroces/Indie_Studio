@@ -16,8 +16,8 @@ Camera::Camera(size_t w, size_t h)
 		setTarget(m_rot);
 	});*/
 
-	setNearValue(0.001);
-	setFarValue(10000.0);
+	setNearValue(1.0);
+	setFarValue(100.0);
 	/*bind(world.session.events.key.pressed, [this](auto key){
 		if (key == irr::KEY_KEY_Z)
 		else if (key == irr::KEY_KEY_D)

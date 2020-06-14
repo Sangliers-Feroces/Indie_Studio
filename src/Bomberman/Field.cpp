@@ -57,6 +57,7 @@ void Field::init(void)
 		if (key == irr::KEY_ESCAPE)
 			session.switch_Pause = true;
 	});
+	addAnim();
 	playMusic();
 }
 
@@ -213,6 +214,11 @@ void Field::genItem(const irr::core::vector2di &pos)
 		}
 		goti += p.first;
 	}
+}
+
+Field::Env Field::getEnv(void) const
+{
+	return m_env;
 }
 
 size_t Field::getWidth(void) const
@@ -405,6 +411,34 @@ void Field::addBarrier(void)
 		}
 }
 
+void Field::addAnim(void)
+{
+	const std::map<Env, std::function<std::unique_ptr<Anim> (void)>> ctors = {
+		{Env::Sky, [&](){
+			return std::make_unique<AnimSky>(*this);
+		}},
+		{Env::Volcano, [&](){
+			return std::make_unique<AnimVolcano>(*this);
+		}},
+		{Env::Mario, [&](){
+			return std::make_unique<AnimMario>(*this);
+		}},
+		{Env::Overworld, [&](){
+			return std::make_unique<AnimOw>(*this);
+		}},
+		{Env::Beach, [&](){
+			return std::make_unique<AnimBeach>(*this);
+		}},
+		{Env::Doom, [&](){
+			return std::make_unique<AnimDoom>(*this);
+		}}
+	};
+
+	auto got = ctors.find(m_env);
+	if (got != ctors.end())
+		m_anim = got->second();
+}
+
 void Field::playMusic(void)
 {
 	static const std::map<Env, std::string> musics = {
@@ -420,6 +454,324 @@ void Field::playMusic(void)
 	m_music.setVolume(world.session.getSfVolume());
 	m_music.setLoop(true);
 	m_music.play();
+}
+
+Field::AnimSky::AnimSky(Field &field) :
+	m_field(field)
+{
+	static const std::vector<irr::core::vector3df> clouds = {
+		{-3.0, 4.0, 2.0},
+		{-5.0, 3.0, 6.0},
+		{-2.0, 1.0, 7.0},
+		{-4.0, 2.0, 9.0},
+		{17.0, 1.5, 1.0},
+		{15.0, 3.4, 2.0},
+		{16.0, 1.0, 6.0},
+		{19, 2.6, 9.0}
+	};
+
+	for (auto &c : clouds)
+		m_field.add<Cloud>(c);
+}
+
+Field::AnimSky::~AnimSky(void)
+{
+}
+
+Field::AnimSky::Cloud::Cloud(const irr::core::vector3df &pos) :
+	Model("res/models/box.obj", "res/env/sky/wall.png"),
+	m_tscale(1.0 - world.session.rand() * 0.5)
+{
+	setPos(pos);
+	setScale(1.0 + world.session.rand() * 2.0);
+
+	bind(world.events.update, [&, pos](auto){
+		auto p = pos + irr::core::vector3df(0.0, sin(world.events.update.getTime() * m_tscale * 0.3), 0.0);
+		setPos(p);
+	});
+}
+
+Field::AnimSky::Cloud::~Cloud(void)
+{
+}
+
+Field::AnimVolcano::AnimVolcano(Field &field)
+{
+	static const std::vector<irr::core::vector3df> lavas = {
+		{-18.0, 0.0, 4.0},
+		{32.0, 0.0, 6.5}
+	};
+
+	size_t i = 0;
+	for (auto &l : lavas)
+		field.add<Lava>(l, i++ > 0);
+	field.add<Lava>(irr::core::vector3df(23.0, 0.0, -2.0), true, 15.0);
+}
+
+Field::AnimVolcano::~AnimVolcano(void)
+{
+}
+
+Field::AnimVolcano::Lava::Lava(const irr::core::vector3df &pos, bool rot_inv, double scale) :
+	Model("res/models/sphere.obj", "res/env/volcano/box.png")
+{
+	setPos(pos);
+	setScale(scale);
+
+	double ts =  scale / 30.0;
+	getMaterial(0).getTextureMatrix(0).setTextureScale(30.0 * ts, 30.0 * ts);
+	getMaterial(0).TextureLayer->TextureWrapU = irr::video::ETC_REPEAT;
+	getMaterial(0).TextureLayer->TextureWrapV = irr::video::ETC_REPEAT;
+
+	bind(world.events.update, [&, rot_inv](auto){
+		auto r = irr::core::vector3df(90.0, 0.0, world.events.update.getTime() * (rot_inv ? 1.0 : -1.0));
+		setRot(r);
+	});
+}
+
+Field::AnimVolcano::Lava::~Lava(void)
+{
+}
+
+Field::AnimMario::AnimMario(Field &field)
+{
+	static const std::vector<irr::core::vector3df> ts = {
+		{-4.0, 0.0, 4.0},
+		{-5.0, 2.0, 9.0},
+		{-3.5, 3.5, 1.0},
+		{17.0, 1.0, 2.0},
+		{16.0, 1.5, 9.0},
+		{20.0, 3.5, 1.0},
+	};
+
+	for (auto &t : ts)
+		field.add<Thing>(t);
+	field.add<Thing>(irr::core::vector3df(21.0, -1.5, 8.0), true, 10.0);
+}
+
+Field::AnimMario::~AnimMario(void)
+{
+}
+
+Field::AnimMario::Thing::Thing(const irr::core::vector3df &pos, bool custom_scale, double scale) :
+	Model("res/models/thing.obj", "res/env/mario/thing.jpg"),
+	m_next_blink(0.0),
+	m_blink_for(0.0)
+{
+	setPos(pos);
+	if (custom_scale)
+		setScale(scale);
+	else
+		setScale(2.0 + world.session.rand());
+
+	bind(world.events.update, [&, pos](auto delta){
+		m_next_blink -= delta;
+		if (m_next_blink <= 0.0) {
+			m_next_blink = world.session.rand() * 2.0;
+			m_blink_for = world.session.rand() * 0.2;
+			setMaterialTexture(0, world.session.driver.getTexture("res/env/mario/thing_blink.jpg"));
+		}
+		if (m_blink_for > 0.0) {
+			m_blink_for -= delta;
+			if (m_blink_for <= 0.0)
+				setMaterialTexture(0, world.session.driver.getTexture("res/env/mario/thing.jpg"));
+		}
+		auto p = pos + irr::core::vector3df(0.0, sin(world.events.update.getTime() * 0.2), 0.0);
+		setPos(p);
+	});
+}
+
+Field::AnimMario::Thing::~Thing(void)
+{
+}
+
+Field::AnimOw::AnimOw(Field &field)
+{
+	static const std::vector<irr::core::vector3df> ts = {
+		{-4.0, 1.0, 4.0},
+		{-3.75, 1.0, 9.0},
+		{-3.5, 1.0, 1.0},
+		{17.0, 1.0, 2.0},
+		{18.0, 1.0, 5.0},
+		{18.0, 1.0, 9.0},
+		{19.0, 1.0, 1.0},
+
+		{3.0, 1.0, 12.0},
+		{16.0, 1.0, 11.0},
+		{10.0, 1.0, 13.0},
+		{2.0, 1.0, -4.0},
+		{8.0, 1.0, -4.0},
+		{12.0, 1.0, -4.5},
+	};
+
+	for (auto &t : ts)
+		field.add<Grass>(t);
+}
+
+Field::AnimOw::~AnimOw(void)
+{
+}
+
+Field::AnimOw::Grass::Grass(const irr::core::vector3df &pos) :
+	Model("res/models/grass.obj", "res/env/ow/grass.jpg")
+{
+	setPos(pos);
+	setScale(2.0);
+
+	auto scale = 1.0 + world.session.rand() * 0.2;
+	bind(world.events.update, [&, pos, scale](auto){
+		auto t = world.events.update.getTime() * scale;
+		auto s = irr::core::vector3df(2.0 + sin(t) * 0.1, 2.0, 2.0 + cos(t) * 0.1);
+		setScale(s);
+	});
+}
+
+Field::AnimOw::Grass::~Grass(void)
+{
+}
+
+Field::AnimBeach::AnimBeach(Field &field)
+{
+	static const std::vector<irr::core::vector3df> ts = {
+		{0.0, -0.4999, 4.5},
+		{14.0, -0.4999, 4.5}
+	};
+
+	size_t i = 0;
+	for (auto &t : ts)
+		field.add<Water>(t, i++ > 0);
+}
+
+Field::AnimBeach::~AnimBeach(void)
+{
+}
+
+Field::AnimBeach::Water::Water(const irr::core::vector3df &pos, bool is_inv) :
+	Model("res/models/box.obj", is_inv ? "res/env/beach/wave_inv.jpg" : "res/env/beach/wave.jpg")
+{
+	setPos(pos);
+	setScale(irr::core::vector3df(16.0f, 0.0005f, 16.0f));
+
+	auto ts = 1.0 + world.session.rand() * 0.2;
+	bind(world.events.update, [&, pos, is_inv, ts](auto){
+		auto t = world.events.update.getTime() * 0.2 * ts;
+		auto p = pos + irr::core::vector3df((sin(t) - 1.0) * 5.0 * (!is_inv ? 1.0 : -1.0), 0.0, 0.0);
+		setPos(p);
+	});
+}
+
+Field::AnimBeach::Water::~Water(void)
+{
+}
+
+Field::AnimDoom::AnimDoom(Field &field)
+{
+	field.add<DoomGuy>(field);
+}
+
+Field::AnimDoom::~AnimDoom(void)
+{
+}
+
+Field::AnimDoom::DoomGuy::DoomGuy(Field &field) :
+	Model("res/models/box.obj", "res/env/doom/guy.jpg"),
+	m_field(field),
+	m_next_mob(0.0)
+{
+	irr::core::vector3df s(0.7f, 0.001f, 1.0f);
+	setScale(s);
+	setPos(irr::core::vector3df(-3.0, 1.0, 5.0));
+
+	bind(world.events.update, [&](auto delta){
+		auto t = world.events.update.getTime() / 2.0;
+		auto center = irr::core::vector3df(7.0, 1.0, 5.0);
+		auto rad = 1.2;
+		auto p = center + irr::core::vector3df(cos(t) * 10.0 * rad, 0.0, sin(t) * 20.0 * rad);
+		setPos(p);
+
+		m_next_mob -= delta;
+		if (m_next_mob < 0.0) {
+			m_next_mob = world.session.rand() * 0.1;
+			field.add<Imp>(*this);
+		}
+	});
+}
+
+Field::AnimDoom::DoomGuy::~DoomGuy(void)
+{
+}
+
+Field::AnimDoom::Imp::Imp(Field::AnimDoom::DoomGuy &g) :
+	Model("res/models/box.obj", "res/env/doom/imp.jpg"),
+	m_life(world.session.rand() * 15.0),
+	m_is_dead(false)
+{
+	irr::core::vector3df s(0.7f, 0.001f, 1.0f);
+	setScale(s);
+
+	double x = 5.0;
+	double y = 5.0;
+	while (x >= 0 && x <= 21.0 && y >= 0 && y <= 11.0) {
+		x = (world.session.rand() - 1.0) * 50.0;
+		y = (world.session.rand() - 1.0) * 50.0;
+	}
+	setPos(irr::core::vector3df(x, 1.0, y));
+
+	bind(world.events.update, [&](auto delta){
+		m_life -= delta;
+		if (m_life < 0.0) {
+			if (m_is_dead)
+				destroy();
+			else {
+				m_is_dead = true;
+				m_life = 15.0;
+				setMaterialTexture(0, world.session.driver.getTexture("res/env/doom/imp_dead.jpg"));
+			}
+		}
+
+		if (m_is_dead)
+			return;
+		auto v = (g.getPos() - getPos()).normalize() * delta * 5.0;
+		setPos(getPos() + v);
+		auto p = getPos();
+
+		auto xmin = -3.0;
+		auto xmax = 15.0;
+		auto zmin = -1.0;
+		auto zmax = 12.0;
+
+		if (p.X >= xmin && p.X <= xmax && p.Z >= zmin && p.Z <= zmax) {
+			double min = 99999999.0f;
+			double v;
+
+			v = fabs(p.X - xmin);
+			if (v < min)
+				min = v;
+			v = fabs(p.X - xmax);
+			if (v < min)
+				min = v;
+			v = fabs(p.Z - zmin);
+			if (v < min)
+				min = v;
+			v = fabs(p.Z - zmax);
+			if (v < min)
+				min = v;
+
+			if (min == fabs(p.X - xmin))
+				p.X = 0.0f;
+			else if (min == fabs(p.X - xmax))
+				p.X = xmax;
+			else if (min == fabs(p.Z - zmin))
+				p.Z = 0.0f;
+			else if (min == fabs(p.Z - zmax))
+				p.Z = xmax;
+		}
+		setPos(p);
+	});
+}
+
+Field::AnimDoom::Imp::~Imp(void)
+{
 }
 
 }

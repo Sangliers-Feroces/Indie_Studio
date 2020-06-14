@@ -48,7 +48,7 @@ public:
 	template <class MobType, typename ...Args>
 	MobType& addMob(Args &&...args);
 
-
+	Env getEnv(void) const;
 
 	size_t getWidth(void) const;
 	size_t getHeight(void) const;
@@ -75,11 +75,148 @@ private:
 	std::vector<std::reference_wrapper<Player>> m_players;
 	sf::Music m_music;
 
+	class Anim
+	{
+	public:
+		virtual ~Anim(void) = default;
+	};
+
+	std::unique_ptr<Anim> m_anim;
+
+	class AnimSky : public Anim
+	{
+	public:
+		AnimSky(Field &field);
+		~AnimSky(void) override;
+
+		class Cloud : public Model
+		{
+		public:
+			Cloud(const irr::core::vector3df &pos);
+			~Cloud(void);
+
+		private:
+			double m_tscale;
+		};
+
+	private:
+		Field &m_field;
+	};
+
+	class AnimVolcano : public Anim
+	{
+	public:
+		AnimVolcano(Field &field);
+		~AnimVolcano(void) override;
+
+		class Lava : public Model
+		{
+		public:
+			Lava(const irr::core::vector3df &pos, bool rot_inv, double scale = 30.0);
+			~Lava(void);
+
+		private:
+			double m_tscale;
+		};
+
+	private:
+	};
+
+	class AnimMario : public Anim
+	{
+	public:
+		AnimMario(Field &field);
+		~AnimMario(void) override;
+
+		class Thing : public Model
+		{
+		public:
+			Thing(const irr::core::vector3df &pos, bool custom_scale = false, double scale = 0.0);
+			~Thing(void);
+
+		private:
+			double m_next_blink;
+			double m_blink_for;
+		};
+
+	private:
+	};
+
+	class AnimOw : public Anim
+	{
+	public:
+		AnimOw(Field &field);
+		~AnimOw(void) override;
+
+		class Grass : public Model
+		{
+		public:
+			Grass(const irr::core::vector3df &pos);
+			~Grass(void);
+
+		private:
+		};
+
+	private:
+	};
+
+	class AnimBeach : public Anim
+	{
+	public:
+		AnimBeach(Field &field);
+		~AnimBeach(void) override;
+
+		class Water : public Model
+		{
+		public:
+			Water(const irr::core::vector3df &pos, bool is_inv);
+			~Water(void);
+
+		private:
+		};
+
+	private:
+	};
+
+	class AnimDoom : public Anim
+	{
+	public:
+		AnimDoom(Field &field);
+		~AnimDoom(void) override;
+
+		class DoomGuy : public Model
+		{
+		public:
+			DoomGuy(Field &field);
+			~DoomGuy(void);
+
+			using Entity::getPos;
+
+		private:
+			Field &m_field;
+			double m_next_mob;
+		};
+
+		class Imp : public Model
+		{
+		public:
+			Imp(DoomGuy &g);
+			~Imp(void);
+
+		private:
+			double m_life;
+			bool m_is_dead;
+		};
+
+	private:
+	};
+
 	static std::string id_to_str(size_t id);
 
 	std::vector<std::vector<Tile::Type>> genField(void);
 	std::vector<std::vector<std::reference_wrapper<Tile>>> genTiles(void);
 	void addBarrier(void);
+	void addAnim(void);
 	void playMusic(void);
 };
 
