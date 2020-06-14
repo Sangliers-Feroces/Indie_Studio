@@ -178,6 +178,39 @@ private:
 	private:
 	};
 
+	class AnimDoom : public Anim
+	{
+	public:
+		AnimDoom(Field &field);
+		~AnimDoom(void) override;
+
+		class DoomGuy : public Model
+		{
+		public:
+			DoomGuy(Field &field);
+			~DoomGuy(void);
+
+			using Entity::getPos;
+
+		private:
+			Field &m_field;
+			double m_next_mob;
+		};
+
+		class Imp : public Model
+		{
+		public:
+			Imp(DoomGuy &g);
+			~Imp(void);
+
+		private:
+			double m_life;
+			bool m_is_dead;
+		};
+
+	private:
+	};
+
 	static std::string id_to_str(size_t id);
 
 	std::vector<std::vector<Tile::Type>> genField(void);
