@@ -29,7 +29,8 @@ void Mob::init(void)
 			}
 			auto np = irr::core::vector2df(pos.X, pos.Y) + irr::core::vector2df(m_dir.X, m_dir.Y) * m_move_ratio;
 			Entity::setPos(irr::core::vector3df(np.X, 0.0, np.Y));
-			setRot(irr::core::vector3df(10.0 * sin(m_move_ratio * (M_PI * 2.0)), m_angle_start * (1.0 - m_move_ratio) + m_angle_end * m_move_ratio, 0.0));
+			auto s = sin(m_move_ratio * (M_PI * 2.0));
+			setRot(irr::core::vector3df(13.0 * s, m_angle_start * (1.0 - m_move_ratio) + m_angle_end * m_move_ratio, s * 5.0));
 		}
 	});
 }
