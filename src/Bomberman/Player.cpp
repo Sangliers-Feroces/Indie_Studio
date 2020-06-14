@@ -6,7 +6,7 @@
 namespace Bomberman {
 
 Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id) :
-	Mob("res/models/box.obj", "res/models/Steve.png"),
+	Mob("res/models/bomberman.obj", "res/models/mario-box.jpg"),
 	m_bombs(1),
 	m_time_before_bomb(reload_rate),
 	m_dead(false),

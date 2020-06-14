@@ -31,6 +31,8 @@ private:
 	irr::core::vector2di m_dir;
 	double m_speed;
 	double m_move_ratio;
+	double m_angle_start;
+	double m_angle_end;
 
 	void updatePos(void);
 	virtual bool canMoveTo(const irr::core::vector2di &pos) const;

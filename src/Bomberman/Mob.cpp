@@ -8,7 +8,8 @@ Mob::Mob(const std::string &model_path, const std::string &texture_path) :
 	m_pos(0),
 	m_dir(0),
 	m_speed(0.0),
-	m_move_ratio(1.0)
+	m_move_ratio(1.0),
+	m_angle_start(0.0)
 {
 	field.at(getPos()).addMob(*this);
 	init();
@@ -28,6 +29,7 @@ void Mob::init(void)
 			}
 			auto np = irr::core::vector2df(pos.X, pos.Y) + irr::core::vector2df(m_dir.X, m_dir.Y) * m_move_ratio;
 			Entity::setPos(irr::core::vector3df(np.X, 0.0, np.Y));
+			setRot(irr::core::vector3df(10.0 * sin(m_move_ratio * (M_PI * 2.0)), m_angle_start * (1.0 - m_move_ratio) + m_angle_end * m_move_ratio, 0.0));
 		}
 	});
 }
@@ -64,6 +66,8 @@ bool Mob::move(const irr::core::vector2di &dir, double speed)
 		m_dir = dir;
 		m_speed = speed;
 		m_move_ratio = 0.0;
+		m_angle_start = m_angle_end;
+		m_angle_end = dir.getAngle() + 90.0;
 		//setRot(-dvec2(dir).angle());
 		return true;
 	}
