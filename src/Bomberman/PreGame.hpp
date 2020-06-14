@@ -22,6 +22,7 @@ private:
 	Image &m_background;
 
 	Button &m_back;
+	Button &m_load;
 	Button &m_play;
 
 	CheckBox &m_p1;

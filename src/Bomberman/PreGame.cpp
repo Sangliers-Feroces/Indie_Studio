@@ -19,8 +19,9 @@ namespace Bomberman {
 
 PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_background(add<Image>(session.driver.getTexture("res/GUI/pregame_background.jpg"), irr::core::position2d<irr::s32>(0, 0))),
-	m_back(add<Button>(irr::core::rect<irr::s32>(0, 800, 100, 900), L"Back")),
-	m_play(add<Button>(irr::core::rect<irr::s32>(1500, 800, 1600, 900), L"Play")),
+	m_back(add<Button>(irr::core::rect<irr::s32>(0, 0, 100, 100), L"")),
+	m_load(add<Button>(irr::core::rect<irr::s32>(1500, 0, 1600, 100), L"")),
+	m_play(add<Button>(irr::core::rect<irr::s32>(685, 800, 925, 875), L"")),
 	m_p1(add<CheckBox>(true, irr::core::rect<irr::s32>(170, 660, 270, 760), L"Human ?")),
 	m_p2(add<CheckBox>(false, irr::core::rect<irr::s32>(560, 660, 660, 760), L"Human ?")),
 	m_p3(add<CheckBox>(false, irr::core::rect<irr::s32>(970, 660, 1070, 760), L"Human ?")),
@@ -36,6 +37,16 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_map_pre(add<Image>(session.driver.getTexture("res/GUI/map1.png"), irr::core::position2d<irr::s32>(406, 43))),
 	m_maps(add<ComboBox>(irr::core::rect<irr::s32>(650, 350, 900, 400)))
 {
+
+	m_back.setImage(session.driver.getTexture("res/GUI/pregame_back.png"));
+	m_back.setUseAlphaChannel(true);
+	m_back.setIsDrawBorder(false);
+	m_load.setImage(session.driver.getTexture("res/GUI/pregame_upload.png"));
+	m_load.setUseAlphaChannel(true);
+	m_load.setIsDrawBorder(false);
+	m_play.setImage(session.driver.getTexture("res/GUI/pregame_play.png"));
+	m_play.setUseAlphaChannel(true);
+	m_play.setIsDrawBorder(false);
 
 	m_b1.setUseAlphaChannel(true);
 	m_b1.setIsDrawBorder(false);
