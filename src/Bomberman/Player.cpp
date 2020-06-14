@@ -6,7 +6,7 @@
 namespace Bomberman {
 
 Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id) :
-	Mob("res/models/box.obj", "res/models/Steve.png"),
+	Mob("res/models/bomberman.obj", "res/models/mario-box.jpg"),
 	m_bombs(1),
 	m_time_before_bomb(reload_rate),
 	m_dead(false),
@@ -31,7 +31,7 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 
 void Player::init(void)
 {
-	setScale(irr::core::vector3df(0.5));
+	setScale(irr::core::vector3df(1.0));
 
 	static const std::map<Controller::Key, irr::core::vector2di> directions = {
 		{Controller::Key::Up, irr::core::vector2di(0, 1)},
@@ -150,6 +150,12 @@ void Player::onMove(const irr::core::vector2di &newpos)
 		}
 	}
 	botUpdate();
+}
+
+void Player::onAnim(double ratio)
+{
+	auto s = sin(ratio * (M_PI * 2.0));
+	setRot(irr::core::vector3df(13.0 * s, getAngleStart() * (1.0 - ratio) + getAngleEnd() * ratio, s * 5.0));
 }
 
 bool Player::isSafeToGo(const irr::core::vector2di &pos)

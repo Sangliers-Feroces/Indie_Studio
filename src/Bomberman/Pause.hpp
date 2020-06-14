@@ -17,6 +17,7 @@ public:
 	Pause(void);
 	~Pause(void);
 private:
+	Image &m_background;
 	Button &m_resume;
 	Button &m_save;
 	Button &m_menu;

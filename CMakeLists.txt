@@ -9,7 +9,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -g -Wno-unused-parameter -Wno-deprecated-copy)
 endif()
 
-set(CMAKE_MODULE_PATH "./cmake_modules")
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake_modules)
 
 include(${CMAKE_MODULE_PATH}/FindIrrlicht.cmake)
 include(${CMAKE_MODULE_PATH}/FindSFMLAudio.cmake)

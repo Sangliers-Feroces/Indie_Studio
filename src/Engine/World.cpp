@@ -35,7 +35,8 @@ void World::Events::updateObserver(void)
 
 World::Events::Update::Update(void) :
 	m_time_before(std::chrono::high_resolution_clock::now()),
-	m_scale(1)
+	m_scale(1.0),
+	m_time(0.0)
 {
 }
 
@@ -48,12 +49,19 @@ void World::Events::Update::setScale(double scale)
 	m_scale = scale;
 }
 
+double World::Events::Update::getTime(void) const
+{
+	return m_time;
+}
+
 void World::Events::Update::updateObserver(void)
 {
 	auto now = std::chrono::high_resolution_clock::now();
-	double res = std::chrono::duration<double>(now - m_time_before).count();
+	double delta = std::chrono::duration<double>(now - m_time_before).count();
 	m_time_before = now;
-	newEvent(res * m_scale);
+	auto res = delta * m_scale;
+	m_time += res;
+	newEvent(res);
 }
 
 }
