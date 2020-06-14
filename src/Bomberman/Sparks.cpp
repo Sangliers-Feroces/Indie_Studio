@@ -3,7 +3,7 @@
 namespace Bomberman {
 
 Sparks::Sparks(const irr::core::vector2di &pos) :
-	Mob("res/models/box.obj", "res/models/SadSteve.png"),
+	Mob("res/models/box.obj", "res/models/fire.jpg"),
 	m_time_bef_death(life)
 {
 	setPos(pos);

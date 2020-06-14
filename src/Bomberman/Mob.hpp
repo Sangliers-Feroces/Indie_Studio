@@ -19,11 +19,15 @@ public:
 protected:
 	Field &field;
 
+	double getAngleStart(void) const;
+	double getAngleEnd(void) const;
+
 	bool move(const irr::core::vector2di &dir, double speed);
 	const irr::core::vector2di& getPos(void) const;
 	irr::core::vector2di getIncomingPos(void) const;
 	void setPos(const irr::core::vector2di &newpos);
 	virtual void onMove(const irr::core::vector2di &newpos);
+	virtual void onAnim(double ratio);
 	bool isMoving(void);
 
 private:

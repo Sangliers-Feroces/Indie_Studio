@@ -29,8 +29,7 @@ void Mob::init(void)
 			}
 			auto np = irr::core::vector2df(pos.X, pos.Y) + irr::core::vector2df(m_dir.X, m_dir.Y) * m_move_ratio;
 			Entity::setPos(irr::core::vector3df(np.X, 0.0, np.Y));
-			auto s = sin(m_move_ratio * (M_PI * 2.0));
-			setRot(irr::core::vector3df(13.0 * s, m_angle_start * (1.0 - m_move_ratio) + m_angle_end * m_move_ratio, s * 5.0));
+			onAnim(m_move_ratio);
 		}
 	});
 }
@@ -59,6 +58,16 @@ Mob::Mob(std::istream &i) :
 Mob::~Mob(void)
 {
 	field.at(getPos()).removeMob(*this);
+}
+
+double Mob::getAngleStart(void) const
+{
+	return m_angle_start;
+}
+
+double Mob::getAngleEnd(void) const
+{
+	return m_angle_end;
 }
 
 bool Mob::move(const irr::core::vector2di &dir, double speed)
@@ -103,6 +112,10 @@ void Mob::setPos(const irr::core::vector2di &newpos)
 }
 
 void Mob::onMove(const irr::core::vector2di&)
+{
+}
+
+void Mob::onAnim(double)
 {
 }
 

@@ -18,6 +18,7 @@ public:
 
 private:
 	double m_time_bef_expl;
+	double m_time;
 	size_t m_radius;
 	bool m_defuzed;
 

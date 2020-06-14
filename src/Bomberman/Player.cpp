@@ -152,6 +152,12 @@ void Player::onMove(const irr::core::vector2di &newpos)
 	botUpdate();
 }
 
+void Player::onAnim(double ratio)
+{
+	auto s = sin(ratio * (M_PI * 2.0));
+	setRot(irr::core::vector3df(13.0 * s, getAngleStart() * (1.0 - ratio) + getAngleEnd() * ratio, s * 5.0));
+}
+
 bool Player::isSafeToGo(const irr::core::vector2di &pos)
 {
 	return !field.isBombed(pos) && canMoveTo(pos);

@@ -53,6 +53,7 @@ private:
 
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
 	void onMove(const irr::core::vector2di &newpos) override;
+	void onAnim(double ratio) override;
 	bool isSafeToGo(const irr::core::vector2di &pos);
 	bool botEscape(const irr::core::vector2di &pos);
 	void insertEntry(std::map<size_t, irr::core::vector2di> &res, const irr::core::vector2di &dir, size_t depth);
