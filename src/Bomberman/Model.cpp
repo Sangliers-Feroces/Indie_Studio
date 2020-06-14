@@ -8,7 +8,8 @@ Model::Model(const std::string &model_path, const std::string &texture_path) :
 	m_texture_path(texture_path)
 {
 	setMaterialTexture(0, world.session.driver.getTexture(texture_path.c_str()));
-	setMaterialFlag(irr::video::EMF_LIGHTING, false);
+	setMaterialFlag(irr::video::EMF_LIGHTING, true);
+	addShadowVolume();
 }
 
 void Model::write(std::ostream &o)

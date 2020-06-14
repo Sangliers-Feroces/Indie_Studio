@@ -10,6 +10,9 @@ public:
 	AnimatedMesh(const std::string &mesh_path);
 	~AnimatedMesh(void);
 
+protected:
+	void addShadowVolume(void);
+
 private:
 	AnimatedMesh(irr::scene::IAnimatedMesh &mesh);
 };
