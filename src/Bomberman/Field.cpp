@@ -145,7 +145,7 @@ void Field::nuke(const irr::core::vector2di &pos, bool is_simulation)
 	} else {
 		if (typeAt(pos) == Tile::Type::Box) {
 			genItem(pos);
-			session.playSoundRnd("res/sounds/box", 4);
+			session.playSoundRnd("res/sounds/box", 4, 0.3);
 		}
 		at(pos).setType(Tile::Type::Air);
 	}

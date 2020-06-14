@@ -110,6 +110,7 @@ void Player::hitByBomb(void)
 		return;
 	m_dead = true;
 	setScale(irr::core::vector3df(0.0));
+	world.session.playSoundRnd("res/sounds/death", 3);
 	died.emit();
 }
 
