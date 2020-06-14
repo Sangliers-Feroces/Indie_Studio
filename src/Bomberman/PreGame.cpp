@@ -137,6 +137,11 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 		if (m_p4 == gui.Caller)
 			players.at(3).is_bot = !m_p4.isChecked();
 	});
+
+	bind(world.session.events.key.pressed, [&](auto key){
+		if (key == irr::KEY_ESCAPE)
+			session.switch_Menu = true;
+	});
 }
 
 PreGame::~PreGame(void)

@@ -21,9 +21,6 @@ protected:
 	Image &m_background;
 	Button &m_back;
 
-	CheckBox &m_fscreen;
-
-	CheckBox &m_mute;
 	Button &m_volup;
 	StaticText &m_vol;
 	Button &m_voldown;

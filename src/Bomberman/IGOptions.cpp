@@ -13,13 +13,11 @@
 namespace Bomberman {
 
 Options::Options(void) : 
-	m_background(add<Image>(session.driver.getTexture("res/GUI/menu_background.png"), irr::core::position2d<irr::s32>(0, 0))),
+	m_background(add<Image>(session.driver.getTexture("res/GUI/menu_background.jpg"), irr::core::position2d<irr::s32>(0, 0))),
 	m_back(add<Button>(irr::core::rect<irr::s32>(0, 800, 100, 900), L"Back")),
-	m_fscreen(add<CheckBox>(session.m_options.full_screen, irr::core::rect<irr::s32>(1200, 300, 1400, 400), L"Full Screen")),
-	m_mute(add<CheckBox>(session.m_options.vol_mute, irr::core::rect<irr::s32>(1200, 500, 1400, 600), L"Mute")),
-	m_volup(add<Button>(irr::core::rect<irr::s32>(1200, 700, 1400, 800), L"+")),
+	m_volup(add<Button>(irr::core::rect<irr::s32>(1200, 700, 1400, 800), L"")),
 	m_vol(add<StaticText>(L"", irr::core::rect<irr::s32>(1000, 700, 1200, 800))),
-	m_voldown(add<Button>(irr::core::rect<irr::s32>(800, 700, 1000, 800), L"-"))
+	m_voldown(add<Button>(irr::core::rect<irr::s32>(800, 700, 1000, 800), L""))
 {
 	m_vol.setOverrideFont(session.m_font);
 	setVolume();
@@ -39,11 +37,9 @@ Options::Options(void) :
 		}
 	});
 
-	bind(session.events.gui.checkbox_pressed, [&](auto gui) {
-		if (m_fscreen == gui.Caller)
-			session.m_options.full_screen = m_fscreen.isChecked();
-		if (m_mute == gui.Caller)
-			session.m_options.vol_mute = m_mute.isChecked();
+	bind(world.session.events.key.pressed, [&](auto key){
+		if (key == irr::KEY_ESCAPE)
+			session.switch_Menu = true;
 	});
 }
 
