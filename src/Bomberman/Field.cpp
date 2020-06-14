@@ -326,6 +326,12 @@ const std::string& Field::typeToTexture(Tile::Type type)
 			{Tile::Type::Wall, "res/env/beach/wall.jpg"},
 			{Tile::Type::Air, "res/env/beach/box.jpg"},
 			{Tile::Type::Ground, "res/env/beach/ground.jpg"}
+		}},
+		{Env::Doom, {
+			{Tile::Type::Box, "res/env/doom/box.jpg"},
+			{Tile::Type::Wall, "res/env/doom/wall.jpg"},
+			{Tile::Type::Air, "res/env/doom/box.jpg"},
+			{Tile::Type::Ground, "res/env/doom/ground.jpg"}
 		}}
 	};
 

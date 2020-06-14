@@ -25,6 +25,7 @@ public:
 		Overworld,
 		Mario,
 		Beach,
+		Doom,
 		Sky
 	};
 
