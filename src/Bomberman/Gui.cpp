@@ -10,15 +10,24 @@
 
 namespace Bomberman {
 
+static int64_t off_x = 40;
+static int64_t off_y = 20;
+
 Gui::Gui(std::vector<Field::PlayerMeta> &players) :
-	m_p1(add<Image>(session.driver.getTexture("res/GUI/Bomberman-icon-l-1.png"), irr::core::position2d<irr::s32>(0, 0))),
-	m_p2(add<Image>(session.driver.getTexture("res/GUI/Bomberman-icon-l-1.png"), irr::core::position2d<irr::s32>(1475, 0))),
-	m_p3(add<Image>(session.driver.getTexture("res/GUI/Bomberman-icon-l-1.png"), irr::core::position2d<irr::s32>(0, 775))),
-	m_p4(add<Image>(session.driver.getTexture("res/GUI/Bomberman-icon-l-1.png"), irr::core::position2d<irr::s32>(1475, 775))),
-	m_t1(add<StaticText>(L"", irr::core::rect<irr::s32>(0, 125, 125, 150))),
-	m_t2(add<StaticText>(L"", irr::core::rect<irr::s32>(1475, 125, 1600, 150))),
-	m_t3(add<StaticText>(L"", irr::core::rect<irr::s32>(0,  750, 125, 775))),
-	m_t4(add<StaticText>(L"", irr::core::rect<irr::s32>(1475, 750, 1600, 775)))
+	m_p1((
+	add<Image>(session.driver.getTexture("res/GUI/underlay_tl.png"), irr::core::position2d<irr::s32>(0, 115)),
+	add<Image>(session.driver.getTexture("res/GUI/underlay_tr.png"), irr::core::position2d<irr::s32>(1600 - 200, 115)),
+	add<Image>(session.driver.getTexture("res/GUI/underlay_bl.png"), irr::core::position2d<irr::s32>(0, 900 - 185)),
+	add<Image>(session.driver.getTexture("res/GUI/underlay_br.png"), irr::core::position2d<irr::s32>(1600 - 200, 900 - 185)),
+
+	add<Image>(session.driver.getTexture("res/GUI/Bomberman-icon-l-1.png"), irr::core::position2d<irr::s32>(off_x, off_y)))),
+	m_p2(add<Image>(session.driver.getTexture("res/GUI/Bomberman-icon-l-1.png"), irr::core::position2d<irr::s32>(1475 - off_x, off_y))),
+	m_p3(add<Image>(session.driver.getTexture("res/GUI/Bomberman-icon-l-1.png"), irr::core::position2d<irr::s32>(off_x, 775 - off_y))),
+	m_p4(add<Image>(session.driver.getTexture("res/GUI/Bomberman-icon-l-1.png"), irr::core::position2d<irr::s32>(1475 - off_x, 775 - off_y))),
+	m_t1(add<StaticText>(L"", irr::core::rect<irr::s32>(off_x, 135 + off_y, 200, 200))),
+	m_t2(add<StaticText>(L"", irr::core::rect<irr::s32>(1510 - off_x, 135 + off_y, 1600, 200))),
+	m_t3(add<StaticText>(L"", irr::core::rect<irr::s32>(off_x,  750 - off_y, 200, 775))),
+	m_t4(add<StaticText>(L"", irr::core::rect<irr::s32>(1510 - off_x, 750 - off_y, 1600, 775)))
 {
 	setName(m_t1, players.at(0).name);
 	setName(m_t2, players.at(1).name);
