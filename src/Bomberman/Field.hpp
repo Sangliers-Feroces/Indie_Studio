@@ -48,6 +48,8 @@ public:
 	template <class MobType, typename ...Args>
 	MobType& addMob(Args &&...args);
 
+	using Entity::add;
+
 	Env getEnv(void) const;
 
 	size_t getWidth(void) const;

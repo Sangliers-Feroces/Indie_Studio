@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.11)
 project(bomberman)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options(/W4 /WX /wd4244 /wd4267 /wd4305 /wd4100 /wd4458 /wd4127)
+    add_compile_options()
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wall -Wextra -O2 -Wno-unused-parameter -Wno-deprecated-copy)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s")
