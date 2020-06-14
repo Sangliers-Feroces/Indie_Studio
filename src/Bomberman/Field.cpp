@@ -38,14 +38,16 @@ Field::Field(const std::vector<PlayerMeta> &players, Env env) :
 void Field::init(void)
 {
 	addBarrier();
-	auto &l = add<en::Light>(irr::video::SColor(0x80FFFFFF), 500.0);
-	l.enableCastShadow();
-	l.setType(irr::video::E_LIGHT_TYPE::ELT_DIRECTIONAL);
-	l.setRot(irr::core::vector3df(90.0 + 45.0, 0.0, -45.0));
-	auto d = l.getData();
-	d.AmbientColor = irr::video::SColor(0x80AAAAFF);
-	d.SpecularColor = irr::video::SColor(0);
-	l.setData(d);
+	for (size_t i = 0; i < 2; i++) {
+		auto &l = add<en::Light>(irr::video::SColor(0xFFFFFFFF), 500.0);
+		l.enableCastShadow();
+		l.setType(irr::video::E_LIGHT_TYPE::ELT_DIRECTIONAL);
+		l.setRot(irr::core::vector3df(90.0 + 45.0, 0.0, -20.0));
+		auto d = l.getData();
+		d.AmbientColor = irr::video::SColor(0xFFAAAAFF);
+		d.SpecularColor = irr::video::SColor(0);
+		l.setData(d);
+	}
 
 	/*auto &amb = add<en::Light>(irr::video::SColor(0x80AAAAFF), 500.0);
 	amb.setType(irr::video::E_LIGHT_TYPE::ELT_DIRECTIONAL);
