@@ -1,6 +1,7 @@
 #include "Session.hpp"
 #include <ctime>
 #include <iostream>
+#include <sstream>
 
 #include <ctime>
 
@@ -82,6 +83,14 @@ void Session::playSound(const std::string &path, double volume)
 	sound->setVolume(volume * 100);
 	sound->play();
 	m_playing_sounds.emplace_back(sound);
+}
+
+void Session::playSoundRnd(const std::string &path, size_t size, double volume)
+{
+	std::stringstream ss;
+
+	ss << path << randInt(size) << ".ogg";
+	playSound(ss.str(), volume);
 }
 
 void Session::reset_run(void)

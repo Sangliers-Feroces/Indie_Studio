@@ -143,28 +143,35 @@ void Field::nuke(const irr::core::vector2di &pos, bool is_simulation)
 	if (is_simulation) {
 		m_bombs.at(pos.Y).at(pos.X) = true;
 	} else {
-		if (typeAt(pos) == Tile::Type::Box)
+		if (typeAt(pos) == Tile::Type::Box) {
 			genItem(pos);
+			session.playSoundRnd("res/sounds/box", 4, 0.3);
+		}
 		at(pos).setType(Tile::Type::Air);
 	}
 }
 
 void Field::genItem(const irr::core::vector2di &pos)
 {
-	static const std::vector<std::pair<size_t, const std::function<void (void)>>> items = {
+	static const std::vector<std::pair<size_t, const std::function<bool (void)>>> items = {
 		{1, [&](){
 			addMob<PowerUp::PassUp>(pos);
+			return true;
 		}},
 		{2, [&](){
 			addMob<PowerUp::SpeedUp>(pos);
+			return true;
 		}},
 		{2, [&](){
 			addMob<PowerUp::FireUp>(pos);
+			return true;
 		}},
 		{3, [&](){
 			addMob<PowerUp::BombUp>(pos);
+			return true;
 		}},
 		{8, [](){
+			return false;
 		}}
 	};
 	size_t sum = 0;

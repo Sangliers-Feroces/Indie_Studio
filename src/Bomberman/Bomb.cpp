@@ -64,6 +64,8 @@ void Bomb::nuke(bool is_simulation)
 
 	if (m_defuzed)
 		return;
+	if (!is_simulation)
+		world.session.playSoundRnd("res/sounds/explode", 3, 0.3);
 	for (auto &d : dirs)
 		nukeLine(getPos(), d, m_radius, 1, is_simulation);
 }

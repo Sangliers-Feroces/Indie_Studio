@@ -46,7 +46,8 @@ void Player::init(void)
 		if (!m_dead) {
 			for (auto &p : directions)
 				if (m_controller->getState(p.first))
-					move(p.second, m_stats.speed);
+					if (move(p.second, m_stats.speed))
+						world.session.playSoundRnd("res/sounds/footstep", 4);
 
 			m_time_before_bomb -= deltaTime;
 			if (m_time_before_bomb <= 0.0) {
@@ -58,6 +59,8 @@ void Player::init(void)
 
 			if (m_controller->isPressed(Controller::Key::Fire)) {
 				if (m_bombs > 0) {
+					world.session.playSound("res/sounds/putbomb.ogg", 0.75);
+					world.session.playSound("res/sounds/bombfuse.ogg", 0.1);
 					field.addMob<Bomb>(getIncomingPos(), m_stats.bomb_radius);
 					m_bombs--;
 				}
@@ -107,6 +110,7 @@ void Player::hitByBomb(void)
 		return;
 	m_dead = true;
 	setScale(irr::core::vector3df(0.0));
+	world.session.playSoundRnd("res/sounds/death", 3);
 	died.emit();
 }
 
@@ -353,8 +357,11 @@ bool Player::shouldPutBomb(void)
 		m_next_bot_moves.pop();
 	if (!res)
 		b.defuze();
-	else
+	else {
+		world.session.playSound("res/sounds/putbomb.ogg", 0.75);
+		world.session.playSound("res/sounds/bombfuse.ogg", 0.1);
 		m_bombs--;
+	}
 	return res;
 }
 

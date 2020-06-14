@@ -35,6 +35,7 @@ public:
 	irr::gui::IGUISkin *getSkin(void);
 
 	void playSound(const std::string &path, double volume = 1.0);
+	void playSoundRnd(const std::string &path, size_t size, double volume = 1.0);
 
 	void reset_run(void);
 	void stop_run(std::string winner);

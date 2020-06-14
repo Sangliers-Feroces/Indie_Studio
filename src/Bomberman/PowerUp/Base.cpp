@@ -50,6 +50,7 @@ void Base::collect(Player &player)
 		return;
 	onPlayerCollect(player);
 	m_collected = true;
+	world.session.playSound("res/sounds/collect.ogg", 0.5);
 	destroy();
 }
 
