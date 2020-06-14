@@ -109,14 +109,7 @@ private:
 	class LocalController : public Controller
 	{
 	public:
-		enum class Layout {
-			Zqsd,
-			Arrows,
-			Oklm,
-			Yghj,
-		};
-
-		LocalController(en::Session &session, Layout layout);
+		LocalController(en::Session &session, size_t layout);
 		~LocalController(void) override;
 
 		void refresh(void) override;
@@ -125,11 +118,12 @@ private:
 
 	private:
 		en::Session &m_session;
-		Layout m_layout;
+		size_t m_layout;
 		const std::map<Key, irr::EKEY_CODE> &m_key_set;
 
-		const std::map<Key, irr::EKEY_CODE>& getKeySet(Layout layout);
+		const std::map<Key, irr::EKEY_CODE>& getKeySet(size_t layout);
 		irr::EKEY_CODE getKeyCode(Key abstract_key) const;
+		static std::map<size_t, std::map<Key, irr::EKEY_CODE>> loadBindings(void);
 	};
 
 	class BotController : public Controller
