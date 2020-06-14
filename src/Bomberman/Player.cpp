@@ -12,7 +12,8 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 	m_dead(false),
 	m_name(name),
 	m_is_bot(is_bot),
-	m_bot_it(levelToBotIt(world.session.m_options.level)),
+	m_difficulty(world.session.m_options.level),
+	m_bot_it(levelToBotIt(m_difficulty)),
 	m_player_id(player_id),
 	m_controller(genController(is_bot, player_id))
 {
@@ -86,6 +87,7 @@ void Player::write(std::ostream &o)
 	en::util::write(o, m_dead);
 	en::util::write_string(o, m_name),
 	en::util::write(o, m_is_bot);
+	en::util::write(o, m_difficulty);
 	en::util::write(o, m_bot_it);
 	en::util::write(o, m_player_id);
 }
@@ -98,6 +100,7 @@ Player::Player(std::istream &i) :
 	m_dead(en::util::read<decltype(m_dead)>(i)),
 	m_name(en::util::read_string(i)),
 	m_is_bot(en::util::read<decltype(m_is_bot)>(i)),
+	m_difficulty(en::util::read<decltype(m_difficulty)>(i)),
 	m_bot_it(en::util::read<decltype(m_bot_it)>(i)),
 	m_player_id(en::util::read<decltype(m_player_id)>(i)),
 	m_controller(genController(m_is_bot, m_player_id))

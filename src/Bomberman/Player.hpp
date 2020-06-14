@@ -49,6 +49,7 @@ private:
 	bool m_dead;
 	const std::string m_name;
 	bool m_is_bot;
+	size_t m_difficulty;
 	size_t m_bot_it;
 	size_t m_player_id;
 
