@@ -32,9 +32,11 @@ Options::Options(void) :
 	m_back.setUseAlphaChannel(true);
 	m_back.setIsDrawBorder(false);
 
-	m_mute.setImage(session.driver.getTexture("res/GUI/option_speaker.png"));
 	m_mute.setUseAlphaChannel(true);
 	m_mute.setIsDrawBorder(false);
+	m_mute.setPressed(session.m_options.vol_mute);
+
+	refreshMute();
 
 	setVolume();
 	bind(session.events.gui.button_pressed, [&](auto gui) {
@@ -42,14 +44,8 @@ Options::Options(void) :
 		if (m_back == gui.Caller)
 			session.switch_Menu = true;
 		if (m_mute == gui.Caller) {
-			if (session.m_options.vol_mute) {
-				session.m_options.vol_mute = false;
-				m_mute.setImage(session.driver.getTexture("res/GUI/option_speaker.png"));
-				
-			} else {
-				session.m_options.vol_mute = true;
-				m_mute.setImage(session.driver.getTexture("res/GUI/option_mute.png"));
-			}
+			session.m_options.vol_mute = !session.m_options.vol_mute;
+			refreshMute();
 		}
 		if (m_volup == gui.Caller) {
 			if ((session.m_options.vol += 10) > 100)
@@ -87,4 +83,14 @@ void Options::setVolume(void)
 	m_vol.setText(str.c_str());
 	world.session.volumeChanged();
 }
+
+void Options::refreshMute(void)
+{
+	if (session.m_options.vol_mute)
+		m_mute.setImage(session.driver.getTexture("res/GUI/option_mute.png"));
+	else
+		m_mute.setImage(session.driver.getTexture("res/GUI/option_speaker.png"));
+	world.session.volumeChanged();
+}
+
 }

@@ -30,6 +30,7 @@ protected:
 
 private:
 	void setVolume(void);
+	void refreshMute(void);
 };
 
 }
