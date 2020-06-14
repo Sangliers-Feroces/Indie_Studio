@@ -9,6 +9,7 @@ Game::Game(void) :
 	m_gui(addGui<Menu>()),
 	m_world(nullptr)
 {
+	player_reset();
 	bind(events.update, [&](auto) {
 		if (switch_preGame) {
 			removeGui(m_gui);
@@ -22,7 +23,7 @@ Game::Game(void) :
 			if (m_world)
 				removeWorld(*m_world);
 			m_world = nullptr;
-			m_players.clear();
+			player_reset();
 			switch_Menu = false;
 		}
 
@@ -79,6 +80,25 @@ Game::Game(void) :
 
 Game::~Game(void)
 {
+}
+
+void Game::player_reset(void)
+{
+	m_players.clear();
+	m_players.push_back({false, genName(), 0});
+	m_players.push_back({true, genName(), 1});
+	m_players.push_back({true, genName(), 2});
+	m_players.push_back({true, genName(), 3});
+
+}
+
+std::string Game::genName(void)
+{
+	const std::vector<std::string> names = {
+		"jacob", "Frank", "Oliver", "Nabil", "David", "Tokyo",
+		"Hotel", "Wiskey", "Morgan", "Gordon", "Mickey", "Yu", "Yuri"
+	};
+	return names.at(randInt(names.size()));
 }
 
 }

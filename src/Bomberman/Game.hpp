@@ -17,6 +17,8 @@ public:
 	Game(void);
 	~Game(void) override;
 private:
+	void player_reset(void);
+	std::string genName(void);
 	std::reference_wrapper<en::EntityGuiWorld> m_gui;
 	en::World *m_world;
 	std::vector<Field::PlayerMeta> m_players;

@@ -17,6 +17,8 @@ public:
 	struct PlayerMeta {
 		bool is_bot;
 		std::string name;
+
+		size_t icon_idx;
 	};
 
 	enum class Env {

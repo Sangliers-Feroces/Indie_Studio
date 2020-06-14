@@ -50,4 +50,14 @@ void GuiEditBox::setOverrideFont(irr::gui::IGUIFont *font)
 	m_irr_elem_der.setOverrideFont(font);
 }
 
+const wchar_t *GuiEditBox::getText(void)
+{
+	return m_irr_elem_der.getText();
+}
+
+void GuiEditBox::setText(const wchar_t *text)
+{
+	m_irr_elem_der.setText(text);
+}
+
 }

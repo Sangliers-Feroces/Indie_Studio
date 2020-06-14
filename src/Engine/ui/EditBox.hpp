@@ -24,5 +24,8 @@ public:
 	void setMultiLine(bool enable);
 	void setOverrideColor(irr::video::SColor color);
 	void setOverrideFont(irr::gui::IGUIFont *font = 0);
+
+	void setText(const wchar_t *text);
+	const wchar_t *getText(void);
 };
 }
