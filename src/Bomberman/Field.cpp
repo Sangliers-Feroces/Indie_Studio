@@ -522,24 +522,46 @@ Field::AnimVolcano::Lava::~Lava(void)
 Field::AnimMario::AnimMario(Field &field)
 {
 	static const std::vector<irr::core::vector3df> ts = {
-		{-2.0, 0.0, 4.0},
+		{-4.0, 0.0, 4.0},
+		{-5.0, 2.0, 9.0},
+		{-3.5, 3.5, 1.0},
+		{17.0, 1.0, 2.0},
+		{16.0, 1.5, 9.0},
+		{20.0, 3.5, 1.0},
 	};
 
 	for (auto &t : ts)
 		field.add<Thing>(t);
+	field.add<Thing>(irr::core::vector3df(21.0, -1.5, 8.0), true, 10.0);
 }
 
 Field::AnimMario::~AnimMario(void)
 {
 }
 
-Field::AnimMario::Thing::Thing(const irr::core::vector3df &pos) :
-	Model("res/models/sphere.obj", "res/env/volcano/box.png")
+Field::AnimMario::Thing::Thing(const irr::core::vector3df &pos, bool custom_scale, double scale) :
+	Model("res/models/thing.obj", "res/env/mario/thing.jpg"),
+	m_next_blink(0.0),
+	m_blink_for(0.0)
 {
 	setPos(pos);
-	setScale(2.0 + world.session.rand());
+	if (custom_scale)
+		setScale(scale);
+	else
+		setScale(2.0 + world.session.rand());
 
-	bind(world.events.update, [&, pos](auto){
+	bind(world.events.update, [&, pos](auto delta){
+		m_next_blink -= delta;
+		if (m_next_blink <= 0.0) {
+			m_next_blink = world.session.rand() * 2.0;
+			m_blink_for = world.session.rand() * 0.2;
+			setMaterialTexture(0, world.session.driver.getTexture("res/env/mario/thing_blink.jpg"));
+		}
+		if (m_blink_for > 0.0) {
+			m_blink_for -= delta;
+			if (m_blink_for <= 0.0)
+				setMaterialTexture(0, world.session.driver.getTexture("res/env/mario/thing.jpg"));
+		}
 		auto p = pos + irr::core::vector3df(0.0, sin(world.events.update.getTime() * 0.2), 0.0);
 		setPos(p);
 	});

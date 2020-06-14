@@ -131,10 +131,12 @@ private:
 		class Thing : public Model
 		{
 		public:
-			Thing(const irr::core::vector3df &pos);
+			Thing(const irr::core::vector3df &pos, bool custom_scale = false, double scale = 0.0);
 			~Thing(void);
 
 		private:
+			double m_next_blink;
+			double m_blink_for;
 		};
 
 	private:

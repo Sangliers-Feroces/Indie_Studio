@@ -403,10 +403,10 @@ Player::Stats& Player::getStats(void)
 size_t Player::levelToBotIt(size_t level)
 {
 	static const std::map<size_t, size_t> table = {
-		{0, 1},
-		{1, 2},
-		{2, 3},
-		{3, 6},
+		{0, 6},
+		{1, 8},
+		{2, 10},
+		{3, 12},
 		{4, 64}
 	};
 
