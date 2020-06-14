@@ -216,6 +216,11 @@ void Field::genItem(const irr::core::vector2di &pos)
 	}
 }
 
+Field::Env Field::getEnv(void) const
+{
+	return m_env;
+}
+
 size_t Field::getWidth(void) const
 {
 	return m_w;
@@ -420,6 +425,9 @@ void Field::addAnim(void)
 		}},
 		{Env::Overworld, [&](){
 			return std::make_unique<AnimOw>(*this);
+		}},
+		{Env::Beach, [&](){
+			return std::make_unique<AnimBeach>(*this);
 		}}
 	};
 
@@ -616,6 +624,39 @@ Field::AnimOw::Grass::Grass(const irr::core::vector3df &pos) :
 }
 
 Field::AnimOw::Grass::~Grass(void)
+{
+}
+
+Field::AnimBeach::AnimBeach(Field &field)
+{
+	static const std::vector<irr::core::vector3df> ts = {
+		{0.0, -0.5, 4.5},
+		{14.0, -0.5, 4.5}
+	};
+
+	size_t i = 0;
+	for (auto &t : ts)
+		field.add<Water>(t, i++ > 0);
+}
+
+Field::AnimBeach::~AnimBeach(void)
+{
+}
+
+Field::AnimBeach::Water::Water(const irr::core::vector3df &pos, bool is_inv) :
+	Model("res/models/box.obj", is_inv ? "res/env/beach/wave_inv.jpg" : "res/env/beach/wave.jpg")
+{
+	setPos(pos);
+	setScale(irr::core::vector3df(15.0f, 0.0001f, 15.0f));
+
+	bind(world.events.update, [&, pos, is_inv](auto){
+		auto t = world.events.update.getTime() * 0.2;
+		auto p = pos + irr::core::vector3df((sin(t) - 1.0) * 5.0 * (!is_inv ? 1.0 : -1.0), 0.0, 0.0);
+		setPos(p);
+	});
+}
+
+Field::AnimBeach::Water::~Water(void)
 {
 }
 

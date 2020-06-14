@@ -234,6 +234,8 @@ void Player::botUpdate(double delta)
 
 	if (!m_is_bot)
 		return;
+	if (m_dead)
+		return;
 
 	field.updateBombMap();
 	auto mul = 1.0;

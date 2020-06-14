@@ -10,7 +10,7 @@
 namespace Bomberman {
 
 Tile::Tile(Type type, const irr::core::vector2di &pos, Field &field, int32_t height) :
-	Model("res/models/box.obj", field.typeToTexture(type), type != Type::Ground),
+	Model("res/models/box.obj", field.typeToTexture(type), type != Type::Ground || field.getEnv() == Field::Env::Beach),
 	m_field(field),
 	m_type(type),
 	m_pos(pos),

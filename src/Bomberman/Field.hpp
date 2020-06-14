@@ -48,7 +48,7 @@ public:
 	template <class MobType, typename ...Args>
 	MobType& addMob(Args &&...args);
 
-
+	Env getEnv(void) const;
 
 	size_t getWidth(void) const;
 	size_t getHeight(void) const;
@@ -153,6 +153,24 @@ private:
 		public:
 			Grass(const irr::core::vector3df &pos);
 			~Grass(void);
+
+		private:
+		};
+
+	private:
+	};
+
+	class AnimBeach : public Anim
+	{
+	public:
+		AnimBeach(Field &field);
+		~AnimBeach(void) override;
+
+		class Water : public Model
+		{
+		public:
+			Water(const irr::core::vector3df &pos, bool is_inv);
+			~Water(void);
 
 		private:
 		};
