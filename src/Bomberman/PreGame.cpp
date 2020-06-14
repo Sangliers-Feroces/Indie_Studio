@@ -78,6 +78,7 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_maps.addItem(L"Sky heaven", 4);
 	m_maps.addItem(L"Volcano", 5);
 	m_maps.setSelected(session.m_options.map);
+	setMap();
 
 	bind(session.events.gui.button_pressed, [this, &players](auto gui) {
 		session.playSound("res/sounds/ui_click2.ogg", session.m_options.vol);
@@ -117,15 +118,7 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 
 	bind(session.events.gui.combo_modified, [&](auto gui) {
 		session.playSound("res/sounds/ui_click1.ogg", session.m_options.vol);
-		const std::vector<irr::io::path> urls = {
-		{"res/GUI/map1.png"},
-		{"res/GUI/map2.png"},
-		{"res/GUI/map3.png"},
-		{"res/GUI/map4.png"},
-		{"res/GUI/map5.png"},
-		{"res/GUI/map6.png"}
-		};
-		m_map_pre.setImage(session.driver.getTexture(urls.at(m_maps.getSelected())));
+		setMap();
 		session.m_options.map = m_maps.getSelected();
 	});
 
@@ -151,6 +144,19 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 
 PreGame::~PreGame(void)
 {
+}
+
+void PreGame::setMap(void)
+{
+	const std::vector<irr::io::path> urls = {
+		{"res/GUI/map1.png"},
+		{"res/GUI/map2.png"},
+		{"res/GUI/map3.png"},
+		{"res/GUI/map4.png"},
+		{"res/GUI/map5.png"},
+		{"res/GUI/map6.png"}
+	};
+	m_map_pre.setImage(session.driver.getTexture(urls.at(m_maps.getSelected())));
 }
 
 void PreGame::setIcon(Button &button, size_t idx)
