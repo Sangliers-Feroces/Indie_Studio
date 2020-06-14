@@ -11,7 +11,7 @@ void Game::onVolumeChange(void)
 }
 
 Game::Game(void) :
-	m_gui(addGui<Menu>()),
+	m_gui(addGui<Intro>()),
 	m_world(nullptr)
 {
 	m_music.openFromFile("res/music/menu.ogg");

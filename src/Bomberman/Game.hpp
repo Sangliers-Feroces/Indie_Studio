@@ -8,6 +8,7 @@
 #include "IGOptions.hpp"
 #include "PreGame.hpp"
 #include "WinScreen.hpp"
+#include "Intro.hpp"
 
 namespace Bomberman {
 

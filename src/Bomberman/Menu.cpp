@@ -13,7 +13,7 @@ Menu::Menu(void) :
 	m_background(add<Image>(session.driver.getTexture("res/GUI/menu_background.jpg"), irr::core::position2d<irr::s32>(0, 0))),
 	m_play(add<Button>(irr::core::rect<irr::s32>(1000, 350, 1500, 500), L"")),
 	m_opt(add<Button>(irr::core::rect<irr::s32>(1000, 500, 1500, 650), L"")),
-	m_quit(add<Button>(irr::core::rect<irr::s32>(1000, 650, 1500, 800), L""))
+	m_quit(add<Button>(irr::core::rect<irr::s32>(1000, 647, 1500, 800), L""))
 {
 	m_play.setImage(session.driver.getTexture("res/GUI/menu_play.png"));
 	m_play.setIsDrawBorder(false);
