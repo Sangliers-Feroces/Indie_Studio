@@ -14,6 +14,7 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 	m_is_bot(is_bot),
 	m_difficulty(world.session.m_options.level),
 	m_bot_it(levelToBotIt(m_difficulty)),
+	m_bot_next_action(0.0),
 	m_player_id(player_id),
 	m_controller(genController(is_bot, player_id))
 {
@@ -72,7 +73,7 @@ void Player::init(void)
 		}
 
 		if (!isMoving())
-			botUpdate();
+			botUpdate(deltaTime);
 	});
 }
 
@@ -89,6 +90,7 @@ void Player::write(std::ostream &o)
 	en::util::write(o, m_is_bot);
 	en::util::write(o, m_difficulty);
 	en::util::write(o, m_bot_it);
+	en::util::write(o, m_bot_next_action);
 	en::util::write(o, m_player_id);
 }
 
@@ -102,6 +104,7 @@ Player::Player(std::istream &i) :
 	m_is_bot(en::util::read<decltype(m_is_bot)>(i)),
 	m_difficulty(en::util::read<decltype(m_difficulty)>(i)),
 	m_bot_it(en::util::read<decltype(m_bot_it)>(i)),
+	m_bot_next_action(en::util::read<decltype(m_bot_next_action)>(i)),
 	m_player_id(en::util::read<decltype(m_player_id)>(i)),
 	m_controller(genController(m_is_bot, m_player_id))
 {
@@ -161,7 +164,7 @@ void Player::onMove(const irr::core::vector2di &newpos)
 				m_stats.wall_pass_used = true;
 		}
 	}
-	botUpdate();
+	botUpdate(0.0);
 }
 
 void Player::onAnim(double ratio)
@@ -210,7 +213,7 @@ irr::core::vector2di Player::nearestPlayerVec(void)
 		return irr::core::vector2di(0, 0);
 }
 
-void Player::botUpdate(void)
+void Player::botUpdate(double delta)
 {
 	static const std::vector<irr::core::vector2di> dirs = {
 		{-1, 0},
@@ -219,29 +222,46 @@ void Player::botUpdate(void)
 		{0, 1},
 	};
 
+	static const std::map<size_t, double> idle_table = {
+		{0, 2.0},
+		{1, 1.5},
+		{2, 1.0},
+		{3, 0.5},
+		{4, 0.0},
+	};
+
 	if (!m_is_bot)
 		return;
 
 	field.updateBombMap();
-	if (field.isBombed(getPos())) {
-		if (!botEscape(getPos())) {}
-			//std::cout << m_name << ": well im fucked :(" << std::endl;
-	} else {
-		shouldPutBomb();
-		{
-			field.updateBombMap();
-			auto n = nearestPlayerVec();
-			auto nf = irr::core::vector2df(n.X, n.Y);
-			std::map<double, irr::core::vector2di> table;
+	auto mul = 1.0;
+	if (field.isBombed(getPos()))
+		mul *= 4.0;
+	m_bot_next_action -= delta * mul;
+	if (m_bot_next_action <= 0) {
+		m_bot_next_action += world.session.rand() * idle_table.at(m_difficulty);
+		if (m_bot_next_action < 0.0)
+			m_bot_next_action = 0.0;
+		if (field.isBombed(getPos())) {
+			if (!botEscape(getPos())) {}
+				//std::cout << m_name << ": well im fucked :(" << std::endl;
+		} else {
+			shouldPutBomb();
+			{
+				field.updateBombMap();
+				auto n = nearestPlayerVec();
+				auto nf = irr::core::vector2df(n.X, n.Y);
+				std::map<double, irr::core::vector2di> table;
 
-			for (auto &d : dirs)
-				if (isSafeToGo(getPos() + d)) {
-					double prod = ivectof(d).dotProduct(nf);
-					if (prod >= 0.0)
-						table.emplace(prod, d);
-				}
-			if (table.size() > 0)
-				m_next_bot_moves.emplace(dirToKey(table.rbegin()->second));
+				for (auto &d : dirs)
+					if (isSafeToGo(getPos() + d)) {
+						double prod = ivectof(d).dotProduct(nf);
+						if (prod >= 0.0)
+							table.emplace(prod, d);
+					}
+				if (table.size() > 0)
+					m_next_bot_moves.emplace(dirToKey(table.rbegin()->second));
+			}
 		}
 	}
 }

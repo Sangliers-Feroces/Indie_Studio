@@ -51,6 +51,7 @@ private:
 	bool m_is_bot;
 	size_t m_difficulty;
 	size_t m_bot_it;
+	double m_bot_next_action;
 	size_t m_player_id;
 
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
@@ -63,7 +64,7 @@ private:
 	void checkDir(const irr::core::vector2di &basedir, const irr::core::vector2di &pos, const irr::core::vector2di &dir, size_t depth, std::map<size_t, irr::core::vector2di> &res, std::vector<irr::core::vector2di> &path);
 	irr::core::vector2di nearestPlayerVec(void);
 	irr::core::vector2df ivectof(const irr::core::vector2di &vec);
-	void botUpdate(void);
+	void botUpdate(double delta);
 	bool shouldPutBomb(void);
 
 	static double reload_rate;
