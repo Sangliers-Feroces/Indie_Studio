@@ -23,6 +23,7 @@ Session::Session(void) :
 	m_font(m_irr_env.getFont("res/GUI/font2.png"))
 {
 	m_irr_env.getSkin()->setFont(m_font);
+	m_irr_scene.setShadowColor(irr::video::SColor(150, 0, 0, 0));
 }
 
 Session::~Session(void)

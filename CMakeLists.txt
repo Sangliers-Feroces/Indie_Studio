@@ -22,6 +22,7 @@ set(SRCS
 	./src/Engine/Camera.cpp
 	./src/Engine/Mesh.cpp
 	./src/Engine/AnimatedMesh.cpp
+	./src/Engine/Light.cpp
 	./src/Engine/IrrReceiver.cpp
 	./src/Engine/EntityGui.cpp
 	./src/Engine/EntityGuiWorld.cpp

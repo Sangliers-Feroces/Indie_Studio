@@ -5,6 +5,7 @@
 #include "PowerUp/BombUp.hpp"
 #include "Bomb.hpp"
 #include "Sparks.hpp"
+#include "Engine/Light.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -21,7 +22,6 @@ Field::Field(const std::vector<PlayerMeta> &players, Env env) :
 	m_wall(add<Tile>(Tile::Type::Wall, irr::core::vector2di(-1000, -1000), *this)),
 	m_players_alive(0)
 {
-	addBarrier();
 	size_t id = 0;
 	size_t player_id = 0;
 	for (auto &m : players) {
@@ -37,6 +37,20 @@ Field::Field(const std::vector<PlayerMeta> &players, Env env) :
 
 void Field::init(void)
 {
+	addBarrier();
+	auto &l = add<en::Light>(irr::video::SColor(0x80FFFFFF), 500.0);
+	l.enableCastShadow();
+	l.setType(irr::video::E_LIGHT_TYPE::ELT_DIRECTIONAL);
+	l.setRot(irr::core::vector3df(90.0 + 45.0, 0.0, -45.0));
+	auto d = l.getData();
+	d.AmbientColor = irr::video::SColor(0x80AAAAFF);
+	d.SpecularColor = irr::video::SColor(0);
+	l.setData(d);
+
+	/*auto &amb = add<en::Light>(irr::video::SColor(0x80AAAAFF), 500.0);
+	amb.setType(irr::video::E_LIGHT_TYPE::ELT_DIRECTIONAL);
+	amb.setRot(irr::core::vector3df(90.0, 0.0, 0.0));*/
+
 	bind(world.session.events.key.pressed, [&](auto key){
 		if (key == irr::KEY_ESCAPE)
 			session.switch_Pause = true;
@@ -92,7 +106,6 @@ Field::Field(std::istream &i) :
 	m_wall(add<Tile>(i, *this)),
 	m_players_alive(0)
 {
-	addBarrier();
 	for (auto &r : m_tiles)
 		for (auto &t : r)
 			for (auto &m : t.get().getMobs()) {
