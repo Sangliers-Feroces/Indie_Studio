@@ -12,6 +12,7 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 	m_dead(false),
 	m_name(name),
 	m_is_bot(is_bot),
+	m_bot_it(levelToBotIt(world.session.m_options.level)),
 	m_player_id(player_id),
 	m_controller(genController(is_bot, player_id))
 {
@@ -83,6 +84,7 @@ void Player::write(std::ostream &o)
 	en::util::write(o, m_dead);
 	en::util::write_string(o, m_name),
 	en::util::write(o, m_is_bot);
+	en::util::write(o, m_bot_it);
 	en::util::write(o, m_player_id);
 }
 
@@ -94,6 +96,7 @@ Player::Player(std::istream &i) :
 	m_dead(en::util::read<decltype(m_dead)>(i)),
 	m_name(en::util::read_string(i)),
 	m_is_bot(en::util::read<decltype(m_is_bot)>(i)),
+	m_bot_it(en::util::read<decltype(m_bot_it)>(i)),
 	m_player_id(en::util::read<decltype(m_player_id)>(i)),
 	m_controller(genController(m_is_bot, m_player_id))
 {
@@ -283,7 +286,7 @@ void Player::checkDir(const irr::core::vector2di &basedir, const irr::core::vect
 		if (res.begin()->first <= depth)
 			return;
 	}
-	if (depth > 128)
+	if (depth > m_bot_it)
 		return;
 
 	if (!(p.X >= 0 && p.X < (int64_t)field.getWidth() && p.Y >= 0 && p.Y < (int64_t)field.getHeight()))
@@ -368,6 +371,19 @@ bool Player::shouldPutBomb(void)
 Player::Stats& Player::getStats(void)
 {
 	return m_stats;
+}
+
+size_t Player::levelToBotIt(size_t level)
+{
+	static const std::map<size_t, size_t> table = {
+		{0, 1},
+		{1, 2},
+		{2, 3},
+		{3, 6},
+		{4, 64}
+	};
+
+	return table.at(level);
 }
 
 double Player::reload_rate = 3.0;

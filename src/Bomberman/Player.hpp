@@ -49,6 +49,7 @@ private:
 	bool m_dead;
 	const std::string m_name;
 	bool m_is_bot;
+	size_t m_bot_it;
 	size_t m_player_id;
 
 	bool canMoveTo(const irr::core::vector2di &pos) const override;
@@ -65,6 +66,7 @@ private:
 	bool shouldPutBomb(void);
 
 	static double reload_rate;
+	static size_t levelToBotIt(size_t level);
 
 	friend PowerUp::Base;
 	Stats& getStats(void);
