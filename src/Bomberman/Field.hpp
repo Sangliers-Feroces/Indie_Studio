@@ -122,6 +122,24 @@ private:
 	private:
 	};
 
+	class AnimMario : public Anim
+	{
+	public:
+		AnimMario(Field &field);
+		~AnimMario(void) override;
+
+		class Thing : public Model
+		{
+		public:
+			Thing(const irr::core::vector3df &pos);
+			~Thing(void);
+
+		private:
+		};
+
+	private:
+	};
+
 	static std::string id_to_str(size_t id);
 
 	std::vector<std::vector<Tile::Type>> genField(void);

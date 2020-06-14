@@ -414,6 +414,9 @@ void Field::addAnim(void)
 		}},
 		{Env::Volcano, [&](){
 			return std::make_unique<AnimVolcano>(*this);
+		}},
+		{Env::Mario, [&](){
+			return std::make_unique<AnimMario>(*this);
 		}}
 	};
 
@@ -513,6 +516,36 @@ Field::AnimVolcano::Lava::Lava(const irr::core::vector3df &pos, bool rot_inv, do
 }
 
 Field::AnimVolcano::Lava::~Lava(void)
+{
+}
+
+Field::AnimMario::AnimMario(Field &field)
+{
+	static const std::vector<irr::core::vector3df> ts = {
+		{-2.0, 0.0, 4.0},
+	};
+
+	for (auto &t : ts)
+		field.add<Thing>(t);
+}
+
+Field::AnimMario::~AnimMario(void)
+{
+}
+
+Field::AnimMario::Thing::Thing(const irr::core::vector3df &pos) :
+	Model("res/models/sphere.obj", "res/env/volcano/box.png")
+{
+	setPos(pos);
+	setScale(2.0 + world.session.rand());
+
+	bind(world.events.update, [&, pos](auto){
+		auto p = pos + irr::core::vector3df(0.0, sin(world.events.update.getTime() * 0.2), 0.0);
+		setPos(p);
+	});
+}
+
+Field::AnimMario::Thing::~Thing(void)
 {
 }
 
