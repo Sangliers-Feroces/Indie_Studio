@@ -86,6 +86,8 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 		if (m_play == gui.Caller) {
 			session.switch_Game = true;
 		}
+		if (m_load == gui.Caller)
+			session.load_game = true;
 
 		if (m_b1 == gui.Caller) {
 			if (++ players.at(0).icon_idx > 3)

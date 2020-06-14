@@ -34,6 +34,7 @@ public:
 	size_t randInt(size_t max);
 	irr::gui::IGUISkin *getSkin(void);
 
+	double getVolume(void) const;
 	void playSound(const std::string &path, double volume = 1.0);
 	void playSoundRnd(const std::string &path, size_t size, double volume = 1.0);
 
@@ -49,6 +50,7 @@ public:
 	bool resume_Pause = false;
 	bool switch_Options = false;
 	bool load_game = false;
+	bool save_game = false;
 
 protected:
 	template <class WorldType, typename ...Args>

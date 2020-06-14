@@ -33,9 +33,10 @@ Pause::Pause(void) :
 	m_leave.setUseAlphaChannel(true);
 	m_leave.setIsDrawBorder(false);
 	bind(session.events.gui.button_pressed, [this](auto gui) {
-		if (m_resume == gui.Caller) {
+		if (m_resume == gui.Caller)
 			session.resume_Pause = true;
-		}
+		if (m_save == gui.Caller)
+			session.save_game = true;
 		if (m_menu == gui.Caller)
 			session.switch_Menu = true;
 		if (m_leave == gui.Caller)

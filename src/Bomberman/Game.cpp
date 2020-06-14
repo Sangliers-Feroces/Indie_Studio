@@ -61,11 +61,25 @@ Game::Game(void) :
 			std::ifstream save("save.BOMBS", std::ios::binary);
 
 			if (save.good()) {
+				removeGui(m_gui);
+				m_gui = addGui<Gui>(m_players);
 				if (m_world)
 					removeWorld(*m_world);
 				m_world = &add<Field>(save);
 			}
 			load_game = false;
+		}
+
+		if (save_game) {
+			if (m_world) {
+				std::ofstream save("save.BOMBS", std::ios::trunc | std::ios::binary);
+				try {
+					dynamic_cast<Field&>(*m_world).write(save);
+				} catch (const std::bad_cast&) {}
+
+				std::cout << "Game saved." << std::endl;
+			}
+			save_game = false;
 		}
 
 		if (isDone()) {

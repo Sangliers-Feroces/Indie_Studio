@@ -40,13 +40,6 @@ void Field::init(void)
 	bind(world.session.events.key.pressed, [&](auto key){
 		if (key == irr::KEY_ESCAPE)
 			session.switch_Pause = true;
-		else if (key == irr::KEY_RETURN) {
-			std::ofstream save("save.BOMBS", std::ios::trunc | std::ios::binary);
-
-			write(save);
-		} else if (key == irr::KEY_RSHIFT) {
-			session.load_game = true;
-		}
 	});
 }
 

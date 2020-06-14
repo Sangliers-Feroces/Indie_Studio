@@ -8,7 +8,7 @@
 namespace Engine {
 
 Session::Session(void) :
-	m_options({false, 50, false, 0, 0}),
+	m_options({false, 100, false, 0, 0}),
 	m_irr_device(irr::createDevice(irr::video::EDT_OPENGL,
 	irr::core::dimension2d<irr::u32>(1600, 900), 32, false, false, true, &events)),
 	driver(*m_irr_device->getVideoDriver()),
@@ -72,6 +72,11 @@ irr::gui::IGUISkin * Session::getSkin(void)
 	return m_irr_env.getSkin();
 }
 
+double Session::getVolume(void) const
+{
+	return (m_options.vol / 100.0) * (m_options.vol_mute ? 0.0 : 1.0);
+}
+
 void Session::playSound(const std::string &path, double volume)
 {
 	m_playing_sounds.erase(std::remove_if(m_playing_sounds.begin(), m_playing_sounds.end(), [](const std::unique_ptr<sf::Sound> &sound){
@@ -80,7 +85,7 @@ void Session::playSound(const std::string &path, double volume)
 
 	auto sound = new sf::Sound;
 	sound->setBuffer(m_sound_buffer_cache.resolve(path));
-	sound->setVolume(volume * 100);
+	sound->setVolume(volume * 100 * getVolume());
 	sound->play();
 	m_playing_sounds.emplace_back(sound);
 }
