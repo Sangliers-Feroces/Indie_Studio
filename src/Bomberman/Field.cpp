@@ -411,6 +411,9 @@ void Field::addAnim(void)
 	const std::map<Env, std::function<std::unique_ptr<Anim> (void)>> ctors = {
 		{Env::Sky, [&](){
 			return std::make_unique<AnimSky>(*this);
+		}},
+		{Env::Volcano, [&](){
+			return std::make_unique<AnimVolcano>(*this);
 		}}
 	};
 
@@ -463,7 +466,7 @@ Field::AnimSky::Cloud::Cloud(const irr::core::vector3df &pos) :
 	m_tscale(1.0 - world.session.rand() * 0.5)
 {
 	setPos(pos);
-	setScale(irr::core::vector3df(1.0 + world.session.rand() * 2.0));
+	setScale(1.0 + world.session.rand() * 2.0);
 
 	bind(world.events.update, [&, pos](auto){
 		auto p = pos + irr::core::vector3df(0.0, sin(world.events.update.getTime() * m_tscale * 0.3), 0.0);
@@ -472,6 +475,44 @@ Field::AnimSky::Cloud::Cloud(const irr::core::vector3df &pos) :
 }
 
 Field::AnimSky::Cloud::~Cloud(void)
+{
+}
+
+Field::AnimVolcano::AnimVolcano(Field &field)
+{
+	static const std::vector<irr::core::vector3df> lavas = {
+		{-18.0, 0.0, 4.0},
+		{32.0, 0.0, 6.5}
+	};
+
+	size_t i = 0;
+	for (auto &l : lavas)
+		field.add<Lava>(l, i++ > 0);
+	field.add<Lava>(irr::core::vector3df(23.0, 0.0, -2.0), true, 15.0);
+}
+
+Field::AnimVolcano::~AnimVolcano(void)
+{
+}
+
+Field::AnimVolcano::Lava::Lava(const irr::core::vector3df &pos, bool rot_inv, double scale) :
+	Model("res/models/sphere.obj", "res/env/volcano/box.png")
+{
+	setPos(pos);
+	setScale(scale);
+
+	double ts =  scale / 30.0;
+	getMaterial(0).getTextureMatrix(0).setTextureScale(30.0 * ts, 30.0 * ts);
+	getMaterial(0).TextureLayer->TextureWrapU = irr::video::ETC_REPEAT;
+	getMaterial(0).TextureLayer->TextureWrapV = irr::video::ETC_REPEAT;
+
+	bind(world.events.update, [&, rot_inv](auto){
+		auto r = irr::core::vector3df(90.0, 0.0, world.events.update.getTime() * (rot_inv ? 1.0 : -1.0));
+		setRot(r);
+	});
+}
+
+Field::AnimVolcano::Lava::~Lava(void)
 {
 }
 

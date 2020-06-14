@@ -103,6 +103,25 @@ private:
 		Field &m_field;
 	};
 
+	class AnimVolcano : public Anim
+	{
+	public:
+		AnimVolcano(Field &field);
+		~AnimVolcano(void) override;
+
+		class Lava : public Model
+		{
+		public:
+			Lava(const irr::core::vector3df &pos, bool rot_inv, double scale = 30.0);
+			~Lava(void);
+
+		private:
+			double m_tscale;
+		};
+
+	private:
+	};
+
 	static std::string id_to_str(size_t id);
 
 	std::vector<std::vector<Tile::Type>> genField(void);

@@ -123,6 +123,11 @@ void Entity::setRot(const irr::core::vector3df& rot)
 	m_irr_node->setRotation(rot);
 }
 
+void Entity::setScale(double scale)
+{
+	setScale(irr::core::vector3df(scale));
+}
+
 void Entity::setScale(const irr::core::vector3df& scale)
 {
 	m_irr_node->setScale(scale);
@@ -133,7 +138,7 @@ void Entity::updateAbsolutePosition(void)
 	m_irr_node->updateAbsolutePosition();
 }
 
-const irr::video::SMaterial& Entity::getMaterial(const irr::u32& num)
+irr::video::SMaterial& Entity::getMaterial(const irr::u32& num)
 {
 	return (m_irr_node.get().getMaterial(num));
 }
