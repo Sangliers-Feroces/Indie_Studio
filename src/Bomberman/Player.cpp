@@ -31,7 +31,7 @@ Player::Player(bool is_bot, const std::string &name, size_t id, size_t player_id
 
 void Player::init(void)
 {
-	setScale(irr::core::vector3df(0.5));
+	setScale(irr::core::vector3df(1.0));
 
 	static const std::map<Controller::Key, irr::core::vector2di> directions = {
 		{Controller::Key::Up, irr::core::vector2di(0, 1)},

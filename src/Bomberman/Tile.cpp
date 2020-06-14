@@ -114,7 +114,7 @@ void Tile::renderType(void)
 	if (m_type == Type::Air)
 		setScale(irr::core::vector3df(0.0));
 	else
-		setScale(irr::core::vector3df(0.5));
+		setScale(irr::core::vector3df(1.0));
 }
 
 }

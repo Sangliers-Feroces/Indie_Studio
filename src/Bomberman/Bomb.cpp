@@ -15,7 +15,7 @@ Bomb::Bomb(const irr::core::vector2di &pos, size_t radius) :
 
 void Bomb::init(void)
 {
-	setScale(irr::core::vector3df(0.3));
+	setScale(irr::core::vector3df(0.6));
 	bind(world.events.update, [this](auto delta){
 		m_time_bef_expl -= delta;
 		if (m_time_bef_expl <= 0.0) {

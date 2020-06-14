@@ -13,11 +13,11 @@ Sparks::Sparks(const irr::core::vector2di &pos) :
 
 void Sparks::init(void)
 {
-	setScale(irr::core::vector3df(0.5));
+	setScale(irr::core::vector3df(1.0));
 	bind(world.events.update, [this](auto delta){
 		m_time_bef_death -= delta;
 		double ratio = getRatio();
-		setScale(irr::core::vector3df(ratio * 0.5));
+		setScale(irr::core::vector3df(ratio));
 		if (stillDeadly())
 			for (auto &m : field.at(getPos()).getMobs()) {
 				auto &mob = m.get();

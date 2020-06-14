@@ -14,7 +14,7 @@ Base::Base(const irr::core::vector2di &pos, const std::string &texture_path) :
 
 void Base::init(void)
 {
-	setScale(irr::core::vector3df(0.4));
+	setScale(irr::core::vector3df(0.8));
 }
 
 void Base::write(std::ostream &o)

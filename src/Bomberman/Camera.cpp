@@ -6,7 +6,7 @@ namespace Bomberman {
 Camera::Camera(size_t w, size_t h)
 {
 	auto el = 18.0;
-	auto pos = irr::core::vector3df(w / 2.0 - 1.0, el, h / 2.0 - 1.0);
+	auto pos = irr::core::vector3df(w / 2.0 - 0.5, el, h / 2.0 - 0.5);
 	setPos(pos);
 	setFOV(M_PI_4);
 	setTarget(pos - irr::core::vector3df(0.0, el, 0.0));
