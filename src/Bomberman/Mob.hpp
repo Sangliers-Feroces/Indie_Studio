@@ -21,6 +21,7 @@ protected:
 
 	double getAngleStart(void) const;
 	double getAngleEnd(void) const;
+	void updatePos(void);
 
 	bool move(const irr::core::vector2di &dir, double speed);
 	const irr::core::vector2di& getPos(void) const;
@@ -38,7 +39,6 @@ private:
 	double m_angle_start;
 	double m_angle_end;
 
-	void updatePos(void);
 	virtual bool canMoveTo(const irr::core::vector2di &pos) const;
 
 	friend Field;

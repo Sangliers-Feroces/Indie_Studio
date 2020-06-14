@@ -34,10 +34,12 @@ public:
 			~Update(void);
 
 			void setScale(double scale);
+			double getTime(void) const;
 
 		private:
 			std::chrono::high_resolution_clock::time_point m_time_before;
 			double m_scale;
+			double m_time;
 			friend Events;
 			void updateObserver(void);
 		} update;

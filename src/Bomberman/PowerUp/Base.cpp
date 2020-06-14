@@ -14,7 +14,17 @@ Base::Base(const irr::core::vector2di &pos, const std::string &texture_path) :
 
 void Base::init(void)
 {
-	setScale(irr::core::vector3df(0.8));
+	setScale(irr::core::vector3df(0.7));
+
+	bind(world.events.update, [this](auto){
+		auto t = world.events.update.getTime();
+		double rot = t * 50.0;
+		setRot(irr::core::vector3df(0.0, rot, 0.0));
+		updatePos();
+		auto off = sin(t * 2.5) * 0.5 + 0.5;
+		auto pos = Entity::getPos() + irr::core::vector3df(0.0, off, 0.0);
+		Entity::setPos(pos);
+	});
 }
 
 void Base::write(std::ostream &o)
