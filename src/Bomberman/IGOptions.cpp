@@ -18,12 +18,12 @@ Options::Options(void) :
 	m_mute(add<Button>(irr::core::rect<irr::s32>(750, 300, 850, 400), L"")),
 	m_volup(add<Button>(irr::core::rect<irr::s32>(825, 400, 875, 450), L"+")),
 	m_vol(add<StaticText>(L"", irr::core::rect<irr::s32>(775, 400, 825, 450))),
-	m_voldown(add<Button>(irr::core::rect<irr::s32>(725, 400, 775, 450), L"-")),
+	m_voldown(add<Button>(irr::core::rect<irr::s32>(700, 400, 750, 450), L"-")),
 	m_diff(add<ComboBox>(irr::core::rect<irr::s32>(650, 600, 950, 700)))
 {
-	m_diff.addItem(L"Tiede", 0);
+	m_diff.addItem(L"Tiède", 0);
 	m_diff.addItem(L"épicé", 1);
-	m_diff.addItem(L"Brulant", 2);
+	m_diff.addItem(L"Brûlant", 2);
 	m_diff.addItem(L"Infernal", 3);
 	m_diff.addItem(L"DOOOOOM", 4);
 	m_diff.setSelected(session.m_options.level);
