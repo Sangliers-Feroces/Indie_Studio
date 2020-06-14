@@ -73,8 +73,8 @@ IrrReceiver::Gui::extract_type IrrReceiver::Gui::extract(const IrrReceiver::Gui:
 			case irr::gui::EGET_CHECKBOX_CHANGED:
 				checkbox_pressed.newEvent(src.GUIEvent);
 				break;
-			case irr::gui::EGET_LISTBOX_CHANGED:
-				listbox_modified.newEvent(src.GUIEvent);
+			case irr::gui::EGET_COMBO_BOX_CHANGED:
+				combo_modified.newEvent(src.GUIEvent);
 				break;
 			default:
 				break;

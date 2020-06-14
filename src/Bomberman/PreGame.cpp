@@ -33,8 +33,8 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_b2(add<Button>(irr::core::rect<irr::s32>(570, 610, 620, 660), L"")),
 	m_b3(add<Button>(irr::core::rect<irr::s32>(990, 610, 1040, 660), L"")),
 	m_b4(add<Button>(irr::core::rect<irr::s32>(1370, 610, 1420, 660), L"")),
-	m_maps(add<ComboBox>(irr::core::rect<irr::s32>(700, 600, 900, 620))),
-	m_difficulty(add<ComboBox>(irr::core::rect<irr::s32>(700, 800, 900, 850)))
+	m_map_pre(add<Image>(session.driver.getTexture("res/GUI/map1.png"), irr::core::position2d<irr::s32>(406, 43))),
+	m_maps(add<ComboBox>(irr::core::rect<irr::s32>(650, 350, 900, 400)))
 {
 
 	m_b1.setUseAlphaChannel(true);
@@ -60,24 +60,14 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_e4.setMax(7);
 	setName(m_e4, players.at(3).name);
 
-	m_maps.addItem(L"Mario Map");
-	m_maps.addItem(L"OverWorld Map");
-	m_maps.addItem(L"Map3");
-	m_maps.addItem(L"Map4");
-	m_maps.addItem(L"Map5");
-	m_maps.addItem(L"Map6");
+	m_maps.addItem(L"Mario Map", 0);
+	m_maps.addItem(L"OverWorld Map", 1);
+	m_maps.addItem(L"Map3", 2);
+	m_maps.addItem(L"Map4", 3);
+	m_maps.addItem(L"Map5", 4);
+	m_maps.addItem(L"Map6", 5);
 	m_maps.setSelected(0);
 
-
-	m_difficulty.addItem(L"LVL1", 1);
-	m_difficulty.addItem(L"LVL2", 2);
-	m_difficulty.addItem(L"LVL3", 3);
-	m_difficulty.addItem(L"LVL4", 4);
-	m_difficulty.addItem(L"LVL5", 5);
-	m_difficulty.setSelected(0);
-
-
-	session.m_options.level = m_difficulty.getSelected();
 	bind(session.events.gui.button_pressed, [this, &players](auto gui) {
 		if (m_back == gui.Caller) {
 			session.switch_Menu = true;
@@ -111,11 +101,17 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 		}
 	});
 
-	bind(session.events.gui.listbox_modified, [&](auto gui) {
-		if (m_difficulty == gui.Caller)
-			session.m_options.level = m_difficulty.getSelected();
-		if (m_maps == gui.Caller)
-			session.m_options.map = m_difficulty.getSelected();
+	bind(session.events.gui.combo_modified, [&](auto gui) {
+		const std::vector<irr::io::path> urls = {
+		{"res/GUI/map1.png"},
+		{"res/GUI/map2.png"},
+		{"res/GUI/map3.png"},
+		{"res/GUI/map4.png"},
+		{"res/GUI/map5.png"},
+		{"res/GUI/map6.png"}
+		};
+		m_map_pre.setImage(session.driver.getTexture(urls.at(m_maps.getSelected())));
+		session.m_options.map = m_maps.getSelected();
 	});
 
 	bind(session.events.gui.checkbox_pressed, [&](auto gui) {
