@@ -22,6 +22,12 @@ private:
 	Image &m_p3;
 	Image &m_p4;
 
+	StaticText &m_t1;
+	StaticText &m_t2;
+	StaticText &m_t3;
+	StaticText &m_t4;
+
+	void setName(StaticText &box, const std::string& src);
 	void setIcon(Image &button, size_t idx);
 
 };

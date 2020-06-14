@@ -22,10 +22,10 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_back(add<Button>(irr::core::rect<irr::s32>(0, 0, 100, 100), L"")),
 	m_load(add<Button>(irr::core::rect<irr::s32>(1500, 0, 1600, 100), L"")),
 	m_play(add<Button>(irr::core::rect<irr::s32>(685, 800, 925, 875), L"")),
-	m_p1(add<CheckBox>(true, irr::core::rect<irr::s32>(170, 660, 270, 760), L"Human ?")),
-	m_p2(add<CheckBox>(false, irr::core::rect<irr::s32>(560, 660, 660, 760), L"Human ?")),
-	m_p3(add<CheckBox>(false, irr::core::rect<irr::s32>(970, 660, 1070, 760), L"Human ?")),
-	m_p4(add<CheckBox>(false, irr::core::rect<irr::s32>(1360, 660, 1460, 760), L"Human ?")),
+	m_p1(add<CheckBox>(true, irr::core::rect<irr::s32>(145, 660, 270, 760), L"Human ?")),
+	m_p2(add<CheckBox>(false, irr::core::rect<irr::s32>(535, 660, 660, 760), L"Human ?")),
+	m_p3(add<CheckBox>(false, irr::core::rect<irr::s32>(945, 660, 1070, 760), L"Human ?")),
+	m_p4(add<CheckBox>(false, irr::core::rect<irr::s32>(1335, 660, 1460, 760), L"Human ?")),
 	m_e1(add<EditBox>(L"", irr::core::rect<irr::s32>(170, 560, 270, 580), false)),
 	m_e2(add<EditBox>(L"", irr::core::rect<irr::s32>(550, 560, 660, 580), false)),
 	m_e3(add<EditBox>(L"", irr::core::rect<irr::s32>(970, 560, 1070, 580), false)),
@@ -136,6 +136,11 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 			players.at(2).is_bot = !m_p3.isChecked();
 		if (m_p4 == gui.Caller)
 			players.at(3).is_bot = !m_p4.isChecked();
+	});
+
+	bind(world.session.events.key.pressed, [&](auto key){
+		if (key == irr::KEY_ESCAPE)
+			session.switch_Menu = true;
 	});
 }
 
