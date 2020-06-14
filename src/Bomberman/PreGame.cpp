@@ -35,7 +35,7 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_b3(add<Button>(irr::core::rect<irr::s32>(990, 610, 1040, 660), L"")),
 	m_b4(add<Button>(irr::core::rect<irr::s32>(1370, 610, 1420, 660), L"")),
 	m_map_pre(add<Image>(session.driver.getTexture("res/GUI/map1.png"), irr::core::position2d<irr::s32>(406, 43))),
-	m_maps(add<ComboBox>(irr::core::rect<irr::s32>(650, 350, 900, 400)))
+	m_maps(add<ComboBox>(irr::core::rect<irr::s32>(650, 370, 900, 420)))
 {
 
 	m_back.setImage(session.driver.getTexture("res/GUI/pregame_back.png"));
