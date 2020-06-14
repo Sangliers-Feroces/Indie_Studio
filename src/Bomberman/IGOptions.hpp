@@ -21,9 +21,12 @@ protected:
 	Image &m_background;
 	Button &m_back;
 
+	Button &m_mute;
 	Button &m_volup;
 	StaticText &m_vol;
 	Button &m_voldown;
+
+	ComboBox &m_diff;
 
 private:
 	void setVolume(void);
