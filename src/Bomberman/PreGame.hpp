@@ -43,6 +43,7 @@ private:
 	Image &m_map_pre;
 	ComboBox &m_maps;
 private:
+	void setMap(void);
 	void setName(EditBox &box, const std::string& src);
 	void setIcon(Button &button, size_t idx);
 };
