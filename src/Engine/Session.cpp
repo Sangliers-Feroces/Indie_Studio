@@ -1,5 +1,6 @@
 #include "Session.hpp"
 #include <ctime>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 
@@ -24,10 +25,20 @@ Session::Session(void) :
 {
 	m_irr_env.getSkin()->setFont(m_font);
 	m_irr_scene.setShadowColor(irr::video::SColor(150, 0, 0, 0));
+
+	std::ifstream options("options.bin", std::ios::binary);
+
+	if (options.good())
+		m_options = en::util::read<decltype(m_options)>(options);
+	std::cout << m_options.level << std::endl;
 }
 
 Session::~Session(void)
 {
+	std::ofstream options("options.bin", std::ios::trunc | std::ios::binary);
+
+	if (options.good())
+		en::util::write(options, m_options);
 }
 
 void Session::closeDevice(void)

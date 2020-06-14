@@ -26,6 +26,7 @@ Options::Options(void) :
 	m_diff.addItem(L"Brulant", 2);
 	m_diff.addItem(L"Infernal", 3);
 	m_diff.addItem(L"DOOOOOM", 4);
+	m_diff.setSelected(session.m_options.level);
 
 	m_back.setImage(session.driver.getTexture("res/GUI/pregame_back.png"));
 	m_back.setUseAlphaChannel(true);

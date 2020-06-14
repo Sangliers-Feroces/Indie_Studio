@@ -8,6 +8,7 @@ bin/bomberman*
 Makefile
 
 *.BOMBS
+options.bin
 
 doc/html
 doc/latex
