@@ -80,6 +80,7 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_maps.setSelected(0);
 
 	bind(session.events.gui.button_pressed, [this, &players](auto gui) {
+		session.playSound("res/sounds/ui_click2.ogg", session.m_options.vol);
 		if (m_back == gui.Caller) {
 			session.switch_Menu = true;
 		}
@@ -115,6 +116,7 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	});
 
 	bind(session.events.gui.combo_modified, [&](auto gui) {
+		session.playSound("res/sounds/ui_click1.ogg", session.m_options.vol);
 		const std::vector<irr::io::path> urls = {
 		{"res/GUI/map1.png"},
 		{"res/GUI/map2.png"},
@@ -128,6 +130,7 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	});
 
 	bind(session.events.gui.checkbox_pressed, [&](auto gui) {
+		session.playSound("res/sounds/ui_click1.ogg", session.m_options.vol);
 		if (m_p1 == gui.Caller)
 			players.at(0).is_bot = !m_p1.isChecked();
 		if (m_p2 == gui.Caller) {

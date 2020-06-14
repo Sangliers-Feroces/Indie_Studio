@@ -33,6 +33,7 @@ Pause::Pause(void) :
 	m_leave.setUseAlphaChannel(true);
 	m_leave.setIsDrawBorder(false);
 	bind(session.events.gui.button_pressed, [this](auto gui) {
+		session.playSound("res/sounds/ui_click2.ogg", session.m_options.vol);
 		if (m_resume == gui.Caller)
 			session.resume_Pause = true;
 		if (m_save == gui.Caller)

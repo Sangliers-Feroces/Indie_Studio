@@ -37,6 +37,7 @@ Options::Options(void) :
 
 	setVolume();
 	bind(session.events.gui.button_pressed, [&](auto gui) {
+		session.playSound("res/sounds/ui_click2.ogg", session.m_options.vol);
 		if (m_back == gui.Caller)
 			session.switch_Menu = true;
 		if (m_mute == gui.Caller) {
@@ -63,7 +64,8 @@ Options::Options(void) :
 	});
 
 	bind(world.session.events.gui.combo_modified, [&](auto gui) {
-		if (gui.Caller == m_diff) {
+		session.playSound("res/sounds/ui_click1.ogg", session.m_options.vol);
+		if (m_diff == gui.Caller) {
 			session.m_options.level = m_diff.getSelected();
 		}
 	});

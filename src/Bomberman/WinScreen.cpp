@@ -34,6 +34,7 @@ WinScreen::WinScreen(void) :
 	m_winner.setText(str.c_str());
 
 	bind(session.events.gui.button_pressed, [&](auto gui) {
+		session.playSound("res/sounds/ui_click2.ogg", session.m_options.vol);
 		if (m_replay == gui.Caller) {
 			session.switch_Game = true;
 		}
