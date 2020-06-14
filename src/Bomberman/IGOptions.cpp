@@ -44,11 +44,11 @@ Options::Options(void) :
 		if (m_mute == gui.Caller) {
 			if (session.m_options.vol_mute) {
 				session.m_options.vol_mute = false;
-				m_mute.setImage(session.driver.getTexture("res/GUI/option_mute.png"));
+				m_mute.setImage(session.driver.getTexture("res/GUI/option_speaker.png"));
 				
 			} else {
 				session.m_options.vol_mute = true;
-				m_mute.setImage(session.driver.getTexture("res/GUI/option_speaker.png"));
+				m_mute.setImage(session.driver.getTexture("res/GUI/option_mute.png"));
 			}
 		}
 		if (m_volup == gui.Caller) {
