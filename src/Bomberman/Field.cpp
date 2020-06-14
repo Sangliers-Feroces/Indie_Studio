@@ -630,8 +630,8 @@ Field::AnimOw::Grass::~Grass(void)
 Field::AnimBeach::AnimBeach(Field &field)
 {
 	static const std::vector<irr::core::vector3df> ts = {
-		{0.0, -0.5, 4.5},
-		{14.0, -0.5, 4.5}
+		{0.0, -0.4999, 4.5},
+		{14.0, -0.4999, 4.5}
 	};
 
 	size_t i = 0;
@@ -647,10 +647,11 @@ Field::AnimBeach::Water::Water(const irr::core::vector3df &pos, bool is_inv) :
 	Model("res/models/box.obj", is_inv ? "res/env/beach/wave_inv.jpg" : "res/env/beach/wave.jpg")
 {
 	setPos(pos);
-	setScale(irr::core::vector3df(15.0f, 0.0001f, 15.0f));
+	setScale(irr::core::vector3df(16.0f, 0.0005f, 16.0f));
 
-	bind(world.events.update, [&, pos, is_inv](auto){
-		auto t = world.events.update.getTime() * 0.2;
+	auto ts = 1.0 + world.session.rand() * 0.2;
+	bind(world.events.update, [&, pos, is_inv, ts](auto){
+		auto t = world.events.update.getTime() * 0.2 * ts;
 		auto p = pos + irr::core::vector3df((sin(t) - 1.0) * 5.0 * (!is_inv ? 1.0 : -1.0), 0.0, 0.0);
 		setPos(p);
 	});
