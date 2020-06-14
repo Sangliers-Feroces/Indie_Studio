@@ -25,6 +25,7 @@ Session::Session(void) :
 {
 	m_irr_env.getSkin()->setFont(m_font);
 	m_irr_scene.setShadowColor(irr::video::SColor(150, 0, 0, 0));
+	m_irr_device.get().setResizable(false);
 
 	std::ifstream options("options.bin", std::ios::binary);
 
