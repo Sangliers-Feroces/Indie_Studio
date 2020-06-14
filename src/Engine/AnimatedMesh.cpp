@@ -18,4 +18,9 @@ AnimatedMesh::~AnimatedMesh(void)
 {
 }
 
+void AnimatedMesh::addShadowVolume(void)
+{
+	m_irr_node_der.addShadowVolumeSceneNode();
+}
+
 }
