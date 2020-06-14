@@ -57,6 +57,7 @@ void Field::init(void)
 		if (key == irr::KEY_ESCAPE)
 			session.switch_Pause = true;
 	});
+	addAnim();
 	playMusic();
 }
 
@@ -405,6 +406,19 @@ void Field::addBarrier(void)
 		}
 }
 
+void Field::addAnim(void)
+{
+	const std::map<Env, std::function<std::unique_ptr<Anim> (void)>> ctors = {
+		{Env::Sky, [&](){
+			return std::make_unique<AnimSky>(*this);
+		}}
+	};
+
+	auto got = ctors.find(m_env);
+	if (got != ctors.end())
+		m_anim = got->second();
+}
+
 void Field::playMusic(void)
 {
 	static const std::map<Env, std::string> musics = {
@@ -420,6 +434,45 @@ void Field::playMusic(void)
 	m_music.setVolume(world.session.getSfVolume());
 	m_music.setLoop(true);
 	m_music.play();
+}
+
+Field::AnimSky::AnimSky(Field &field) :
+	m_field(field)
+{
+	static const std::vector<irr::core::vector3df> clouds = {
+		{-3.0, 4.0, 2.0},
+		{-5.0, 3.0, 6.0},
+		{-2.0, 1.0, 7.0},
+		{-4.0, 2.0, 9.0},
+		{17.0, 1.5, 1.0},
+		{15.0, 3.4, 2.0},
+		{16.0, 1.0, 6.0},
+		{19, 2.6, 9.0}
+	};
+
+	for (auto &c : clouds)
+		m_field.add<Cloud>(c);
+}
+
+Field::AnimSky::~AnimSky(void)
+{
+}
+
+Field::AnimSky::Cloud::Cloud(const irr::core::vector3df &pos) :
+	Model("res/models/box.obj", "res/env/sky/wall.png"),
+	m_tscale(1.0 - world.session.rand() * 0.5)
+{
+	setPos(pos);
+	setScale(irr::core::vector3df(1.0 + world.session.rand() * 2.0));
+
+	bind(world.events.update, [&, pos](auto){
+		auto p = pos + irr::core::vector3df(0.0, sin(world.events.update.getTime() * m_tscale * 0.3), 0.0);
+		setPos(p);
+	});
+}
+
+Field::AnimSky::Cloud::~Cloud(void)
+{
 }
 
 }

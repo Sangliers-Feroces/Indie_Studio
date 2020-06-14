@@ -75,11 +75,40 @@ private:
 	std::vector<std::reference_wrapper<Player>> m_players;
 	sf::Music m_music;
 
+	class Anim
+	{
+	public:
+		virtual ~Anim(void) = default;
+	};
+
+	std::unique_ptr<Anim> m_anim;
+
+	class AnimSky : public Anim
+	{
+	public:
+		AnimSky(Field &field);
+		~AnimSky(void) override;
+
+		class Cloud : public Model
+		{
+		public:
+			Cloud(const irr::core::vector3df &pos);
+			~Cloud(void);
+
+		private:
+			double m_tscale;
+		};
+
+	private:
+		Field &m_field;
+	};
+
 	static std::string id_to_str(size_t id);
 
 	std::vector<std::vector<Tile::Type>> genField(void);
 	std::vector<std::vector<std::reference_wrapper<Tile>>> genTiles(void);
 	void addBarrier(void);
+	void addAnim(void);
 	void playMusic(void);
 };
 
