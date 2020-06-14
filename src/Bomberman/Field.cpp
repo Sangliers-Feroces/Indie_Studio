@@ -738,7 +738,7 @@ Field::AnimDoom::Imp::Imp(Field::AnimDoom::DoomGuy &g) :
 		auto xmin = -3.0;
 		auto xmax = 15.0;
 		auto zmin = -1.0;
-		auto zmax = 12.0;
+		auto zmax = 13.5;
 
 		if (p.X >= xmin && p.X <= xmax && p.Z >= zmin && p.Z <= zmax) {
 			double min = 99999999.0f;
