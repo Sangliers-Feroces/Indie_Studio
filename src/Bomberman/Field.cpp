@@ -177,24 +177,24 @@ void Field::nuke(const irr::core::vector2di &pos, bool is_simulation)
 
 void Field::genItem(const irr::core::vector2di &pos)
 {
-	static const std::vector<std::pair<size_t, const std::function<bool (void)>>> items = {
-		{1, [&](){
-			addMob<PowerUp::PassUp>(pos);
+	static const std::vector<std::pair<size_t, const std::function<bool (Field &f, const irr::core::vector2di&)>>> items = {
+		{1, [](auto &f, auto &pos){
+			f.template addMob<PowerUp::PassUp>(pos);
 			return true;
 		}},
-		{2, [&](){
-			addMob<PowerUp::SpeedUp>(pos);
+		{2, [](auto &f, auto &pos){
+			f.template addMob<PowerUp::SpeedUp>(pos);
 			return true;
 		}},
-		{2, [&](){
-			addMob<PowerUp::FireUp>(pos);
+		{2, [](auto &f, auto &pos){
+			f.template addMob<PowerUp::FireUp>(pos);
 			return true;
 		}},
-		{3, [&](){
-			addMob<PowerUp::BombUp>(pos);
+		{3, [](auto &f, auto &pos){
+			f.template addMob<PowerUp::BombUp>(pos);
 			return true;
 		}},
-		{8, [](){
+		{8, [](auto&, auto&){
 			return false;
 		}}
 	};
@@ -208,7 +208,7 @@ void Field::genItem(const irr::core::vector2di &pos)
 	size_t goti = 0;
 	for (auto &p : items) {
 		if (goti >= got) {
-			p.second();
+			p.second(*this, pos);
 			return;
 		}
 		goti += p.first;
