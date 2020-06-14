@@ -26,7 +26,8 @@ public:
 		Mario,
 		Beach,
 		Doom,
-		Sky
+		Sky,
+		Volcano
 	};
 
 	Field(const std::vector<PlayerMeta> &players, Env env = Env::Overworld);
