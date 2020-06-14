@@ -7,6 +7,7 @@ bomberman
 bin/bomberman*
 Makefile
 
+bomberman.exe
 *.BOMBS
 options.bin
 
