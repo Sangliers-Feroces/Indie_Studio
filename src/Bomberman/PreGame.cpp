@@ -34,7 +34,7 @@ PreGame::PreGame(std::vector<Field::PlayerMeta> &players) :
 	m_b2(add<Button>(irr::core::rect<irr::s32>(570, 610, 620, 660), L"")),
 	m_b3(add<Button>(irr::core::rect<irr::s32>(990, 610, 1040, 660), L"")),
 	m_b4(add<Button>(irr::core::rect<irr::s32>(1370, 610, 1420, 660), L"")),
-	m_map_pre(add<Image>(session.driver.getTexture("res/GUI/map1.png"), irr::core::position2d<irr::s32>(406, 43))),
+	m_map_pre(add<Image>(session.driver.getTexture("res/GUI/map1.jpg"), irr::core::position2d<irr::s32>(406, 43))),
 	m_maps(add<ComboBox>(irr::core::rect<irr::s32>(650, 370, 900, 420)))
 {
 
@@ -149,12 +149,12 @@ PreGame::~PreGame(void)
 void PreGame::setMap(void)
 {
 	const std::vector<irr::io::path> urls = {
-		{"res/GUI/map1.png"},
-		{"res/GUI/map2.png"},
-		{"res/GUI/map3.png"},
-		{"res/GUI/map4.png"},
-		{"res/GUI/map5.png"},
-		{"res/GUI/map6.png"}
+		{"res/GUI/map1.jpg"},
+		{"res/GUI/map2.jpg"},
+		{"res/GUI/map3.jpg"},
+		{"res/GUI/map4.jpg"},
+		{"res/GUI/map5.jpg"},
+		{"res/GUI/map6.jpg"}
 	};
 	m_map_pre.setImage(session.driver.getTexture(urls.at(m_maps.getSelected())));
 }
